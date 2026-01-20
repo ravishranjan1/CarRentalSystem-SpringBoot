@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentify | Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+          margin:0;
+          padding:0;
+          box-sizing:border-box;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        body{
+          background: linear-gradient(135deg, #f7f9fc, #eef3ff);
+          color:#2c3e50;
+        }
+
+        /* Navbar */
+        .navbar{
+          background: linear-gradient(90deg, #0f172a, #1e293b);
+          padding: 14px 30px;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          position: sticky;
+          top: 0;
+          z-index: 999;
+          box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+
+          /* ✅ Navbar height SAME (fixed) */
+          height: 70px;
+        }
+
+        .logo{
+          display:flex;
+          align-items:center;
+          gap:10px;
+          cursor:pointer;
+        }
+
+        .logo h2{
+          color:white;
+          font-size:20px;
+          font-weight:700;
+          letter-spacing:1px;
+        }
+
+        .logo span{
+          color:#facc15;
+        }
+
+        .nav-links a{
+          color: white;
+          text-decoration:none;
+          margin-left:18px;
+          font-weight:500;
+          font-size:14px;
+          padding:8px 12px;
+          border-radius:10px;
+          transition:0.3s;
+        }
+
+        .nav-links a:hover{
+          background: rgba(255,255,255,0.12);
+          color:#facc15;
+        }
+
+        /* ✅ Bigger App Logo (Height + Width increase) */
+        .app-logo{
+          height: 58px;
+          width: 58px;
+          border-radius: 16px;
+          object-fit: cover;
+
+          /* navbar ke andar nicely fit */
+          display:block;
+        }
+
+        /* Hero section */
+        .hero{
+          width:90%;
+          margin: 25px auto;
+          padding: 25px;
+          border-radius:18px;
+          background: linear-gradient(135deg, #2563eb, #7c3aed);
+          color:white;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          flex-wrap:wrap;
+          box-shadow:0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .hero h1{
+          font-size:30px;
+          font-weight:700;
+          margin-bottom:8px;
+        }
+
+        .hero p{
+          font-size:14px;
+          opacity:0.95;
+          max-width:550px;
+          line-height:1.6;
+        }
+
+        .hero-btn{
+          margin-top:15px;
+          display:inline-block;
+          background:white;
+          color:#2563eb;
+          padding:10px 18px;
+          border-radius:12px;
+          font-weight:600;
+          text-decoration:none;
+          transition:0.3s;
+        }
+
+        .hero-btn:hover{
+          transform: translateY(-3px);
+          box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+        }
+
+        .hero-right{
+          text-align:right;
+          font-size:14px;
+          opacity:0.9;
+        }
+
+        /* Stats section */
+        .stats{
+          width:90%;
+          margin: 20px auto;
+          display:grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap:18px;
+        }
+
+        .stat-card{
+          background:white;
+          padding:18px;
+          border-radius:16px;
+          box-shadow:0 6px 15px rgba(0,0,0,0.08);
+          transition:0.3s;
+          border:1px solid rgba(0,0,0,0.05);
+        }
+
+        .stat-card:hover{
+          transform: translateY(-5px);
+          box-shadow:0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-top{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+        }
+
+        .stat-icon{
+          width:44px;
+          height:44px;
+          border-radius:14px;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          font-size:20px;
+          color:white;
+          box-shadow:0 6px 14px rgba(0,0,0,0.12);
+        }
+
+        .bg-green{ background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .bg-blue{ background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .bg-orange{ background: linear-gradient(135deg, #f97316, #ea580c); }
+        .bg-purple{ background: linear-gradient(135deg, #a855f7, #7c3aed); }
+
+        .stat-card h3{
+          margin-top:12px;
+          font-size:15px;
+          font-weight:600;
+          color:#334155;
+        }
+
+        .stat-card h2{
+          font-size:26px;
+          font-weight:700;
+          margin-top:5px;
+        }
+
+        .stat-card small{
+          display:block;
+          margin-top:5px;
+          color:#64748b;
+          font-size:12px;
+        }
+
+        /* Quick actions section */
+        .section-title{
+          width:90%;
+          margin: 25px auto 10px;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+        }
+
+        .section-title h2{
+          font-size:20px;
+          font-weight:700;
+          color:#1e293b;
+        }
+
+        .section-title p{
+          font-size:13px;
+          color:#64748b;
+        }
+
+        .cards{
+          width:90%;
+          margin: 10px auto 30px;
+          display:grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap:20px;
+        }
+
+        .card{
+          background:white;
+          border-radius:18px;
+          padding:20px;
+          box-shadow:0 6px 15px rgba(0,0,0,0.08);
+          transition:0.3s;
+          position:relative;
+          overflow:hidden;
+        }
+
+        .card::before{
+          content:"";
+          position:absolute;
+          top:-60px;
+          right:-60px;
+          width:120px;
+          height:120px;
+          border-radius:50%;
+          background: rgba(0,0,0,0.05);
+        }
+
+        .card:hover{
+          transform: translateY(-6px);
+          box-shadow:0 12px 30px rgba(0,0,0,0.14);
+        }
+
+        .card h3{
+          margin:0;
+          color:#1e293b;
+          font-size:16px;
+          font-weight:700;
+        }
+
+        .card p{
+          color:#64748b;
+          font-size:13px;
+          margin:10px 0 14px;
+          line-height:1.5;
+        }
+
+        .btn{
+          display:block;
+          text-align:center;
+          padding:10px;
+          border-radius:12px;
+          color:white;
+          font-weight:600;
+          text-decoration:none;
+          transition:0.25s;
+        }
+
+        .btn:hover{
+          filter: brightness(1.05);
+          transform: translateY(-2px);
+        }
+
+        .btn-green{ background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .btn-blue{ background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .btn-orange{ background: linear-gradient(135deg, #f97316, #ea580c); }
+        .btn-purple{ background: linear-gradient(135deg, #a855f7, #7c3aed); }
+        .btn-red{ background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        /* Footer */
+        .footer{
+          margin-top:40px;
+          background:#0f172a;
+          color:#cbd5e1;
+          text-align:center;
+          padding:18px 10px;
+          font-size:13px;
+        }
+
+        .footer span{
+          color:#facc15;
+          font-weight:600;
+        }
+
+        /* Responsive */
+        @media(max-width:650px){
+          .hero{
+            text-align:center;
+          }
+          .hero-right{
+            text-align:center;
+            margin-top:15px;
+          }
+          .nav-links{
+            display:none;
+          }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">
+        <img th:src="@{/images/rentify.png}" class="app-logo" alt="Rentify Logo">
+        <h2>Rent<span>ify</span></h2>
+    </div>
+
+    <div class="nav-links">
+        <a href="/rentify/">🏠 Dashboard</a>
+    </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+    <div>
+        <h1>Welcome to Rentify Dashboard 🚀</h1>
+        <p>
+            Manage your customers, cars, bookings and payments easily from one professional dashboard.
+            Fast, clean, and smooth experience like a real-world rental app.
+        </p>
+        <a class="hero-btn" href="/rentify/booking/">📄 Create New Booking</a>
+    </div>
+
+    <div class="hero-right">
+        <p><b>Status:</b> ✅ System Running</p>
+        <p><b>Version:</b> Rentify v1.0</p>
+        <p><b>Tech:</b> Spring Boot + Thymeleaf</p>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="stats">
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div>
+                <h3>Total Customers</h3>
+                <h2 th:text="${totalCustomers}">120</h2>
+                <small>Active users in system</small>
+            </div>
+            <div class="stat-icon bg-green">👤</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div>
+                <h3>Total Cars</h3>
+                <h2 th:text="${totalCars}">45</h2>
+                <small>Available + booked cars</small>
+            </div>
+            <div class="stat-icon bg-blue">🚗</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div>
+                <h3>Total Bookings</h3>
+                <h2 th:text="${totalBookings}">78</h2>
+                <small>All rental orders</small>
+            </div>
+            <div class="stat-icon bg-purple">📄</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div>
+                <h3>Total Payments</h3>
+                <h2 th:text="${totalPayments}">₹ 2.4L</h2>
+                <small>Revenue collected</small>
+            </div>
+            <div class="stat-icon bg-orange">💳</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Quick Navigation Title -->
+<div class="section-title">
+    <div>
+        <h2>Quick Actions ⚡</h2>
+        <p>Control all activities of Car Rental System from one place.</p>
+    </div>
+</div>
+
+<!-- Cards -->
+<div class="cards">
+
+    <div class="card">
+        <h3>👤 Customers</h3>
+        <p>Add, update, delete and manage customer information easily.</p>
+        <a class="btn btn-green" href="/rentify/customer/">Open Customer Page →</a>
+    </div>
+
+    <div class="card">
+        <h3>🏢 Company</h3>
+        <p>Manage company details, branches and rental service configuration.</p>
+        <a class="btn btn-blue" href="/rentify/company/">Open Company Page →</a>
+    </div>
+
+    <div class="card">
+        <h3>🚗 Cars</h3>
+        <p>Add cars, update availability, pricing and car details instantly.</p>
+        <a class="btn btn-orange" href="/rentify/car/">Open Cars Page →</a>
+    </div>
+
+    <div class="card">
+        <h3>📄 Bookings</h3>
+        <p>Create new booking, view rental history and booking status.</p>
+        <a class="btn btn-purple" href="/rentify/booking/">Open Booking Page →</a>
+    </div>
+
+    <div class="card">
+        <h3>💳 Payments</h3>
+        <p>Track payments, view invoices, and payment status.</p>
+        <a class="btn btn-red" href="/rentify/payment/">Open Payments Page →</a>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    © 2026 <span>Rentify</span> | Car Rental System 🚘
+</div>
+
+</body>
+</html>

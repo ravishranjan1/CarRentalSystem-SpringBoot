@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentify | Create Customer</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #f7f9fc, #eef3ff);
+            color:#0f172a;
+        }
+
+        /* Navbar */
+        .navbar{
+            background: linear-gradient(90deg, #0f172a, #1e293b);
+            padding: 14px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+            height:70px;
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
+        }
+
+        .logo h2{
+            color:white;
+            font-size:20px;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        .logo span{
+            color:#facc15;
+        }
+        /* ✅ Bigger App Logo (Height + Width increase) */
+        .app-logo{
+          height: 58px;
+          width: 58px;
+          border-radius: 16px;
+          object-fit: cover;
+
+          /* navbar ke andar nicely fit */
+          display:block;
+        }
+
+        .nav-links a{
+            color:white;
+            text-decoration:none;
+            margin-left:18px;
+            font-weight:500;
+            font-size:14px;
+            padding:8px 12px;
+            border-radius:10px;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            background: rgba(255,255,255,0.12);
+            color:#facc15;
+        }
+
+
+        /* Container */
+        .page-wrap{
+            width:90%;
+            margin: 30px auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .form-card{
+            width: 520px;
+            max-width: 100%;
+            background:white;
+            padding: 26px 28px;
+            border-radius:20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+            border:1px solid rgba(0,0,0,0.06);
+            position:relative;
+            overflow:hidden;
+        }
+
+        .form-card::before{
+            content:"";
+            position:absolute;
+            top:-60px;
+            right:-60px;
+            width:140px;
+            height:140px;
+            border-radius:50%;
+            background: rgba(37,99,235,0.10);
+        }
+
+        .form-header{
+            text-align:center;
+            margin-bottom:18px;
+        }
+
+        .form-header h2{
+            font-size:22px;
+            font-weight:800;
+            color:#0f172a;
+        }
+
+        .form-header p{
+            font-size:13px;
+            color:#64748b;
+            margin-top:5px;
+        }
+
+        .form-row{
+            margin-top:14px;
+        }
+
+        label{
+            display:block;
+            font-weight:700;
+            font-size:13px;
+            color:#334155;
+            margin-bottom:6px;
+        }
+
+        input{
+            width:100%;
+            padding:11px 12px;
+            border:1px solid #cbd5e1;
+            border-radius:14px;
+            font-size:14px;
+            outline:none;
+            transition:0.25s;
+        }
+
+        input:focus{
+            border:1px solid #2563eb;
+            box-shadow:0 0 0 4px rgba(37,99,235,0.15);
+        }
+
+        /* Buttons */
+        .btn-row{
+            margin-top:18px;
+            display:flex;
+            gap:10px;
+        }
+
+        .btn{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:14px;
+            cursor:pointer;
+            font-weight:800;
+            font-size:14px;
+            transition:0.3s;
+        }
+
+        .btn-primary{
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color:white;
+            box-shadow: 0 10px 20px rgba(37,99,235,0.25);
+        }
+
+        .btn-primary:hover{
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .btn-secondary{
+            background:#e2e8f0;
+            color:#0f172a;
+        }
+
+        .btn-secondary:hover{
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+        }
+
+        /* Footer link */
+        .back-link{
+            text-align:center;
+            margin-top:14px;
+            font-size:13px;
+        }
+
+        .back-link a{
+            text-decoration:none;
+            color:#2563eb;
+            font-weight:700;
+        }
+
+        .back-link a:hover{
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media(max-width:650px){
+            .nav-links{
+                display:none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">
+        <img th:src="@{/images/rentify.png}" class="app-logo" alt="Rentify Logo">
+        <h2>Rent<span>ify</span></h2>
+    </div>
+
+    <div class="nav-links">
+        <a href="/rentify/">🏠 Dashboard</a>
+    </div>
+</div>
+
+<!-- Form Page -->
+<div class="page-wrap">
+    <div class="form-card">
+
+        <div class="form-header">
+            <h2 th:text="${customer.id} == null ? 'Create Customer' : 'Update Customer'">Create Customer</h2>
+            <p>Fill the details carefully to save customer info.</p>
+        </div>
+
+        <form th:action="@{/rentify/customer/save}"
+              th:object="${customer}"
+              method="post">
+
+            <!-- Hidden field for Update -->
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-row">
+                <label>Customer Name</label>
+                <input type="text" th:field="*{name}" placeholder="Enter customer name" required>
+            </div>
+
+            <div class="form-row">
+                <label>Phone</label>
+                <input type="number" th:field="*{phone}" placeholder="Enter phone number" required>
+            </div>
+
+            <div class="form-row">
+                <label>Driving License No</label>
+                <input type="text" th:field="*{drivingLicenseNo}" placeholder="Enter driving license number" required>
+            </div>
+
+            <div class="btn-row">
+                <button type="submit"
+                        class="btn btn-primary"
+                        th:text="${customer.id} == null ? 'Save Customer' : 'Update Customer'">
+                    Save Customer
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        onclick="location.href='/rentify/customer/'">
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+
+        <div class="back-link">
+            ← <a href="/rentify/customer/">Back to Customer List</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
