@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Rentify | Customers</title>
+    <title>Rentify | Cars</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -255,6 +255,25 @@
             border-bottom: 1px solid #eee;
         }
 
+        .badge {
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .badge-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-notavailable {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         .actions a {
             margin: 0 8px;
             font-size: 16px;
@@ -335,6 +354,7 @@
 <!-- Navbar -->
 <div class="navbar">
 <!--    <div class="logo">🚗 Rentify</div>-->
+
     <div class="logo">
         <img th:src="@{/images/rentify.png}" class="app-logo" alt="Rentify Logo">
         <h2>Rent<span>ify</span></h2>
@@ -347,18 +367,18 @@
 
 <!-- Page Title -->
 <div class="page-title">
-    <h1>Customers 👤</h1>
-    <p>Manage all customer details in a clean and professional way.</p>
+    <h1>Cars 🚘</h1>
+    <p>Manage all car details in a clean and professional way.</p>
 </div>
 
 <!-- Stats Cards -->
 <div class="stats-container">
     <div class="stat-card">
         <div>
-            <h3>Total Customers</h3>
-            <span th:text="${#lists.size(customers)}">0</span>
+            <h3>Total Cars</h3>
+            <span th:text="${#lists.size(cars)}">0</span>
         </div>
-        <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
+        <div class="stat-icon blue"><i class="fa-solid fa-car"></i></div>
     </div>
 </div>
 
@@ -377,43 +397,71 @@
 <div class="top-bar">
     <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Search customer..."/>
+        <input type="text" id="searchInput" placeholder="Search car model..."/>
     </div>
 
-    <button class="btn btn-create" onclick="location.href='/rentify/customer/new'">
-        <i class="fa-solid fa-plus"></i> Add Customer
+    <button class="btn btn-create" onclick="location.href='/rentify/car/new'">
+        <i class="fa-solid fa-plus"></i> Add Car
     </button>
 </div>
 
 <!-- Table -->
 <div class="table-container">
-    <table id="customerTable">
+    <table id="carTable">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>License No</th>
+            <th>Model</th>
+            <th>Registration No</th>
+            <th>Available</th>
+            <th>Type</th>
+            <th>Price / Day</th>
+            <th>Company</th>
             <th>Action</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="c : ${customers}">
+        <tr th:each="c : ${cars}">
             <td data-label="ID" th:text="${c.id}"></td>
-            <td data-label="Name" th:text="${c.name}"></td>
-            <td data-label="Phone" th:text="${c.phone}"></td>
-            <td data-label="License No" th:text="${c.drivingLicenseNo}"></td>
+
+            <td data-label="Model" th:text="${c.model}"></td>
+
+            <td data-label="Registration No">
+                <span class="badge" th:text="${c.registrationNo}"></span>
+            </td>
+
+            <td data-label="Available">
+                <span th:if="${c.available}" class="badge badge-available">Yes ✅</span>
+                <span th:unless="${c.available}" class="badge badge-notavailable">No ❌</span>
+            </td>
+
+            <td data-label="Type">
+                <span class="badge" th:text="${c.type}"></span>
+            </td>
+
+            <td data-label="Price / Day" th:text="${c.pricePerday}"></td>
+
+            <td data-label="Company">
+                <a th:if="${c.company != null}"
+                   th:text="${c.company.name}"
+                   th:href="@{/rentify/company/find/{id}(id=${c.company.id})}"
+                   style="color:#1e88e5; text-decoration: none; font-weight:600;">
+                </a>
+
+                <span th:if="${c.company == null}">N/A</span>
+            </td>
+
 
             <td data-label="Action" class="actions">
-                <a class="edit" th:href="@{/rentify/customer/edit/{id}(id=${c.id})}">
+                <a class="edit" th:href="@{/rentify/car/edit/{id}(id=${c.id})}">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
 
-                <form th:action="@{/rentify/customer/delete/{id}(id=${c.id})}"
+                <form th:action="@{/rentify/car/delete/{id}(id=${c.id})}"
                       method="post"
                       style="display:inline;"
-                      onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                      onsubmit="return confirm('Are you sure you want to delete this car?');">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button type="submit">
                         <i class="fa-solid fa-trash"></i>
@@ -429,12 +477,11 @@
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function () {
         let value = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#customerTable tbody tr");
+        let rows = document.querySelectorAll("#carTable tbody tr");
 
         rows.forEach(row => {
-            // Name column index = 1 (same as company)
-            let name = row.children[1].innerText.toLowerCase();
-            row.style.display = name.includes(value) ? "" : "none";
+            let model = row.children[1].innerText.toLowerCase();
+            row.style.display = model.includes(value) ? "" : "none";
         });
     });
 </script>

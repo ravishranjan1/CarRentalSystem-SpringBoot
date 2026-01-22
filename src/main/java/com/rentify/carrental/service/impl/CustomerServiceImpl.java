@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerModel.setName(customerModel.getName().toUpperCase());
             customerRepo.save(customerModel);
         }catch(Exception e){
-            throw new Exception("Error while adding customer "+ e.getMessage());
+            throw new Exception("Error while adding customer ");
         }
     }
 
@@ -87,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService {
         try{
             customerRepo.deleteById(id);
         }catch(Exception e){
-            throw new Exception("Error while deleting customer "+e.getMessage());
+            throw new Exception("Error while deleting customer ");
         }
     }
 }

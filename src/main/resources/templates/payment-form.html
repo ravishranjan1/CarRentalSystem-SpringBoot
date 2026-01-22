@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rentify | Add Payment</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
+        }
+
+        body{
+            background:#f4f6fb;
+            padding:20px;
+            color:#2c3e50;
+        }
+
+        /* Navbar */
+        .navbar{
+            background: linear-gradient(135deg,#2c3e50,#34495e);
+            color:white;
+            padding:15px 20px;
+            border-radius:15px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:10px;
+            box-shadow:0px 4px 15px rgba(0,0,0,0.15);
+            margin-bottom:25px;
+        }
+
+        .navbar .logo{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-size:20px;
+            font-weight:700;
+        }
+
+        .navbar a{
+            color:white;
+            text-decoration:none;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .navbar a:hover{
+            color:#f1c40f;
+        }
+
+        /* Form Card */
+        .form-wrapper{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .container{
+            width:100%;
+            max-width:520px;
+            background:white;
+            padding:28px 25px;
+            border-radius:18px;
+            box-shadow:0px 6px 18px rgba(0,0,0,0.08);
+            animation:fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn{
+            from{
+                opacity:0;
+                transform:translateY(10px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        .container h2{
+            text-align:center;
+            font-size:22px;
+            font-weight:700;
+            color:#2c3e50;
+            margin-bottom:6px;
+        }
+
+        .subtitle{
+            text-align:center;
+            color:#7f8c8d;
+            font-size:13px;
+            margin-bottom:18px;
+        }
+
+        .form-row{
+            margin-bottom:14px;
+        }
+
+        label{
+            font-weight:600;
+            display:block;
+            margin-bottom:6px;
+            color:#34495e;
+            font-size:14px;
+        }
+
+        .input-box{
+            position:relative;
+        }
+
+        .input-box i{
+            position:absolute;
+            top:50%;
+            left:12px;
+            transform:translateY(-50%);
+            color:#95a5a6;
+            font-size:14px;
+        }
+
+        input, select{
+            width:100%;
+            padding:12px 12px 12px 36px;
+            border:1px solid #dfe6e9;
+            border-radius:12px;
+            font-size:14px;
+            outline:none;
+            transition:0.3s;
+            background:#fbfcff;
+        }
+
+        input:focus, select:focus{
+            border-color:#3498db;
+            box-shadow:0 0 0 4px rgba(52,152,219,0.15);
+            background:white;
+        }
+
+        /* ✅ Readonly styling */
+        input[readonly]{
+            background:#f0f3f5;
+            cursor:not-allowed;
+            color:#7f8c8d;
+        }
+
+        /* Buttons */
+        .btn{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:14px;
+            font-size:15px;
+            font-weight:700;
+            cursor:pointer;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            transition:0.3s;
+        }
+
+        .btn-save{
+            background:#27ae60;
+            color:white;
+            margin-top:10px;
+            box-shadow:0px 5px 12px rgba(39,174,96,0.25);
+        }
+
+        .btn-save:hover{
+            background:#1e8449;
+            transform:translateY(-2px);
+        }
+
+        .btn-back{
+            margin-top:12px;
+            background:#ecf0f1;
+            color:#2c3e50;
+        }
+
+        .btn-back:hover{
+            background:#dfe6e9;
+        }
+
+        /* Responsive */
+        @media (max-width:768px){
+            body{
+                padding:12px;
+            }
+            .container{
+                padding:22px 18px;
+            }
+            .container h2{
+                font-size:20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">💳 Rentify</div>
+    <a href="/rentify/">🏠 Dashboard</a>
+</div>
+
+<div class="form-wrapper">
+    <div class="container">
+
+        <h2 th:text="${payment.id} == null ? 'Add Payment' : 'Update Payment'"></h2>
+        <p class="subtitle">Payment details will be fetched automatically from booking.</p>
+
+        <form th:action="@{/rentify/payment/save}"
+              th:object="${payment}"
+              method="post">
+
+<!--            &lt;!&ndash; ✅ Hidden field for update &ndash;&gt;-->
+<!--            <input type="hidden" th:field="*{id}"/>-->
+
+            <!-- ✅ Booking auto bind (hidden, user can't change) -->
+            <input type="hidden" th:field="*{bookingModel.id}"/>
+
+            <!-- ✅ Amount auto bind (hidden, user can't change) -->
+            <input type="hidden" th:field="*{amount}"/>
+
+            <!-- ✅ Booking ID display -->
+            <div class="form-row">
+                <label>Booking ID (Auto)</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-receipt"></i>
+                    <input type="text"
+                           th:value="*{bookingModel.id}"
+                           placeholder="Booking ID"
+                           readonly>
+                </div>
+            </div>
+
+            <!-- ✅ Amount display -->
+            <div class="form-row">
+                <label>Amount (Auto)</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <input type="text"
+                           th:value="*{amount}"
+                           placeholder="Amount"
+                           readonly>
+                </div>
+            </div>
+
+            <!-- ✅ Payment Mode Dropdown (manual options) -->
+            <div class="form-row">
+                <label>Payment Mode</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-wallet"></i>
+                    <select th:field="*{mode}" required>
+                        <option value="">Select Payment Mode</option>
+                        <option value="UPI">UPI</option>
+                        <option value="CARD">CARD</option>
+                        <option value="CASH">CASH</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ❌ Status field removed -->
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-save">
+                <i class="fa-solid fa-floppy-disk"></i>
+                <span th:text="${payment.id} == null ? 'Save Payment' : 'Update Payment'"></span>
+            </button>
+
+        </form>
+
+        <!-- Back Button -->
+        <button class="btn btn-back" onclick="location.href='/rentify/payments'">
+            <i class="fa-solid fa-arrow-left"></i> Back to Payment List
+        </button>
+
+    </div>
+</div>
+
+</body>
+</html>

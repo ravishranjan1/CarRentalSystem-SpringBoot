@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Rentify | Customers</title>
+    <title>Rentify | Payments</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -39,30 +39,19 @@
             margin-bottom: 25px;
         }
 
-<!--        .navbar .logo {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            gap: 10px;-->
-<!--            font-size: 20px;-->
-<!--            font-weight: 700;-->
-<!--        }-->
-
         .logo{
-          display:flex;
-          align-items:center;
-          gap:10px;
-          cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
         }
 
-        /* ✅ Bigger App Logo (Height + Width increase) */
         .app-logo{
-          height: 58px;
-          width: 58px;
-          border-radius: 16px;
-          object-fit: cover;
-
-          /* navbar ke andar nicely fit */
-          display:block;
+            height: 58px;
+            width: 58px;
+            border-radius: 16px;
+            object-fit: cover;
+            display:block;
         }
 
         .navbar .links {
@@ -176,29 +165,6 @@
             font-size: 14px;
         }
 
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-create {
-            background: #27ae60;
-            color: white;
-            box-shadow: 0px 4px 10px rgba(39, 174, 96, 0.3);
-        }
-
-        .btn-create:hover {
-            background: #1e8449;
-        }
-
         /* Alerts */
         .alert {
             padding: 12px 15px;
@@ -253,21 +219,6 @@
 
         td {
             border-bottom: 1px solid #eee;
-        }
-
-        .actions a {
-            margin: 0 8px;
-            font-size: 16px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .actions a.edit {
-            color: #2980b9;
-        }
-
-        .actions a.edit:hover {
-            color: #1abc9c;
         }
 
         .actions button {
@@ -334,7 +285,6 @@
 
 <!-- Navbar -->
 <div class="navbar">
-<!--    <div class="logo">🚗 Rentify</div>-->
     <div class="logo">
         <img th:src="@{/images/rentify.png}" class="app-logo" alt="Rentify Logo">
         <h2>Rent<span>ify</span></h2>
@@ -347,18 +297,18 @@
 
 <!-- Page Title -->
 <div class="page-title">
-    <h1>Customers 👤</h1>
-    <p>Manage all customer details in a clean and professional way.</p>
+    <h1>Payments 💳</h1>
+    <p>Manage all payment details in a clean and professional way.</p>
 </div>
 
 <!-- Stats Cards -->
 <div class="stats-container">
     <div class="stat-card">
         <div>
-            <h3>Total Customers</h3>
-            <span th:text="${#lists.size(customers)}">0</span>
+            <h3>Total Payments</h3>
+            <span th:text="${#lists.size(payments)}">0</span>
         </div>
-        <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
+        <div class="stat-icon blue"><i class="fa-solid fa-credit-card"></i></div>
     </div>
 </div>
 
@@ -377,43 +327,37 @@
 <div class="top-bar">
     <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Search customer..."/>
+        <input type="text" id="searchInput" placeholder="Search by booking id..."/>
     </div>
-
-    <button class="btn btn-create" onclick="location.href='/rentify/customer/new'">
-        <i class="fa-solid fa-plus"></i> Add Customer
-    </button>
 </div>
 
 <!-- Table -->
 <div class="table-container">
-    <table id="customerTable">
+    <table id="paymentTable">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>License No</th>
+            <th>Amount</th>
+            <th>Mode</th>
+            <th>Status</th>
+            <th>Booking ID</th>
             <th>Action</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="c : ${customers}">
-            <td data-label="ID" th:text="${c.id}"></td>
-            <td data-label="Name" th:text="${c.name}"></td>
-            <td data-label="Phone" th:text="${c.phone}"></td>
-            <td data-label="License No" th:text="${c.drivingLicenseNo}"></td>
+        <tr th:each="p : ${payments}">
+            <td data-label="ID" th:text="${p.id}"></td>
+            <td data-label="Amount" th:text="${p.amount}"></td>
+            <td data-label="Mode" th:text="${p.mode}"></td>
+            <td data-label="Status" th:text="${p.status}"></td>
+            <td data-label="Booking ID" th:text="${p.bookingModel.id}"></td>
 
             <td data-label="Action" class="actions">
-                <a class="edit" th:href="@{/rentify/customer/edit/{id}(id=${c.id})}">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-
-                <form th:action="@{/rentify/customer/delete/{id}(id=${c.id})}"
+                <form th:action="@{/rentify/payment/delete/{id}(id=${p.id})}"
                       method="post"
                       style="display:inline;"
-                      onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                      onsubmit="return confirm('Are you sure you want to delete this payment?');">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button type="submit">
                         <i class="fa-solid fa-trash"></i>
@@ -429,12 +373,12 @@
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function () {
         let value = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#customerTable tbody tr");
+        let rows = document.querySelectorAll("#paymentTable tbody tr");
 
         rows.forEach(row => {
-            // Name column index = 1 (same as company)
-            let name = row.children[1].innerText.toLowerCase();
-            row.style.display = name.includes(value) ? "" : "none";
+            // Booking ID column index = 4
+            let bookingId = row.children[4].innerText.toLowerCase();
+            row.style.display = bookingId.includes(value) ? "" : "none";
         });
     });
 </script>

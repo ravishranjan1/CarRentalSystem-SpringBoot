@@ -30,7 +30,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyModel.setCountry(companyModel.getCountry().toUpperCase());
             companyRepo.save(companyModel);
         }catch(Exception e){
-            throw new Exception("Error while adding Company "+e.getMessage());
+            throw new Exception("Error while adding Company ");
         }
     }
 

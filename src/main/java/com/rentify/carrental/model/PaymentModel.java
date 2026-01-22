@@ -2,10 +2,7 @@ package com.rentify.carrental.model;
 
 import com.rentify.carrental.enums.PaymentMode;
 import com.rentify.carrental.enums.PaymentStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "payment")
@@ -18,6 +15,17 @@ public class PaymentModel extends BaseModel{
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
+    public BookingModel getBookingModel() {
+        return bookingModel;
+    }
+
+    public void setBookingModel(BookingModel bookingModel) {
+        this.bookingModel = bookingModel;
+    }
+
+    @OneToOne
+    private BookingModel bookingModel;
 
     public double getAmount() {
         return amount;

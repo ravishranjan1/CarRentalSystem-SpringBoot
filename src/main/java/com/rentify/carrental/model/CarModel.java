@@ -8,7 +8,11 @@ import jakarta.persistence.*;
 public class CarModel extends BaseModel{
 
     private String model;
+
+    @Column(unique = true)
     private String registrationNo;
+
+    private Boolean available;
 
     @Enumerated(EnumType.STRING)
     private CarType type;
@@ -20,6 +24,14 @@ public class CarModel extends BaseModel{
 
     public String getModel() {
         return model;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public void setModel(String model) {

@@ -47,7 +47,7 @@ public class CompanyController {
             }
         } catch(CompanyNotFoundException e){
             model.addAttribute("error", e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("companies", companyService.findAll());
@@ -77,6 +77,19 @@ public class CompanyController {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("companies", companyService.findAll());
+        return "company";
+    }
+
+    @GetMapping("/find/{id}")
+    public String getCompanyById(@PathVariable Long id, Model model){
+        try {
+            CompanyModel company = companyService.findById(id);
+            model.addAttribute("success", "Company found");
+            model.addAttribute("companies", List.of(company));
+        } catch (CompanyNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("companies", null);
+        }
         return "company";
     }
 

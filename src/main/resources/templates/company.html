@@ -39,12 +39,30 @@
             margin-bottom: 25px;
         }
 
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: 700;
+<!--        .navbar .logo {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--            font-size: 20px;-->
+<!--            font-weight: 700;-->
+<!--        }-->
+
+        .logo{
+          display:flex;
+          align-items:center;
+          gap:10px;
+          cursor:pointer;
+        }
+
+        /* ✅ Bigger App Logo (Height + Width increase) */
+        .app-logo{
+          height: 58px;
+          width: 58px;
+          border-radius: 16px;
+          object-fit: cover;
+
+          /* navbar ke andar nicely fit */
+          display:block;
         }
 
         .navbar .links {
@@ -329,7 +347,12 @@
 
 <!-- Navbar -->
 <div class="navbar">
-    <div class="logo">🚗 Rentify</div>
+<!--    <div class="logo">🚗 Rentify</div>-->
+
+    <div class="logo">
+        <img th:src="@{/images/rentify.png}" class="app-logo" alt="Rentify Logo">
+        <h2>Rent<span>ify</span></h2>
+    </div>
 
     <div class="links">
         <a href="/rentify/">🏠 Dashboard</a>
@@ -352,21 +375,7 @@
         <div class="stat-icon blue"><i class="fa-solid fa-building"></i></div>
     </div>
 
-<!--    <div class="stat-card">-->
-<!--        <div>-->
-<!--            <h3>Active Record</h3>-->
-<!--            <span>✅</span>-->
-<!--        </div>-->
-<!--        <div class="stat-icon green"><i class="fa-solid fa-check"></i></div>-->
-<!--    </div>-->
 
-<!--    <div class="stat-card">-->
-<!--        <div>-->
-<!--            <h3>Quick Manage</h3>-->
-<!--            <span>⚡</span>-->
-<!--        </div>-->
-<!--        <div class="stat-icon orange"><i class="fa-solid fa-bolt"></i></div>-->
-<!--    </div>-->
 </div>
 
 <!-- Alerts -->
@@ -388,7 +397,7 @@
     </div>
 
     <button class="btn btn-create" onclick="location.href='/rentify/company/new'">
-        <i class="fa-solid fa-plus"></i> Create Company
+        <i class="fa-solid fa-plus"></i> Add Company
     </button>
 </div>
 

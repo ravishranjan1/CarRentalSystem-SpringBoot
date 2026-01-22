@@ -2,6 +2,7 @@ package com.rentify.carrental.model;
 
 import com.rentify.carrental.enums.CarStatus;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -9,16 +10,16 @@ import java.time.LocalDate;
 @Table(name = "booking")
 public class BookingModel extends BaseModel{
 
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
     private double totalAmount;
 
     @Enumerated(EnumType.STRING)
     private CarStatus status;
-
-    @OneToOne
-    private PaymentModel payment;
 
     @ManyToOne
     private CustomerModel customer;
@@ -74,11 +75,4 @@ public class BookingModel extends BaseModel{
         this.status = status;
     }
 
-    public PaymentModel getPayment() {
-        return payment;
-    }
-
-    public void setPayment(PaymentModel payment) {
-        this.payment = payment;
-    }
 }
