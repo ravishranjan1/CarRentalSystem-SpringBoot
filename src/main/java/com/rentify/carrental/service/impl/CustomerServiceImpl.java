@@ -17,55 +17,34 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepo customerRepo;
 
     @Override
-    public void add(CustomerModel customerModel) throws Exception {
+    public void save(CustomerModel customerModel) throws Exception {
         try{
-            if (customerModel.getName() == null) {
-                throw new Exception("Name cannot be null");
-            }
-            if (customerModel.getPhone() == null) {
-                throw new Exception("Phone number cannot be null");
-            }
-            if (customerModel.getDrivingLicenseNo() == null) {
-                throw new Exception("Driving License No cannot be null");
-            }
-            if (customerModel.getPhone() < 1000000000L || customerModel.getPhone() > 9999999999L) {
-                throw new Exception("Phone number must be exactly 10 digits");
-            }
             customerModel.setName(customerModel.getName().toUpperCase());
-            customerRepo.save(customerModel);
-        }catch(Exception e){
-            throw new Exception("Error while adding customer ");
+
+            if(customerModel.getId() == null){
+                customerRepo.save(customerModel);
+            }else{
+                Optional<CustomerModel> opt = customerRepo.findById(customerModel.getId());
+
+                if(opt.isEmpty()){
+                    throw new CustomerNotFoundException("Customer not found with ID: " + customerModel.getId());
+                }
+                CustomerModel updateCustomer = opt.get();
+
+                updateCustomer.setName(customerModel.getName());
+                updateCustomer.setPhone(customerModel.getPhone());
+                updateCustomer.setDrivingLicenseNo(customerModel.getDrivingLicenseNo());
+
+                customerRepo.save(updateCustomer);
+            }
+        }catch(CustomerNotFoundException e){
+            throw e;
+        }
+        catch (Exception e) {
+            throw new Exception("Error while Saving the data please check the given data is correct or not");
         }
     }
 
-    @Override
-    public void update(CustomerModel customerModel) throws Exception {
-        Optional<CustomerModel> opt = customerRepo.findById(customerModel.getId());
-        if(opt.isPresent()){
-            CustomerModel updateCustomer = opt.get();
-
-            if (customerModel.getName() == null) {
-                throw new Exception("Name cannot be null");
-            }
-            if (customerModel.getPhone() == null) {
-                throw new Exception("Phone number cannot be null");
-            }
-            if (customerModel.getDrivingLicenseNo() == null) {
-                throw new Exception("Driving License No cannot be null");
-            }
-            if (customerModel.getPhone() < 1000000000L || customerModel.getPhone() > 9999999999L) {
-                throw new Exception("Phone number must be exactly 10 digits");
-            }
-            customerModel.setName(customerModel.getName().toUpperCase());
-            updateCustomer.setName(customerModel.getName());
-            updateCustomer.setPhone(customerModel.getPhone());
-            updateCustomer.setDrivingLicenseNo(customerModel.getDrivingLicenseNo());
-
-            customerRepo.save(updateCustomer);
-        }else{
-            throw new CustomerNotFoundException("Customer not found with given Id : "+customerModel.getId());
-        }
-    }
 
     @Override
     public List<CustomerModel> findAll() {

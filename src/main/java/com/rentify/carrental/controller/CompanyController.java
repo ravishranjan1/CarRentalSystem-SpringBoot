@@ -3,6 +3,7 @@ package com.rentify.carrental.controller;
 import com.rentify.carrental.exception.CompanyNotFoundException;
 import com.rentify.carrental.model.CompanyModel;
 import com.rentify.carrental.service.CompanyService;
+import com.rentify.carrental.validators.CompanyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,9 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private CompanyValidator validator;
 
     @GetMapping("/")
     public String getCompany(Model model){
@@ -37,18 +41,20 @@ public class CompanyController {
 
     @PostMapping("/save")
     public String saveCompany(@ModelAttribute CompanyModel companyModel, Model model){
-        try{
-            if(companyModel.getId() == null){
-                companyService.add(companyModel);
-                model.addAttribute("success", "Company added successfully");
-            }else{
-                companyService.update(companyModel);
-                model.addAttribute("success", "Company updated successfully");
+        List<String> errors = validator.validate(companyModel);
+        if(!errors.isEmpty()){
+            model.addAttribute("error", errors);
+        }else{
+            try {
+                companyService.save(companyModel);
+                if(companyModel.getId() == null){
+                    model.addAttribute("success", "Company added successfully");
+                }else{
+                    model.addAttribute("success", "Company updated successfully");
+                }
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
             }
-        } catch(CompanyNotFoundException e){
-            model.addAttribute("error", e.getMessage());
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("companies", companyService.findAll());
         return "company";
@@ -59,7 +65,6 @@ public class CompanyController {
         try {
             CompanyModel company = companyService.findById(id);
             model.addAttribute("company", company);
-            model.addAttribute("success", "Company found with id : "+id);
             return "company-form";
         } catch (CompanyNotFoundException e) {
             model.addAttribute("error", e.getMessage());

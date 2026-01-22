@@ -18,40 +18,28 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public void add(CompanyModel companyModel) throws Exception {
+    public void save(CompanyModel companyModel) throws Exception {
         try{
-            if(companyModel.getName() == null){
-                throw new Exception("Name cannot be null");
-            }
-            if(companyModel.getCountry() == null){
-                throw new Exception("Country cannot be null");
-            }
             companyModel.setName(companyModel.getName().toUpperCase());
             companyModel.setCountry(companyModel.getCountry().toUpperCase());
-            companyRepo.save(companyModel);
-        }catch(Exception e){
-            throw new Exception("Error while adding Company ");
-        }
-    }
 
-    @Override
-    public void update(CompanyModel companyModel) throws Exception {
-        Optional<CompanyModel> opt = companyRepo.findById(companyModel.getId());
-        if(opt.isPresent()){
-            CompanyModel updateCompany = opt.get();
-            if(companyModel.getName() == null){
-                throw new Exception("Name cannot be null");
+            if(companyModel.getId() == null){
+                companyRepo.save(companyModel);
+            }else{
+                Optional<CompanyModel> opt = companyRepo.findById(companyModel.getId());
+                if(opt.isPresent()){
+                    CompanyModel updateCompany = opt.get();
+                    updateCompany.setName(companyModel.getName());
+                    updateCompany.setCountry(companyModel.getCountry());
+                    companyRepo.save(updateCompany);
+                }else{
+                    throw new CompanyNotFoundException("Company not found with given id : "+companyModel.getId());
+                }
             }
-            if(companyModel.getCountry() == null){
-                throw new Exception("Country cannot be null");
-            }
-            companyModel.setName(companyModel.getName().toUpperCase());
-            companyModel.setCountry(companyModel.getCountry().toUpperCase());
-            updateCompany.setName(companyModel.getName());
-            updateCompany.setCountry(companyModel.getCountry());
-            companyRepo.save(updateCompany);
-        }else{
-            throw new CompanyNotFoundException("Company not found with given id : "+companyModel.getId());
+        } catch(CompanyNotFoundException e){
+            throw e;
+        } catch(Exception e){
+            throw new Exception("Error while adding Company ");
         }
     }
 

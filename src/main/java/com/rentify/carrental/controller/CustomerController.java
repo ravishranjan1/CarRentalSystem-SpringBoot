@@ -4,6 +4,7 @@ package com.rentify.carrental.controller;
 import com.rentify.carrental.exception.CustomerNotFoundException;
 import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.service.CustomerService;
+import com.rentify.carrental.validators.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private CustomerValidator validator;
 
     @GetMapping("/")
     public String getCustomer(Model model){
@@ -40,18 +44,20 @@ public class CustomerController {
 
     @PostMapping("/save")
     public String saveCustomer(@ModelAttribute CustomerModel customer, Model model){
-        try{
-            if(customer.getId() == null){
-                customerService.add(customer);
-                model.addAttribute("success", "Customer Saves successfully");
-            }else{
-                customerService.update(customer);
-                model.addAttribute("success", "Customer updated successfully");
+        List<String> errors = validator.validate(customer);
+        if(!errors.isEmpty()){
+            model.addAttribute("error", errors);
+        }else{
+            try {
+                customerService.save(customer);
+                if(customer.getId() == null){
+                    model.addAttribute("success", "Customer added success fully");
+                }else{
+                    model.addAttribute("success", "Customer updated success fully");
+                }
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
             }
-        }catch(CustomerNotFoundException e){
-            model.addAttribute("error", e.getMessage());
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("customers", customerService.findAll());
         return "customer";
@@ -62,7 +68,6 @@ public class CustomerController {
         try{
             CustomerModel customer = customerService.findById(id);
             model.addAttribute("customer", customer);
-            model.addAttribute("success", "Customer found");
             return "customer-form";
         } catch (CustomerNotFoundException e) {
             model.addAttribute("customers", customerService.findAll());

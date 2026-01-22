@@ -1,13 +1,11 @@
 package com.rentify.carrental.controller;
 
-import com.rentify.carrental.exception.BookingNotFoundException;
 import com.rentify.carrental.model.BookingModel;
 import com.rentify.carrental.model.PaymentModel;
 import com.rentify.carrental.service.BookingService;
 import com.rentify.carrental.service.CarService;
 import com.rentify.carrental.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
