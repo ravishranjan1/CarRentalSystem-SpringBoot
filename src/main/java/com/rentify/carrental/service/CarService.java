@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface CarService {
 
-    void add(CarModel carModel) throws Exception;
-    void update (CarModel carModel) throws CarNotFoundException, CompanyNotFoundException;
+    void save(CarModel carModel) throws Exception;
     void removeById(Long id) throws Exception;
 
     List<CarModel> findAll();

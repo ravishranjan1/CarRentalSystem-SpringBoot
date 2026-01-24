@@ -23,37 +23,39 @@ public class CarServiceImpl implements CarService {
     private CompanyService companyService;
 
     @Override
-    public void add(CarModel carModel) throws Exception {
-        try{
-            CompanyModel company = companyService.findById(carModel.getCompany().getId());
-            carModel.setCompany(company);
-            carModel.setAvailable(true);
-            carRepo.save(carModel);
+    public void save(CarModel carModel) throws Exception {
 
-        }catch(CompanyNotFoundException e){
-            throw new CompanyNotFoundException("Company not found with this name");
-        } catch(Exception e){
-            throw new Exception("Error while adding the car");
+        try {
+            CompanyModel company = companyService.findById(carModel.getCompany().getId());
+
+            if (carModel.getId() == null) {
+                carModel.setCompany(company);
+                carModel.setAvailable(true);
+                carRepo.save(carModel);
+            } else {
+                Optional<CarModel> opt = carRepo.findById(carModel.getId());
+                if(opt.isPresent()){
+                    CarModel updateCar = opt.get();
+
+                    updateCar.setCompany(company);
+                    updateCar.setModel(carModel.getModel());
+                    updateCar.setRegistrationNo(carModel.getRegistrationNo());
+                    updateCar.setType(carModel.getType());
+                    updateCar.setPricePerday(carModel.getPricePerday());
+                    updateCar.setAvailable(carModel.getAvailable());
+
+                    carRepo.save(updateCar);
+                }else{
+                    throw new CarNotFoundException("Car not found with given Id : "+carModel.getId());
+                }
+            }
+        } catch (CarNotFoundException | CompanyNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new Exception("Error while saving car : " + e.getMessage());
         }
     }
 
-    @Override
-    public void update(CarModel carModel) throws CarNotFoundException, CompanyNotFoundException {
-        Optional<CarModel> opt = carRepo.findById(carModel.getId());
-        if(opt.isPresent()){
-            CarModel updateCar = opt.get();
-            CompanyModel company = companyService.findById(carModel.getCompany().getId());
-            updateCar.setCompany(company);
-            updateCar.setModel(carModel.getModel());
-            updateCar.setRegistrationNo(carModel.getRegistrationNo());
-            updateCar.setType(carModel.getType());
-            updateCar.setPricePerday(carModel.getPricePerday());
-            updateCar.setAvailable(carModel.getAvailable());
-            carRepo.save(updateCar);
-        }else{
-            throw new CarNotFoundException("Car not found with id : "+carModel.getId());
-        }
-    }
 
     @Override
     public void removeById(Long id) throws Exception {

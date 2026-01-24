@@ -39,7 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
         } catch(CompanyNotFoundException e){
             throw e;
         } catch(Exception e){
-            throw new Exception("Error while adding Company ");
+            throw new Exception("Error while adding or updating Company ");
         }
     }
 

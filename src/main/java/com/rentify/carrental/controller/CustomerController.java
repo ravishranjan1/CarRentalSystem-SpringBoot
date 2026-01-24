@@ -1,7 +1,9 @@
 package com.rentify.carrental.controller;
 
 
+import com.rentify.carrental.exception.CompanyNotFoundException;
 import com.rentify.carrental.exception.CustomerNotFoundException;
+import com.rentify.carrental.model.CompanyModel;
 import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.service.CustomerService;
 import com.rentify.carrental.validators.CustomerValidator;
@@ -86,6 +88,19 @@ public class CustomerController {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("customers", customerService.findAll());
+        return "customer";
+    }
+
+    @GetMapping("/find/{id}")
+    public String getCustomerById(@PathVariable Long id, Model model){
+        try {
+            CustomerModel customer = customerService.findById(id);
+            model.addAttribute("success", "Customer found");
+            model.addAttribute("customers", List.of(customer));
+        }  catch (CustomerNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("customers", null);
+        }
         return "customer";
     }
 }

@@ -351,7 +351,16 @@
             <td data-label="Amount" th:text="${p.amount}"></td>
             <td data-label="Mode" th:text="${p.mode}"></td>
             <td data-label="Status" th:text="${p.status}"></td>
-            <td data-label="Booking ID" th:text="${p.bookingModel.id}"></td>
+            <td data-label="Booking ID">
+                <a th:if="${p.bookingModel != null}"
+                   th:text="${p.bookingModel.id}"
+                   th:href="@{/rentify/booking/find/{id}(id=${p.bookingModel.id})}"
+                   style="color:#1e88e5; text-decoration:none; font-weight:600;">
+                </a>
+
+                <span th:if="${p.bookingModel == null}">N/A</span>
+            </td>
+
 
             <td data-label="Action" class="actions">
                 <form th:action="@{/rentify/payment/delete/{id}(id=${p.id})}"

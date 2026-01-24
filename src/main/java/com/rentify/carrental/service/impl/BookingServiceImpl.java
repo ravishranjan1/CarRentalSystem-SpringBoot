@@ -40,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
                 bookingModel.setStatus(CarStatus.ONGOING);
                 bookingRepo.save(bookingModel);
                 car.setAvailable(false);
-                carService.update(car);
+                carService.save(car);
             }else{
                 throw new CarNotAvailableException("Car Not Available for now, Choose another car");
             }
@@ -50,23 +50,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingModel returnCar(BookingModel booking, LocalDate returnDate) throws Exception {
-        if (booking == null) {
-            throw new Exception("Booking not found");
-        }
+    public BookingModel returnCar(BookingModel booking) throws Exception {
 
-        if (!CarStatus.ONGOING.equals(booking.getStatus())) {
-            throw new Exception("Car already returned or not rented yet");
-        }
-
-        if (returnDate.isBefore(booking.getStartDate())) {
-            throw new Exception("Return date must be on/after start date");
-        }
-
-        booking.setEndDate(returnDate);
         booking.setStatus(CarStatus.RETURNED);
 
-        long days = ChronoUnit.DAYS.between(booking.getStartDate(), returnDate) + 1;
+        long days = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate()) + 1;
         double totalPrice = days * booking.getCar().getPricePerday();
         booking.setTotalAmount(totalPrice);
 
@@ -74,7 +62,7 @@ public class BookingServiceImpl implements BookingService {
 
         CarModel car = booking.getCar();
         car.setAvailable(true);
-        carService.update(car);
+        carService.save(car);
         return booking;
     }
 

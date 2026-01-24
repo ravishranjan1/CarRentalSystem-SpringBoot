@@ -1,9 +1,12 @@
 package com.rentify.carrental.controller;
 
 import com.rentify.carrental.exception.CarNotFoundException;
+import com.rentify.carrental.exception.CustomerNotFoundException;
 import com.rentify.carrental.model.CarModel;
+import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.service.CarService;
 import com.rentify.carrental.service.CompanyService;
+import com.rentify.carrental.validators.CarValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,9 @@ public class CarController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private CarValidator validator;
 
     @GetMapping("/")
     public String getCar(Model model){
@@ -57,18 +63,20 @@ public class CarController {
 
     @PostMapping("/save")
     public String saveCar(@ModelAttribute CarModel carModel, Model model){
-        try{
-            if(carModel.getId() == null){
-                carService.add(carModel);
-                model.addAttribute("success", "Car added successfully");
-            }else{
-                carService.update(carModel);
-                model.addAttribute("success", "Car updated successfully");
+        List<String> errors = validator.validate(carModel);
+        if(!errors.isEmpty()){
+            model.addAttribute("error", errors);
+        }else{
+            try {
+                carService.save(carModel);
+                if(carModel.getId() == null){
+                    model.addAttribute("success", "Car added successfully");
+                }else{
+                    model.addAttribute("success", "Car updated successfully");
+                }
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
             }
-        } catch(CarNotFoundException e){
-            model.addAttribute("error", e.getMessage());
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("cars", carService.findAll());
         return "car";
@@ -83,6 +91,19 @@ public class CarController {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("cars", carService.findAll());
+        return "car";
+    }
+
+    @GetMapping("/find/{id}")
+    public String getCarById(@PathVariable Long id, Model model){
+        try {
+            CarModel car = carService.findById(id);
+            model.addAttribute("success", "Car found");
+            model.addAttribute("cars", List.of(car));
+        } catch (CarNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("cars", null);
+        }
         return "car";
     }
 
