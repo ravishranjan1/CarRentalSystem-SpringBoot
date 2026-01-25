@@ -1,6 +1,7 @@
 1. Option for Booking Modification
 2. Validation in booking, date etc
 3. Show Car name also in Booking page.
+4. Add one more car status 'SCHEDULED'
 
 
 Upgrade:
