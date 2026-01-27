@@ -27,7 +27,6 @@ public class RentCarValidator implements DataValidator{
         if (booking.getStatus() != CarStatus.SCHEDULED) {
             errors.add("Car can be rented only for scheduled bookings");
         }
-
         return errors;
     }
 }

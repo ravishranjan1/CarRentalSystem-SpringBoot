@@ -114,6 +114,26 @@ public class BookingController {
         return "booking";
     }
 
+    @GetMapping("/rent/{id}")
+    public String submitRentFormById(@PathVariable Long id, Model model){
+        try {
+            BookingModel bookingModel = bookingService.findById(id);
+            List<String> errors = rentCarValidator.validate(bookingModel);
+            if (!errors.isEmpty()) {
+                model.addAttribute("error", errors);
+                model.addAttribute("bookings", bookingService.findAll());
+                return "booking";
+            }
+            BookingModel booking = bookingService.rentCar(bookingModel);
+            model.addAttribute("success", "Car rent successfully");
+            model.addAttribute("bookings",List.of(booking));
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("bookings", null);
+        }
+        return "booking";
+    }
+
 
 
     @GetMapping("/return")
@@ -124,6 +144,26 @@ public class BookingController {
 
     @PostMapping("/return")
     public String submitReturnForm(@RequestParam Long id, Model model ){
+        try {
+            BookingModel bookingModel = bookingService.findById(id);
+            List<String> errors = returnCarValidator.validate(bookingModel);
+            if (!errors.isEmpty()) {
+                model.addAttribute("error", errors);
+                model.addAttribute("bookings", bookingService.findAll());
+                return "booking";
+            }
+            BookingModel booking = bookingService.returnCar(bookingModel);
+            model.addAttribute("success", "Car return successfully");
+            model.addAttribute("bookings",List.of(booking));
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("bookings", null);
+        }
+        return "booking";
+    }
+
+    @GetMapping("/return/{id}")
+    public String submitReturnFormById(@PathVariable Long id, Model model ){
         try {
             BookingModel bookingModel = bookingService.findById(id);
             List<String> errors = returnCarValidator.validate(bookingModel);

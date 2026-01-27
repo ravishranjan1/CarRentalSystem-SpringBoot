@@ -176,23 +176,25 @@
                    class="btn-edit">✏️</a>
 
                 <!-- Rent -->
-                <a th:if="${b.status == T(com.rentify.carrental.enums.CarStatus).SCHEDULED}"
-                   th:href="@{/rentify/booking/rent/{id}(id=${b.id})}"
-                   class="btn-small rent">Rent</a>
+                <a th:href="@{/rentify/booking/rent/{id}(id=${b.id})}"
+                   class="btn-small rent">
+                    Rent
+                </a>
 
                 <!-- Return -->
-                <a th:if="${b.status == T(com.rentify.carrental.enums.CarStatus).RENTED}"
-                   th:href="@{/rentify/booking/return/{id}(id=${b.id})}"
-                   class="btn-small return">Return</a>
+                <a th:href="@{/rentify/booking/return/{id}(id=${b.id})}"
+                   class="btn-small return">
+                    Return
+                </a>
 
                 <!-- Delete -->
-                <form th:if="${b.status == T(com.rentify.carrental.enums.CarStatus).SCHEDULED}"
-                      th:action="@{/rentify/booking/delete/{id}(id=${b.id})}"
+                <form th:action="@{/rentify/booking/delete/{id}(id=${b.id})}"
                       method="post"
                       onsubmit="return confirm('Delete booking?');">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button class="btn-delete">🗑</button>
                 </form>
+
 
             </td>
         </tr>
