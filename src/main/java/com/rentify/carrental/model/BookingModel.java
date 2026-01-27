@@ -27,6 +27,17 @@ public class BookingModel extends BaseModel{
     @ManyToOne
     private CarModel car;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private PaymentModel payment;
+
+    public PaymentModel getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentModel payment) {
+        this.payment = payment;
+    }
+
     public CustomerModel getCustomer() {
         return customer;
     }

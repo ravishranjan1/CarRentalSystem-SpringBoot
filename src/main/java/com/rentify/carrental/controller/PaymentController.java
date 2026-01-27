@@ -30,27 +30,4 @@ public class PaymentController {
         return "payment";
     }
 
-    @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute PaymentModel payment, Model model){
-        try{
-           paymentService.payment(payment);
-           model.addAttribute("success", "Payment completed successfully");
-        }catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-        }
-        model.addAttribute("payments", paymentService.findAll());
-        return "payment";
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deletePayment(@PathVariable Long id, Model model){
-        try {
-            paymentService.removeById(id);
-            model.addAttribute("success", "Payment deleted success");
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-        }
-        model.addAttribute("payments", paymentService.findAll());
-        return "payment";
-    }
 }

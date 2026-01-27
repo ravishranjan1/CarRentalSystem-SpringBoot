@@ -16,6 +16,9 @@ public class PaymentModel extends BaseModel{
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
+    @OneToOne
+    private BookingModel bookingModel;
+
     public BookingModel getBookingModel() {
         return bookingModel;
     }
@@ -23,9 +26,6 @@ public class PaymentModel extends BaseModel{
     public void setBookingModel(BookingModel bookingModel) {
         this.bookingModel = bookingModel;
     }
-
-    @OneToOne
-    private BookingModel bookingModel;
 
     public double getAmount() {
         return amount;

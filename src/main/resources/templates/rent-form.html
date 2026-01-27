@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Rentify | Rent Car</title>
+    <title>Rentify | Booking ID</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -33,16 +33,11 @@
             display:flex;
             justify-content:space-between;
             align-items:center;
-            flex-wrap:wrap;
-            gap:10px;
             box-shadow:0px 4px 15px rgba(0,0,0,0.15);
             margin-bottom:25px;
         }
 
         .navbar .logo{
-            display:flex;
-            align-items:center;
-            gap:10px;
             font-size:20px;
             font-weight:700;
         }
@@ -51,11 +46,6 @@
             color:white;
             text-decoration:none;
             font-weight:600;
-            transition:0.3s;
-        }
-
-        .navbar a:hover{
-            color:#f1c40f;
         }
 
         /* Form Card */
@@ -72,25 +62,12 @@
             padding:28px 25px;
             border-radius:18px;
             box-shadow:0px 6px 18px rgba(0,0,0,0.08);
-            animation:fadeIn 0.4s ease-in-out;
-        }
-
-        @keyframes fadeIn{
-            from{
-                opacity:0;
-                transform:translateY(10px);
-            }
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
         }
 
         .container h2{
             text-align:center;
             font-size:22px;
             font-weight:700;
-            color:#2c3e50;
             margin-bottom:6px;
         }
 
@@ -107,10 +84,8 @@
 
         label{
             font-weight:600;
-            display:block;
             margin-bottom:6px;
-            color:#34495e;
-            font-size:14px;
+            display:block;
         }
 
         .input-box{
@@ -133,8 +108,8 @@
             border-radius:12px;
             font-size:14px;
             outline:none;
-            transition:0.3s;
             background:#fbfcff;
+            transition:0.3s;
         }
 
         input:focus, select:focus{
@@ -163,7 +138,6 @@
             background:#3498db;
             color:white;
             margin-top:10px;
-            box-shadow:0px 5px 12px rgba(52,152,219,0.25);
         }
 
         .btn-save:hover{
@@ -175,6 +149,7 @@
             margin-top:12px;
             background:#ecf0f1;
             color:#2c3e50;
+            text-decoration:none;
         }
 
         .btn-back:hover{
@@ -182,15 +157,7 @@
         }
 
         @media (max-width:768px){
-            body{
-                padding:12px;
-            }
-            .container{
-                padding:22px 18px;
-            }
-            .container h2{
-                font-size:20px;
-            }
+            body{ padding:12px; }
         }
     </style>
 </head>
@@ -206,54 +173,25 @@
 <div class="form-wrapper">
     <div class="container">
 
-        <h2>Rent a Car</h2>
-        <p class="subtitle">Select customer, car and start date for booking</p>
+        <h2>Booking ID Form</h2>
+        <p class="subtitle">Select booking id</p>
 
-        <form th:action="@{/rentify/booking/rent}"
-              th:object="${booking}"
-              method="post">
+        <form th:action="@{/rentify/booking/rent}" method="post">
 
-
-            <!-- Booking Start Date -->
+            <!-- Booking ID Dropdown -->
             <div class="form-row">
-                <label>Start Date</label>
+                <label>Booking ID</label>
                 <div class="input-box">
-                    <i class="fa-solid fa-calendar-day"></i>
-                    <input type="date"
-                           th:field="*{startDate}"
-                           required>
-                </div>
-            </div>
+                    <i class="fa-solid fa-hashtag"></i>
 
-            <!-- Customer Dropdown -->
-            <div class="form-row">
-                <label>Select Customer</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-user"></i>
-
-                    <select th:field="*{customer}" required>
-                        <option value="">Select Customer</option>
-
-                        <option th:each="c : ${customers}"
-                                th:value="${c.id}"
-                                th:text="${c.name} + ' (Mob: ' + ${c.phone} + ')'">
+                    <select name="id" required>
+                        <option value="" disabled selected>
+                            -- Select Booking ID --
                         </option>
-                    </select>
-                </div>
-            </div>
 
-            <!-- Car Dropdown -->
-            <div class="form-row">
-                <label>Select Car</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-car"></i>
-
-                    <select th:field="*{car}" required>
-                        <option value="">Select Car</option>
-
-                        <option th:each="car : ${cars}"
-                                th:value="${car.id}"
-                                th:text="${car.model} + ' | ' + ${car.registrationNo} + ' | ₹' + ${car.pricePerday}">
+                        <option th:each="booking : ${bookings}"
+                                th:value="${booking.id}"
+                                th:text="${booking.id}">
                         </option>
                     </select>
                 </div>
@@ -261,15 +199,15 @@
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-save">
-                <i class="fa-solid fa-circle-check"></i>
-                <span>Confirm Booking</span>
+                <i class="fa-solid fa-check"></i>
+                Submit
             </button>
 
         </form>
 
-        <!-- Back Button -->
-        <a class="btn btn-back" th:href="@{/rentify/booking/}">
-            <i class="fa-solid fa-arrow-left"></i> Back to Booking List
+        <!-- Back -->
+        <a class="btn btn-back" href="/rentify/booking/">
+            <i class="fa-solid fa-arrow-left"></i> Back
         </a>
 
     </div>

@@ -1,5 +1,6 @@
 package com.rentify.carrental.service;
 
+import com.rentify.carrental.enums.CarType;
 import com.rentify.carrental.exception.CarNotFoundException;
 import com.rentify.carrental.exception.CompanyNotFoundException;
 import com.rentify.carrental.model.CarModel;
@@ -13,4 +14,5 @@ public interface CarService {
 
     List<CarModel> findAll();
     CarModel findById(Long id) throws CarNotFoundException;
+    List<CarModel> findByType(CarType type);
 }

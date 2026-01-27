@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rentify | Rent Car</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+        body{background:#f4f6fb;padding:20px;color:#2c3e50}
+
+        .navbar{
+            background:linear-gradient(135deg,#2c3e50,#34495e);
+            color:white;padding:15px 20px;border-radius:15px;
+            display:flex;justify-content:space-between;align-items:center;
+            box-shadow:0 4px 15px rgba(0,0,0,.15);margin-bottom:25px
+        }
+
+        .logo{font-size:20px;font-weight:700}
+        .navbar a{color:white;text-decoration:none;font-weight:600}
+        .navbar a:hover{color:#f1c40f}
+
+        .form-wrapper{display:flex;justify-content:center}
+        .container{
+            max-width:520px;width:100%;background:white;
+            padding:28px 25px;border-radius:18px;
+            box-shadow:0 6px 18px rgba(0,0,0,.08)
+        }
+
+        h2{text-align:center;margin-bottom:6px}
+        .subtitle{text-align:center;color:#7f8c8d;font-size:13px;margin-bottom:18px}
+
+        .form-row{margin-bottom:14px}
+        label{font-weight:600;margin-bottom:6px;display:block;font-size:14px}
+
+        .input-box{position:relative}
+        .input-box i{
+            position:absolute;top:50%;left:12px;
+            transform:translateY(-50%);color:#95a5a6
+        }
+
+        input,select{
+            width:100%;padding:12px 12px 12px 36px;
+            border:1px solid #dfe6e9;border-radius:12px;
+            font-size:14px;background:#fbfcff
+        }
+
+        input:focus,select:focus{
+            border-color:#3498db;
+            box-shadow:0 0 0 4px rgba(52,152,219,.15);
+            outline:none
+        }
+
+        .btn{
+            width:100%;padding:12px;border:none;
+            border-radius:14px;font-size:15px;
+            font-weight:700;cursor:pointer;margin-top:10px;
+            display:flex;justify-content:center;align-items:center;gap:8px
+        }
+
+        .btn-save{background:#3498db;color:white}
+        .btn-save:hover{background:#21618c}
+
+        .btn-back{
+            margin-top:12px;background:#ecf0f1;
+            color:#2c3e50;text-decoration:none
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo">🚗 Rentify</div>
+    <a href="/rentify/">🏠 Dashboard</a>
+</div>
+
+<div class="form-wrapper">
+    <div class="container">
+
+        <h2>Rent a Car</h2>
+        <p class="subtitle">Select customer, car, dates and payment mode</p>
+
+        <form th:action="@{/rentify/booking/save}"
+              th:object="${booking}"
+              method="post">
+
+            <div class="form-row">
+                <label>Start Date</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <input type="date" th:field="*{startDate}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>End Date</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <input type="date" th:field="*{endDate}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Select Customer</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-user"></i>
+                    <select th:field="*{customer}" required>
+                        <option value="">Select Customer</option>
+                        <option th:each="c : ${customers}"
+                                th:value="${c.id}"
+                                th:text="${c.name} + ' (Mob: ' + ${c.phone} + ')'">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Select Car</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-car"></i>
+                    <select th:field="*{car}" required>
+                        <option value="">Select Car</option>
+                        <option th:each="car : ${cars}"
+                                th:value="${car.id}"
+                                th:text="${car.model} + ' | ' + ${car.registrationNo} + ' | ₹' + ${car.pricePerday}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ✅ FIXED PAYMENT MODE -->
+            <div class="form-row">
+                <label>Payment Mode</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <select th:field="*{payment.mode}" required>
+                        <option value="">-- Select Payment Mode --</option>
+                        <option th:each="pm : ${T(com.rentify.carrental.enums.PaymentMode).values()}"
+                                th:value="${pm}"
+                                th:text="${pm}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-save">
+                <i class="fa-solid fa-circle-check"></i>
+                Confirm Booking
+            </button>
+        </form>
+
+        <a class="btn btn-back" th:href="@{/rentify/booking/}">
+            <i class="fa-solid fa-arrow-left"></i> Back to Booking List
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

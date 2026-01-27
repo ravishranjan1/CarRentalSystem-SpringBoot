@@ -1,20 +1,19 @@
 package com.rentify.carrental.controller;
 
 import com.rentify.carrental.exception.BookingNotFoundException;
-import com.rentify.carrental.exception.CarNotFoundException;
 import com.rentify.carrental.model.BookingModel;
-import com.rentify.carrental.model.CarModel;
 import com.rentify.carrental.model.PaymentModel;
 import com.rentify.carrental.service.BookingService;
 import com.rentify.carrental.service.CarService;
 import com.rentify.carrental.service.CustomerService;
+import com.rentify.carrental.validators.BookingValidator;
 import com.rentify.carrental.validators.RentCarValidator;
+import com.rentify.carrental.validators.ReturnCarValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -31,10 +30,13 @@ public class BookingController {
     private CarService carService;
 
     @Autowired
+    private BookingValidator bookingValidator;
+
+    @Autowired
     private RentCarValidator rentCarValidator;
 
     @Autowired
-    private RentCarValidator returnCarValidator;
+    private ReturnCarValidator returnCarValidator;
 
     @GetMapping("/")
     public String getBooking(Model model){
@@ -49,32 +51,70 @@ public class BookingController {
         return "booking";
     }
 
-    @GetMapping("/rent")
-    public String openRentForm(Model model){
+
+    @GetMapping("/new")
+    public String openBookingForm(Model model){
         model.addAttribute("booking", new BookingModel());
         model.addAttribute("customers", customerService.findAll());
         model.addAttribute("cars", carService.findAll());
+        return "booking-form";
+    }
+
+
+
+    @PostMapping("/save")
+    public String submitRentForm (@ModelAttribute BookingModel bookingModel, Model model){
+
+        List<String> errors = bookingValidator.validate(bookingModel);
+        if (!errors.isEmpty()) {
+            model.addAttribute("error", errors);
+            model.addAttribute("bookings", bookingService.findAll());
+            return "booking";
+        }
+        try{
+            if(bookingModel.getId() == null){
+                bookingService.booking(bookingModel);
+                model.addAttribute("success", "Car is booked successfully");
+                model.addAttribute("bookings", List.of(bookingService.findById(bookingModel.getId())));
+            }else{
+                bookingService.booking(bookingModel);
+                model.addAttribute("success", "Booking is updated successfully");
+                model.addAttribute("bookings", List.of(bookingService.findById(bookingModel.getId())));
+            }
+        }catch(Exception e){
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("bookings", null);
+        }
+        return "booking";
+    }
+
+    @GetMapping("/rent")
+    public String openRentForm(Model model){
+        model.addAttribute("bookings", bookingService.findAll());
         return "rent-form";
     }
 
     @PostMapping("/rent")
-    public String submitRentForm (@ModelAttribute BookingModel bookingModel, Model model){
+    public String submitRentForm(@RequestParam Long id, Model model){
         try {
+            BookingModel bookingModel = bookingService.findById(id);
             List<String> errors = rentCarValidator.validate(bookingModel);
             if (!errors.isEmpty()) {
                 model.addAttribute("error", errors);
                 model.addAttribute("bookings", bookingService.findAll());
                 return "booking";
             }
-            bookingService.rentCar(bookingModel);
-            model.addAttribute("success", "Car is rented successfully");
-            model.addAttribute("bookings", List.of(bookingService.findById(bookingModel.getId())));
+            BookingModel booking = bookingService.rentCar(bookingModel);
+            model.addAttribute("success", "Car rent successfully");
+            model.addAttribute("bookings",List.of(booking));
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("bookings", null);
         }
         return "booking";
     }
+
+
 
     @GetMapping("/return")
     public String openReturnForm(Model model){
@@ -83,32 +123,23 @@ public class BookingController {
     }
 
     @PostMapping("/return")
-    public String submitReturnForm(@RequestParam Long id, @RequestParam LocalDate returnDate, Model model ){
+    public String submitReturnForm(@RequestParam Long id, Model model ){
         try {
             BookingModel bookingModel = bookingService.findById(id);
-
-            bookingModel.setEndDate(returnDate);
-
             List<String> errors = returnCarValidator.validate(bookingModel);
             if (!errors.isEmpty()) {
                 model.addAttribute("error", errors);
                 model.addAttribute("bookings", bookingService.findAll());
                 return "booking";
             }
-
             BookingModel booking = bookingService.returnCar(bookingModel);
-            model.addAttribute("booking", booking);
-            model.addAttribute("success", "Car returned successfully");
-            PaymentModel paymentModel = new PaymentModel();
-            paymentModel.setBookingModel(booking);
-            paymentModel.setAmount(booking.getTotalAmount());
-            model.addAttribute("payment", paymentModel);
-            return "payment-form";
+            model.addAttribute("success", "Car return successfully");
+            model.addAttribute("bookings",List.of(booking));
         } catch (Exception e) {
-            model.addAttribute("bookings", bookingService.findAll());
             model.addAttribute("error", e.getMessage());
-            return "booking";
+            model.addAttribute("bookings", null);
         }
+        return "booking";
     }
 
     @DeleteMapping("/delete/{id}")

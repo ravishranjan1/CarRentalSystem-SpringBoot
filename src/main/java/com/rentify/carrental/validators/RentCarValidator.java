@@ -1,5 +1,6 @@
 package com.rentify.carrental.validators;
 
+import com.rentify.carrental.enums.CarStatus;
 import com.rentify.carrental.model.BookingModel;
 import org.springframework.stereotype.Component;
 
@@ -10,28 +11,21 @@ import java.util.List;
 public class RentCarValidator implements DataValidator{
     @Override
     public List<String> validate(Object data) {
+
         List<String> errors = new ArrayList<>();
+
+        if (!(data instanceof BookingModel)) {
+            errors.add("Invalid booking data");
+        }
+
         BookingModel booking = (BookingModel) data;
 
-        if (booking == null) {
-            errors.add("Booking data cannot be null");
-            return errors;
+        if (booking.getStatus() == null) {
+            errors.add("Booking status cannot be null");
         }
 
-        if (booking.getCustomer() == null) {
-            errors.add("Customer cannot be null");
-        } else if (booking.getCustomer().getId() == null) {
-            errors.add("Customer Id cannot be null");
-        }
-
-        if (booking.getCar() == null) {
-            errors.add("Car cannot be null");
-        } else if (booking.getCar().getId() == null) {
-            errors.add("Car Id cannot be null");
-        }
-
-        if (booking.getStartDate() == null) {
-            errors.add("Pickup date cannot be null");
+        if (booking.getStatus() != CarStatus.SCHEDULED) {
+            errors.add("Car can be rented only for scheduled bookings");
         }
 
         return errors;
