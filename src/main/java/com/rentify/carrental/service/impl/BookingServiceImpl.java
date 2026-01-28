@@ -83,43 +83,31 @@ public class BookingServiceImpl implements BookingService {
     }
 
 
-    @Override
-    public List<BookingModel> rentCarsForToday() throws Exception {
+    public void autoUpdateBookingStatus() throws Exception{
         try{
             LocalDate today = LocalDate.now();
             List<BookingModel> bookings = bookingRepo.findAll();
             for (BookingModel booking : bookings) {
-                if (booking.getStatus() == CarStatus.SCHEDULED &&
-                        booking.getStartDate().equals(today)) {
+                if (booking.getStatus() == CarStatus.SCHEDULED && booking.getStartDate() != null && booking.getStartDate().equals(today)) {
                     booking.setStatus(CarStatus.ONGOING);
+                    if (booking.getCar() != null) {
+                        CarModel car = booking.getCar();
+                        car.setAvailable(false);
+                        carService.save(car);
+                    }
                 }
-            }
-            return bookingRepo.saveAll(bookings);
-        }catch(Exception e){
-            throw new Exception("Error while renting the car");
-        }
-    }
-
-
-    @Override
-    public List<BookingModel> returnCars() throws Exception{
-        try{
-            LocalDate today = LocalDate.now();
-            List<BookingModel> bookings = bookingRepo.findAll();
-            for (BookingModel booking : bookings) {
-                if (booking.getStatus() == CarStatus.ONGOING &&
-                        booking.getEndDate().equals(today)) {
+                if (booking.getStatus() == CarStatus.ONGOING && booking.getEndDate() != null && booking.getEndDate().isBefore(today)) {
                     booking.setStatus(CarStatus.RETURNED);
-                    CarModel car = booking.getCar();
-                    if (car != null) {
+                    if (booking.getCar() != null) {
+                        CarModel car = booking.getCar();
                         car.setAvailable(true);
                         carService.save(car);
                     }
                 }
             }
-            return bookingRepo.saveAll(bookings);
+            bookingRepo.saveAll(bookings);
         }catch(Exception e){
-            throw new Exception("Error while returning the car");
+            throw new Exception(e.getMessage());
         }
     }
 

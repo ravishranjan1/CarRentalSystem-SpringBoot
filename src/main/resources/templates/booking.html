@@ -132,20 +132,9 @@
 <!-- Top Buttons (ALWAYS VISIBLE) -->
 <div class="top-bar">
     <button class="btn btn-book" onclick="location.href='/rentify/booking/new'">
-        ➕ Booking Car
+        🚗 Rent Car
     </button>
 
-    <form th:action="@{/rentify/booking/rent}" method="post">
-        <button type="submit" class="btn btn-rent">
-            🚗 Rent Car
-        </button>
-    </form>
-
-    <form th:action="@{/rentify/booking/return}" method="post">
-        <button type="submit" class="btn btn-return">
-            🔁 Return Car
-        </button>
-    </form>
 </div>
 
 <!-- Table -->

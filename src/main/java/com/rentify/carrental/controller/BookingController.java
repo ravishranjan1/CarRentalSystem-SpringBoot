@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,17 +33,21 @@ public class BookingController {
 
     @GetMapping("/")
     public String getBooking(Model model){
-        List<BookingModel> bookings = bookingService.findAll();
-
-        if(bookings.isEmpty()){
-            model.addAttribute("error", "No booking found");
-        }else{
-            model.addAttribute("success", bookings.size()+" Booking found");
+        try{
+            bookingService.autoUpdateBookingStatus();
+            List<BookingModel> bookings = bookingService.findAll();
+            if(bookings.isEmpty()){
+                model.addAttribute("error", "No booking found");
+            }else{
+                model.addAttribute("success", bookings.size()+" Booking found");
+            }
+            model.addAttribute("bookings", bookings);
+        } catch (Exception e) {
+            model.addAttribute("error", "Something went wrong while loading cars");
+            model.addAttribute("cars", new ArrayList<>());
         }
-        model.addAttribute("bookings", bookings);
         return "booking";
     }
-
 
     @GetMapping("/new")
     public String openBookingForm(Model model){
@@ -51,8 +56,6 @@ public class BookingController {
         model.addAttribute("cars", carService.findAll());
         return "booking-form";
     }
-
-
 
     @PostMapping("/save")
     public String submitRentForm (@ModelAttribute BookingModel bookingModel, Model model){
@@ -76,53 +79,6 @@ public class BookingController {
         }catch(Exception e){
             model.addAttribute("error", e.getMessage());
             model.addAttribute("bookings", null);
-        }
-        return "booking";
-    }
-
-    @PostMapping("/rent")
-    public String submitRentForm(Model model) {
-        try {
-            List<BookingModel> updatedBookings = bookingService.rentCarsForToday();
-            long rentedCount = 0;
-            for (BookingModel booking : updatedBookings) {
-                if (booking.getStatus() == CarStatus.ONGOING) {
-                    rentedCount++;
-                }
-            }
-            if (rentedCount > 0) {
-                model.addAttribute("success", rentedCount + " booking(s) moved to ONGOING status");
-            } else {
-                model.addAttribute("error", "No bookings available to rent today");
-            }
-            model.addAttribute("bookings", updatedBookings);
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("bookings", bookingService.findAll());
-        }
-        return "booking";
-    }
-
-
-    @PostMapping("/return")
-    public String submitReturnForm(Model model) {
-        try {
-            List<BookingModel> updatedBookings = bookingService.returnCars();
-            long returnedCount = 0;
-            for (BookingModel booking : updatedBookings) {
-                if (booking.getStatus() == CarStatus.RETURNED) {
-                    returnedCount++;
-                }
-            }
-            if (returnedCount > 0) {
-                model.addAttribute("success", returnedCount + " booking(s) returned successfully");
-            } else {
-                model.addAttribute("error", "No ongoing bookings to return");
-            }
-            model.addAttribute("bookings", updatedBookings);
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("bookings", bookingService.findAll());
         }
         return "booking";
     }

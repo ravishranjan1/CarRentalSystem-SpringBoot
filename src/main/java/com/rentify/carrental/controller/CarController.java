@@ -4,6 +4,7 @@ import com.rentify.carrental.exception.CarNotFoundException;
 import com.rentify.carrental.exception.CustomerNotFoundException;
 import com.rentify.carrental.model.CarModel;
 import com.rentify.carrental.model.CustomerModel;
+import com.rentify.carrental.service.BookingService;
 import com.rentify.carrental.service.CarService;
 import com.rentify.carrental.service.CompanyService;
 import com.rentify.carrental.validators.CarValidator;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,15 +29,24 @@ public class CarController {
     @Autowired
     private CarValidator validator;
 
+    @Autowired
+    private BookingService bookingService;
+
     @GetMapping("/")
     public String getCar(Model model){
-        List<CarModel> cars = carService.findAll();
-        if(cars.isEmpty()){
-            model.addAttribute("error", "No car found");
-        }else{
-            model.addAttribute("success", cars.size()+" car found");
+        try{
+            bookingService.autoUpdateBookingStatus();
+            List<CarModel> cars = carService.findAll();
+            if(cars.isEmpty()){
+                model.addAttribute("error", "No car found");
+            }else{
+                model.addAttribute("success", cars.size()+" car found");
+            }
+            model.addAttribute("cars", cars);
+        } catch (Exception e) {
+            model.addAttribute("error", "Something went wrong while loading cars");
+            model.addAttribute("cars", new ArrayList<>());
         }
-        model.addAttribute("cars", cars);
         return "car";
     }
     
