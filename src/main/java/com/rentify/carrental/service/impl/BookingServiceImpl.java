@@ -84,22 +84,45 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public BookingModel rentCar(BookingModel booking) throws Exception {
-        booking.setStatus(CarStatus.ONGOING);
-        return bookingRepo.save(booking);
+    public List<BookingModel> rentCarsForToday() throws Exception {
+        try{
+            LocalDate today = LocalDate.now();
+            List<BookingModel> bookings = bookingRepo.findAll();
+            for (BookingModel booking : bookings) {
+                if (booking.getStatus() == CarStatus.SCHEDULED &&
+                        booking.getStartDate().equals(today)) {
+                    booking.setStatus(CarStatus.ONGOING);
+                }
+            }
+            return bookingRepo.saveAll(bookings);
+        }catch(Exception e){
+            throw new Exception("Error while renting the car");
+        }
     }
+
 
     @Override
-    public BookingModel returnCar(BookingModel booking) throws Exception {
-
-        booking.setStatus(CarStatus.RETURNED);
-        BookingModel bookingModel = bookingRepo.save(booking);
-
-        CarModel car = booking.getCar();
-        car.setAvailable(true);
-        carService.save(car);
-        return bookingModel;
+    public List<BookingModel> returnCars() throws Exception{
+        try{
+            LocalDate today = LocalDate.now();
+            List<BookingModel> bookings = bookingRepo.findAll();
+            for (BookingModel booking : bookings) {
+                if (booking.getStatus() == CarStatus.ONGOING &&
+                        booking.getEndDate().equals(today)) {
+                    booking.setStatus(CarStatus.RETURNED);
+                    CarModel car = booking.getCar();
+                    if (car != null) {
+                        car.setAvailable(true);
+                        carService.save(car);
+                    }
+                }
+            }
+            return bookingRepo.saveAll(bookings);
+        }catch(Exception e){
+            throw new Exception("Error while returning the car");
+        }
     }
+
 
 
     @Override

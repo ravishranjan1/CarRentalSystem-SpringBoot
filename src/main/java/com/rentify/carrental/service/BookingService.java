@@ -9,8 +9,8 @@ import java.util.List;
 public interface BookingService {
 
     void booking(BookingModel bookingModel) throws Exception;
-    BookingModel rentCar(BookingModel bookingModel)throws Exception;
-    BookingModel returnCar(BookingModel bookingModel) throws Exception;
+    List<BookingModel> rentCarsForToday()throws Exception;
+    List<BookingModel> returnCars() throws Exception;
     BookingModel findById(Long id) throws BookingNotFoundException;
     void removeById(Long id) throws Exception;
     List<BookingModel> findAll();

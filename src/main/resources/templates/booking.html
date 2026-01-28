@@ -118,19 +118,34 @@
     <p>Book, Rent and Return cars from one place</p>
 </div>
 
+<!-- Alerts -->
+<div th:if="${success}" class="alert success">
+    <i class="fa-solid fa-circle-check"></i>
+    <span th:text="${success}"></span>
+</div>
+
+<div th:if="${error}" class="alert error">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <span th:text="${error}"></span>
+</div>
+
 <!-- Top Buttons (ALWAYS VISIBLE) -->
 <div class="top-bar">
     <button class="btn btn-book" onclick="location.href='/rentify/booking/new'">
         ➕ Booking Car
     </button>
 
-    <button class="btn btn-rent" onclick="location.href='/rentify/booking/rent'">
-        🚗 Rent Car
-    </button>
+    <form th:action="@{/rentify/booking/rent}" method="post">
+        <button type="submit" class="btn btn-rent">
+            🚗 Rent Car
+        </button>
+    </form>
 
-    <button class="btn btn-return" onclick="location.href='/rentify/booking/return'">
-        🔁 Return Car
-    </button>
+    <form th:action="@{/rentify/booking/return}" method="post">
+        <button type="submit" class="btn btn-return">
+            🔁 Return Car
+        </button>
+    </form>
 </div>
 
 <!-- Table -->
@@ -174,18 +189,6 @@
                 <!-- Edit (backend allows only SCHEDULED) -->
                 <a th:href="@{/rentify/booking/edit/{id}(id=${b.id})}"
                    class="btn-edit">✏️</a>
-
-                <!-- Rent -->
-                <a th:href="@{/rentify/booking/rent/{id}(id=${b.id})}"
-                   class="btn-small rent">
-                    Rent
-                </a>
-
-                <!-- Return -->
-                <a th:href="@{/rentify/booking/return/{id}(id=${b.id})}"
-                   class="btn-small return">
-                    Return
-                </a>
 
                 <!-- Delete -->
                 <form th:action="@{/rentify/booking/delete/{id}(id=${b.id})}"
