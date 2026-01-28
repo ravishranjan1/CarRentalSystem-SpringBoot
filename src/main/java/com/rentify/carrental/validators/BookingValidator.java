@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class BookingValidator implements DataValidator{
+public class BookingValidator implements DataValidator {
+
     @Autowired
     private BookingService bookingService;
 
     @Override
     public List<String> validate(Object data) {
+
         List<String> errors = new ArrayList<>();
         BookingModel booking = (BookingModel) data;
 
@@ -43,24 +45,24 @@ public class BookingValidator implements DataValidator{
         if (booking.getEndDate() == null) {
             errors.add("Return date cannot be null");
         }
-        if (booking.getStartDate().isBefore(LocalDate.now())) {
+
+        if (booking.getStartDate() != null &&
+                booking.getStartDate().isBefore(LocalDate.now())) {
             errors.add("Start date must be today or a future date");
         }
 
-        if (booking.getStartDate() != null && booking.getEndDate() != null) {
-            if (booking.getEndDate().isBefore(booking.getStartDate())) {
-                errors.add("Return date cannot be before pickup date");
+        if (booking.getStartDate() != null && booking.getEndDate() != null &&
+                booking.getEndDate().isBefore(booking.getStartDate())) {
+            errors.add("Return date cannot be before pickup date");
+        }
+
+        if (booking.getCar() != null && booking.getCar().getId() != null && booking.getStartDate() != null && booking.getEndDate() != null) {
+            boolean available = bookingService.isCarAvailable(booking.getCar().getId(),booking.getStartDate(), booking.getEndDate());
+            if (!available) {
+                errors.add("Car is not available for selected dates");
             }
         }
-
-        if (!bookingService.isCarAvailable(
-                booking.getCar().getId(),
-                booking.getStartDate(),
-                booking.getEndDate())) {
-
-            errors.add("Car is not available for selected dates");
-        }
-
         return errors;
     }
 }
+
