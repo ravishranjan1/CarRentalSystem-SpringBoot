@@ -68,13 +68,27 @@ public class BookingServiceImpl implements BookingService {
                 if (booking.getStatus() != CarStatus.SCHEDULED) {
                     throw new Exception("Booking cannot be edited after rent");
                 }
+                CarModel car = carService.findById(bookingModel.getCar().getId());
+                booking.setCar(bookingModel.getCar());
+
+                long days = ChronoUnit.DAYS.between(bookingModel.getStartDate(),
+                        bookingModel.getEndDate()) + 1;
+
+                double totalPrice = days * car.getPricePerday();
+                booking.setTotalAmount(totalPrice);
+
+                PaymentModel payment = bookingModel.getPayment();
+                payment.setAmount(totalPrice);
+                payment.setMode(bookingModel.getPayment().getMode());
+                payment.setStatus(PaymentStatus.SUCCESS);
+                payment.setBookingModel(bookingModel);
+
                 booking.setStatus(bookingModel.getStatus());
-                booking.setPayment(bookingModel.getPayment());
+                booking.setPayment(payment);
                 booking.setStartDate(bookingModel.getStartDate());
                 booking.setEndDate(bookingModel.getEndDate());
-                booking.setCar(bookingModel.getCar());
                 booking.setCustomer(bookingModel.getCustomer());
-                booking.setTotalAmount(bookingModel.getTotalAmount());
+
                 bookingRepo.save(booking);
             }
         } catch (Exception e) {
