@@ -1,93 +1,244 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentify | Rent Car</title>
 
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-        body{background:#f4f6fb;padding:20px;color:#2c3e50}
+        :root{
+            --bg-main:#020617;
+            --bg-card:#0b1220;
+            --border-soft:rgba(255,255,255,0.08);
+            --text-main:#e5e7eb;
+            --text-muted:#94a3b8;
+            --accent:#22c55e;
+            --accent-soft:rgba(34,197,94,0.18);
+            --info:#60a5fa;
+        }
 
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:"Inter",sans-serif;
+        }
+
+        body{
+            background:radial-gradient(circle at top,#111827,#020617);
+            color:var(--text-main);
+        }
+
+        a{text-decoration:none;color:inherit}
+
+        /* NAVBAR */
         .navbar{
-            background:linear-gradient(135deg,#2c3e50,#34495e);
-            color:white;padding:15px 20px;border-radius:15px;
-            display:flex;justify-content:space-between;align-items:center;
-            box-shadow:0 4px 15px rgba(0,0,0,.15);margin-bottom:25px
+            position:sticky;
+            top:0;
+            z-index:999;
+            background:rgba(2,6,23,.85);
+            backdrop-filter:blur(12px);
+            padding:14px 26px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid var(--border-soft);
         }
 
-        .logo{font-size:20px;font-weight:700}
-        .navbar a{color:white;text-decoration:none;font-weight:600}
-        .navbar a:hover{color:#f1c40f}
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        .app-logo{
+            width:42px;
+            height:42px;
+            border-radius:12px;
+        }
+        .logo h2{font-weight:900}
+        .logo span{color:var(--accent)}
 
-        .form-wrapper{display:flex;justify-content:center}
-        .container{
-            max-width:520px;width:100%;background:white;
-            padding:28px 25px;border-radius:18px;
-            box-shadow:0 6px 18px rgba(0,0,0,.08)
+        .nav-links a{
+            font-size:13px;
+            padding:10px 16px;
+            border-radius:14px;
+            background:rgba(255,255,255,0.05);
+            font-weight:700;
+            transition:.3s;
+        }
+        .nav-links a:hover{
+            background:var(--accent-soft);
+            color:var(--accent);
         }
 
-        h2{text-align:center;margin-bottom:6px}
-        .subtitle{text-align:center;color:#7f8c8d;font-size:13px;margin-bottom:18px}
+        /* FORM WRAPPER */
+        .page-wrap{
+            width:92%;
+            max-width:520px;
+            margin:40px auto;
+        }
 
-        .form-row{margin-bottom:14px}
-        label{font-weight:600;margin-bottom:6px;display:block;font-size:14px}
+        .form-card{
+            background:linear-gradient(180deg,#0b1220,#020617);
+            border:1px solid var(--border-soft);
+            border-radius:22px;
+            padding:28px;
+            box-shadow:0 25px 70px rgba(0,0,0,.6);
+            position:relative;
+        }
 
-        .input-box{position:relative}
+        .form-card::before{
+            content:"";
+            position:absolute;
+            top:-60px;
+            right:-60px;
+            width:140px;
+            height:140px;
+            border-radius:50%;
+            background:var(--accent-soft);
+        }
+
+        .form-header{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .form-header h2{
+            font-size:22px;
+            font-weight:900;
+        }
+
+        .form-header p{
+            font-size:13px;
+            color:var(--text-muted);
+            margin-top:6px;
+        }
+
+        .form-row{
+            margin-top:14px;
+        }
+
+        label{
+            display:block;
+            font-weight:700;
+            font-size:13px;
+            color:var(--text-muted);
+            margin-bottom:6px;
+        }
+
+        .input-box{
+            position:relative;
+        }
+
         .input-box i{
-            position:absolute;top:50%;left:12px;
-            transform:translateY(-50%);color:#95a5a6
+            position:absolute;
+            top:50%;
+            left:14px;
+            transform:translateY(-50%);
+            color:var(--text-muted);
+            font-size:14px;
         }
 
-        input,select{
-            width:100%;padding:12px 12px 12px 36px;
-            border:1px solid #dfe6e9;border-radius:12px;
-            font-size:14px;background:#fbfcff
+        input, select{
+            width:100%;
+            padding:12px 14px 12px 38px;
+            border-radius:14px;
+            border:1px solid var(--border-soft);
+            background:#020617;
+            color:white;
+            font-size:14px;
+            outline:none;
+            transition:.25s;
         }
 
-        input:focus,select:focus{
-            border-color:#3498db;
-            box-shadow:0 0 0 4px rgba(52,152,219,.15);
-            outline:none
+        input:focus, select:focus{
+            border-color:var(--accent);
+            box-shadow:0 0 0 4px rgba(34,197,94,.15);
         }
 
+        select option{
+            background:#020617;
+            color:white;
+        }
+
+        /* BUTTONS */
         .btn{
-            width:100%;padding:12px;border:none;
-            border-radius:14px;font-size:15px;
-            font-weight:700;cursor:pointer;margin-top:10px;
-            display:flex;justify-content:center;align-items:center;gap:8px
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:16px;
+            cursor:pointer;
+            font-weight:900;
+            font-size:14px;
+            transition:.3s;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
         }
 
-        .btn-save{background:#3498db;color:white}
-        .btn-save:hover{background:#21618c}
+        .btn-primary{
+            background:linear-gradient(135deg,#22c55e,#16a34a);
+            color:#022c16;
+            box-shadow:0 12px 30px rgba(34,197,94,.35);
+            margin-top:18px;
+        }
 
-        .btn-back{
-            margin-top:12px;background:#ecf0f1;
-            color:#2c3e50;text-decoration:none
+        .btn-primary:hover{
+            transform:translateY(-2px);
+        }
+
+        .btn-secondary{
+            margin-top:12px;
+            background:rgba(255,255,255,0.07);
+            border:1px solid var(--border-soft);
+            color:white;
+        }
+
+        .btn-secondary:hover{
+            background:rgba(255,255,255,0.12);
+        }
+
+        @media(max-width:650px){
+            .nav-links{display:none}
         }
     </style>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
-    <div class="logo">🚗 Rentify</div>
-    <a href="/rentify/">🏠 Dashboard</a>
+    <div class="logo">
+        <img th:src="@{/images/rentify.png}" class="app-logo">
+        <h2>Rent<span>ify</span></h2>
+    </div>
+    <div class="nav-links">
+        <a href="/rentify/">Dashboard</a>
+    </div>
 </div>
 
-<div class="form-wrapper">
-    <div class="container">
+<!-- FORM -->
+<div class="page-wrap">
+    <div class="form-card">
 
-        <h2>Rent a Car</h2>
-        <p class="subtitle">Select customer, car, dates and payment mode</p>
+        <div class="form-header">
+            <h2>Rent a Car</h2>
+            <p>Select customer, car, dates and payment mode</p>
+        </div>
 
         <form th:action="@{/rentify/booking/save}"
               th:object="${booking}"
               method="post">
 
+            <!-- Start Date -->
             <div class="form-row">
                 <label>Start Date</label>
                 <div class="input-box">
@@ -96,6 +247,7 @@
                 </div>
             </div>
 
+            <!-- End Date -->
             <div class="form-row">
                 <label>End Date</label>
                 <div class="input-box">
@@ -104,6 +256,7 @@
                 </div>
             </div>
 
+            <!-- Customer -->
             <div class="form-row">
                 <label>Select Customer</label>
                 <div class="input-box">
@@ -118,6 +271,7 @@
                 </div>
             </div>
 
+            <!-- Car -->
             <div class="form-row">
                 <label>Select Car</label>
                 <div class="input-box">
@@ -132,7 +286,7 @@
                 </div>
             </div>
 
-            <!-- ✅ FIXED PAYMENT MODE -->
+            <!-- Payment Mode -->
             <div class="form-row">
                 <label>Payment Mode</label>
                 <div class="input-box">
@@ -147,14 +301,15 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-save">
+            <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-circle-check"></i>
                 Confirm Booking
             </button>
         </form>
 
-        <a class="btn btn-back" th:href="@{/rentify/booking/}">
-            <i class="fa-solid fa-arrow-left"></i> Back to Booking List
+        <a class="btn btn-secondary" th:href="@{/rentify/booking/}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Booking List
         </a>
 
     </div>
