@@ -1,485 +1,360 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Rentify | Cars</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root{
+            --bg-main:#020617;
+            --bg-card:#0b1220;
+            --border-soft:rgba(255,255,255,0.08);
+            --text-main:#e5e7eb;
+            --text-muted:#94a3b8;
+            --accent:#22c55e;
+            --accent-soft:rgba(34,197,94,0.18);
+            --danger:#ef4444;
+            --info:#60a5fa;
         }
 
-        body {
-            background: #f4f6fb;
-            padding: 20px;
-            color: #2c3e50;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:"Inter",sans-serif;
         }
 
-        /* Navbar */
-        .navbar {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
-            margin-bottom: 25px;
+        body{
+            background:radial-gradient(circle at top,#111827,#020617);
+            color:var(--text-main);
         }
 
-<!--        .navbar .logo {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            gap: 10px;-->
-<!--            font-size: 20px;-->
-<!--            font-weight: 700;-->
-<!--        }-->
+        a{text-decoration:none;color:inherit}
+
+        /* NAVBAR */
+        .navbar{
+            position:sticky;
+            top:0;
+            z-index:999;
+            background:rgba(2,6,23,.85);
+            backdrop-filter:blur(12px);
+            padding:14px 26px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid var(--border-soft);
+        }
 
         .logo{
-          display:flex;
-          align-items:center;
-          gap:10px;
-          cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:10px;
         }
-
-        /* ✅ Bigger App Logo (Height + Width increase) */
         .app-logo{
-          height: 58px;
-          width: 58px;
-          border-radius: 16px;
-          object-fit: cover;
+            width:42px;
+            height:42px;
+            border-radius:12px;
+        }
+        .logo h2{font-weight:900}
+        .logo span{color:var(--accent)}
 
-          /* navbar ke andar nicely fit */
-          display:block;
+        .nav-links a{
+            font-size:13px;
+            padding:10px 16px;
+            border-radius:14px;
+            background:rgba(255,255,255,0.05);
+            font-weight:700;
+            transition:.3s;
+        }
+        .nav-links a:hover{
+            background:var(--accent-soft);
+            color:var(--accent);
         }
 
-        .navbar .links {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+        /* CONTAINER */
+        .container{
+            width:92%;
+            max-width:1200px;
+            margin:24px auto;
         }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
+        /* HEADER */
+        .page-head{
+            margin-bottom:18px;
+        }
+        .page-head h1{
+            font-size:26px;
+            font-weight:900;
+        }
+        .page-head p{
+            color:var(--text-muted);
+            font-size:13px;
+            margin-top:6px;
         }
 
-        .navbar a:hover {
-            color: #f1c40f;
+        /* STATS */
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:14px;
+            margin-bottom:24px;
         }
 
-        /* Header */
-        .page-title {
-            margin-bottom: 15px;
+        .stat-card{
+            background:linear-gradient(180deg,#0b1220,#020617);
+            border:1px solid var(--border-soft);
+            border-radius:20px;
+            padding:18px;
+            box-shadow:0 20px 60px rgba(0,0,0,.55);
+        }
+        .stat-card h3{
+            color:var(--text-muted);
+            font-size:13px;
+        }
+        .stat-card h2{
+            font-size:28px;
+            font-weight:900;
+            margin-top:6px;
         }
 
-        .page-title h1 {
-            font-size: 26px;
-            font-weight: 700;
+        /* TOP BAR */
+        .top-bar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:12px;
+            margin-bottom:14px;
         }
 
-        .page-title p {
-            color: #6c7a89;
-            font-size: 14px;
-            margin-top: 6px;
+        .search-box{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            background:#020617;
+            border:1px solid var(--border-soft);
+            padding:12px 14px;
+            border-radius:14px;
+            width:320px;
         }
 
-        /* Stats cards */
-        .stats-container {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+        .search-box input{
+            background:transparent;
+            border:none;
+            outline:none;
+            color:white;
+            width:100%;
         }
 
-        .stat-card {
-            background: white;
-            padding: 18px;
-            border-radius: 16px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.3s;
+        .btn-primary{
+            background:linear-gradient(135deg,#22c55e,#16a34a);
+            color:#022c16;
+            padding:12px 18px;
+            border-radius:16px;
+            font-weight:900;
+            border:none;
+            cursor:pointer;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
+        /* ALERTS */
+        .alert{
+            padding:12px 14px;
+            border-radius:14px;
+            margin-bottom:14px;
+            font-size:14px;
+            font-weight:700;
+        }
+        .success{
+            background:rgba(34,197,94,.15);
+            color:var(--accent);
+        }
+        .error{
+            background:rgba(239,68,68,.15);
+            color:var(--danger);
         }
 
-        .stat-card h3 {
-            font-size: 14px;
-            color: #7f8c8d;
-            font-weight: 600;
+        /* TABLE */
+        .table-wrap{
+            background:linear-gradient(180deg,#0b1220,#020617);
+            border:1px solid var(--border-soft);
+            border-radius:20px;
+            overflow:hidden;
+            box-shadow:0 20px 60px rgba(0,0,0,.55);
         }
 
-        .stat-card span {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2c3e50;
+        table{
+            width:100%;
+            border-collapse:collapse;
         }
 
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            color: white;
+        th,td{
+            padding:14px 12px;
+            text-align:center;
+            font-size:14px;
         }
 
-        .blue { background: #3498db; }
-
-        /* Top bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 15px;
+        th{
+            background:#020617;
+            color:var(--text-muted);
+            font-weight:800;
         }
 
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.06);
-            width: 320px;
-            max-width: 100%;
+        tr{
+            border-bottom:1px solid var(--border-soft);
         }
 
-        .search-box input {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 14px;
+        tr:hover{
+            background:rgba(34,197,94,0.06);
         }
 
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .badge{
+            padding:6px 12px;
+            border-radius:999px;
+            font-size:12px;
+            font-weight:900;
+            background:rgba(255,255,255,0.06);
         }
 
-        .btn-create {
-            background: #27ae60;
-            color: white;
-            box-shadow: 0px 4px 10px rgba(39, 174, 96, 0.3);
+        .available{
+            background:var(--accent-soft);
+            color:var(--accent);
         }
 
-        .btn-create:hover {
-            background: #1e8449;
+        .notavailable{
+            background:rgba(239,68,68,0.15);
+            color:var(--danger);
         }
 
-        /* Alerts */
-        .alert {
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            font-weight: 600;
+        .actions a{
+            margin:0 8px;
+            font-size:16px;
         }
 
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
+        .edit{color:var(--info)}
+        .delete{color:var(--danger)}
 
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Table container */
-        .table-container {
-            background: white;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 14px 12px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        th {
-            background: #2c3e50;
-            color: white;
-            font-size: 14px;
-        }
-
-        tr {
-            transition: 0.2s;
-        }
-
-        tr:hover {
-            background: #f1f1f1;
-        }
-
-        td {
-            border-bottom: 1px solid #eee;
-        }
-
-        .badge {
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 600;
-            background: #ecf0f1;
-            color: #2c3e50;
-        }
-
-        .badge-available {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .badge-notavailable {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .actions a {
-            margin: 0 8px;
-            font-size: 16px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .actions a.edit {
-            color: #2980b9;
-        }
-
-        .actions a.edit:hover {
-            color: #1abc9c;
-        }
-
-        .actions button {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #e74c3c;
-        }
-
-        .actions button:hover {
-            color: #c0392b;
-        }
-
-        /* ✅ Mobile Responsive Table -> Card */
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-
-            .page-title h1 {
-                font-size: 22px;
-            }
-
-            table, thead, tbody, th, td, tr {
-                display: block;
-                width: 100%;
-            }
-
-            thead {
-                display: none;
-            }
-
-            tr {
-                background: white;
-                margin: 12px 0;
-                padding: 15px;
-                border-radius: 15px;
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
-            }
-
-            td {
-                border: none;
-                display: flex;
-                justify-content: space-between;
-                padding: 10px 0;
-            }
-
-            td::before {
-                content: attr(data-label);
-                font-weight: 700;
-                color: #34495e;
-            }
-
-            .actions {
-                justify-content: flex-end;
-                gap: 15px;
-            }
+        @media(max-width:650px){
+            .nav-links{display:none}
         }
     </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
 <div class="navbar">
-<!--    <div class="logo">🚗 Rentify</div>-->
-
     <div class="logo">
-        <img th:src="@{/images/rentify.png}" class="app-logo" alt="Rentify Logo">
+        <img th:src="@{/images/rentify.png}" class="app-logo">
         <h2>Rent<span>ify</span></h2>
     </div>
-
-    <div class="links">
-        <a href="/rentify/">🏠 Dashboard</a>
+    <div class="nav-links">
+        <a href="/rentify/">Dashboard</a>
     </div>
 </div>
 
-<!-- Page Title -->
-<div class="page-title">
-    <h1>Cars 🚘</h1>
-    <p>Manage all car details in a clean and professional way.</p>
-</div>
+<div class="container">
 
-<!-- Stats Cards -->
-<div class="stats-container">
-    <div class="stat-card">
-        <div>
+    <!-- HEADER -->
+    <div class="page-head">
+        <h1>Cars 🚘</h1>
+        <p>Manage all car details in one place</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat-card">
             <h3>Total Cars</h3>
-            <span th:text="${#lists.size(cars)}">0</span>
+            <h2 th:text="${#lists.size(cars)}">0</h2>
         </div>
-        <div class="stat-icon blue"><i class="fa-solid fa-car"></i></div>
-    </div>
-</div>
-
-<!-- Alerts -->
-<div th:if="${success}" class="alert success">
-    <i class="fa-solid fa-circle-check"></i>
-    <span th:text="${success}"></span>
-</div>
-
-<div th:if="${error}" class="alert error">
-    <i class="fa-solid fa-triangle-exclamation"></i>
-    <span th:text="${error}"></span>
-</div>
-
-<!-- Top Bar -->
-<div class="top-bar">
-    <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Search car model..."/>
     </div>
 
-    <button class="btn btn-create" onclick="location.href='/rentify/car/new'">
-        <i class="fa-solid fa-plus"></i> Add Car
-    </button>
+    <!-- ALERTS -->
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search car model...">
+        </div>
+
+        <button class="btn-primary" onclick="location.href='/rentify/car/new'">
+            <i class="fa-solid fa-plus"></i> Add Car
+        </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+        <table id="carTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Model</th>
+                <th>Reg No</th>
+                <th>Available</th>
+                <th>Type</th>
+                <th>Price / Day</th>
+                <th>Company</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="c : ${cars}">
+                <td th:text="${c.id}"></td>
+                <td th:text="${c.model}"></td>
+                <td><span class="badge" th:text="${c.registrationNo}"></span></td>
+
+                <td>
+                    <span th:if="${c.available}" class="badge available">Yes ✅</span>
+                    <span th:unless="${c.available}" class="badge notavailable">No ❌</span>
+                </td>
+
+                <td><span class="badge" th:text="${c.type}"></span></td>
+                <td th:text="${c.pricePerday}"></td>
+
+                <td>
+                    <a th:if="${c.company != null}"
+                       th:text="${c.company.name}"
+                       th:href="@{/rentify/company/find/{id}(id=${c.company.id})}"
+                       style="color:var(--info);font-weight:700">
+                    </a>
+                    <span th:if="${c.company == null}">N/A</span>
+                </td>
+
+                <td class="actions">
+                    <a class="edit" th:href="@{/rentify/car/edit/{id}(id=${c.id})}">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <form th:action="@{/rentify/car/delete/{id}(id=${c.id})}"
+                          method="post"
+                          style="display:inline"
+                          onsubmit="return confirm('Delete this car?')">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" style="background:none;border:none;cursor:pointer">
+                            <i class="fa-solid fa-trash delete"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
-<!-- Table -->
-<div class="table-container">
-    <table id="carTable">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Model</th>
-            <th>Registration No</th>
-            <th>Available</th>
-            <th>Type</th>
-            <th>Price / Day</th>
-            <th>Company</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr th:each="c : ${cars}">
-            <td data-label="ID" th:text="${c.id}"></td>
-
-            <td data-label="Model" th:text="${c.model}"></td>
-
-            <td data-label="Registration No">
-                <span class="badge" th:text="${c.registrationNo}"></span>
-            </td>
-
-            <td data-label="Available">
-                <span th:if="${c.available}" class="badge badge-available">Yes ✅</span>
-                <span th:unless="${c.available}" class="badge badge-notavailable">No ❌</span>
-            </td>
-
-            <td data-label="Type">
-                <span class="badge" th:text="${c.type}"></span>
-            </td>
-
-            <td data-label="Price / Day" th:text="${c.pricePerday}"></td>
-
-            <td data-label="Company">
-                <a th:if="${c.company != null}"
-                   th:text="${c.company.name}"
-                   th:href="@{/rentify/company/find/{id}(id=${c.company.id})}"
-                   style="color:#1e88e5; text-decoration: none; font-weight:600;">
-                </a>
-
-                <span th:if="${c.company == null}">N/A</span>
-            </td>
-
-
-            <td data-label="Action" class="actions">
-                <a class="edit" th:href="@{/rentify/car/edit/{id}(id=${c.id})}">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-
-                <form th:action="@{/rentify/car/delete/{id}(id=${c.id})}"
-                      method="post"
-                      style="display:inline;"
-                      onsubmit="return confirm('Are you sure you want to delete this car?');">
-                    <input type="hidden" name="_method" value="DELETE"/>
-                    <button type="submit">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- ✅ Search Filter JS -->
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function () {
         let value = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#carTable tbody tr");
-
-        rows.forEach(row => {
+        document.querySelectorAll("#carTable tbody tr").forEach(row => {
             let model = row.children[1].innerText.toLowerCase();
             row.style.display = model.includes(value) ? "" : "none";
         });

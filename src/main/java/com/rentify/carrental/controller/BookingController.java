@@ -83,6 +83,23 @@ public class BookingController {
         return "booking";
     }
 
+    @GetMapping("/edit/{id}")
+    public String openEditBookingForm(@PathVariable Long id, Model model) {
+
+        BookingModel booking = null;
+        try {
+            booking = bookingService.findById(id);
+            model.addAttribute("booking", booking);
+            model.addAttribute("cars", carService.findAll());
+            return "booking-edit-form";
+        } catch (BookingNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("bookings",bookingService.findAll());
+            return "booking";
+        }
+    }
+
+
     @DeleteMapping("/delete/{id}")
     public String deleteBooking(@PathVariable Long id, Model model){
         try {
