@@ -179,9 +179,35 @@
         </span>
             </td>
 
-            <td data-label="Customer" th:text="${b.customer != null ? b.customer.name : 'N/A'}"></td>
-            <td data-label="Car" th:text="${b.car != null ? b.car.registrationNo : 'N/A'}"></td>
-            <td data-label="Payment" th:text="${b.payment != null ? b.payment.id : 'N/A'}"></td>
+            <td data-label="Customer">
+                <a th:if="${b.customer != null}"
+                   th:text="${b.customer.name}"
+                   th:href="@{/rentify/customer/find/{id}(id=${b.customer.id})}"
+                   style="color:#1e88e5; text-decoration:none; font-weight:600;">
+                </a>
+
+                <span th:if="${b.customer == null}">N/A</span>
+            </td>
+            <td data-label="Car">
+                <a th:if="${b.car != null}"
+                   th:text="${b.car.registrationNo}"
+                   th:href="@{/rentify/car/find/{id}(id=${b.car.id})}"
+                   style="color:#1e88e5; text-decoration:none; font-weight:600;">
+                </a>
+
+                <span th:if="${b.car == null}">N/A</span>
+            </td>
+
+            <td data-label="Payment">
+                <a th:if="${b.payment != null}"
+                   th:text="${b.payment.id}"
+                   th:href="@{/rentify/payment/find/{id}(id=${b.payment.id})}"
+                   style="color:#1e88e5; text-decoration:none; font-weight:600;">
+                </a>
+
+                <span th:if="${b.payment == null}">N/A</span>
+            </td>
+
 
             <!-- Actions -->
             <td data-label="Action" class="actions">
