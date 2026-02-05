@@ -57,8 +57,6 @@ public class BookingServiceImpl implements BookingService {
                 bookingModel.setPayment(payment);
 
                 bookingRepo.save(bookingModel);
-                car.setAvailable(false);
-                carService.save(car);
             }else{
                 Optional<BookingModel> opt = bookingRepo.findById(bookingModel.getId());
                 if(opt.isEmpty()){
@@ -95,7 +93,6 @@ public class BookingServiceImpl implements BookingService {
             throw new Exception("Error while creating booking"+e.getMessage());
         }
     }
-
 
     public void autoUpdateBookingStatus() throws Exception{
         try{
@@ -159,11 +156,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public boolean isCarAvailable(Long carId, LocalDate from, LocalDate to) {
-
         List<BookingModel> bookings = bookingRepo.findAll();
-
         for (BookingModel booking : bookings) {
-
             if (booking.getCar() != null
                     && booking.getCar().getId().equals(carId)
                     && booking.getStatus() != CarStatus.RETURNED) {

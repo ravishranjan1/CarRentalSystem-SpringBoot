@@ -46,8 +46,9 @@ public class CompanyController {
             model.addAttribute("error", errors);
         }else{
             try {
+                boolean isNew = (companyModel.getId() == null);
                 companyService.save(companyModel);
-                if(companyModel.getId() == null){
+                if(isNew){
                     model.addAttribute("success", "Company added successfully");
                 }else{
                     model.addAttribute("success", "Company updated successfully");

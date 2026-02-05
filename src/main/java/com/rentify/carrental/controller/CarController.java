@@ -79,8 +79,9 @@ public class CarController {
             model.addAttribute("error", errors);
         }else{
             try {
+                boolean isNew = (carModel.getId() == null);
                 carService.save(carModel);
-                if(carModel.getId() == null){
+                if(isNew){
                     model.addAttribute("success", "Car added successfully");
                 }else{
                     model.addAttribute("success", "Car updated successfully");

@@ -51,8 +51,9 @@ public class CustomerController {
             model.addAttribute("error", errors);
         }else{
             try {
+                boolean isNew = (customer.getId() == null);
                 customerService.save(customer);
-                if(customer.getId() == null){
+                if(isNew){
                     model.addAttribute("success", "Customer added success fully");
                 }else{
                     model.addAttribute("success", "Customer updated success fully");
