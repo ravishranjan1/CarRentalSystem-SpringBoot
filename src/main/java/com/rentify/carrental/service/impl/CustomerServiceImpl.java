@@ -17,12 +17,12 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepo customerRepo;
 
     @Override
-    public void save(CustomerModel customerModel) throws Exception {
+    public CustomerModel save(CustomerModel customerModel) throws Exception {
         try{
             customerModel.setName(customerModel.getName().toUpperCase());
 
             if(customerModel.getId() == null){
-                customerRepo.save(customerModel);
+                return customerRepo.save(customerModel);
             }else{
                 Optional<CustomerModel> opt = customerRepo.findById(customerModel.getId());
 
@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
                 updateCustomer.setPhone(customerModel.getPhone());
                 updateCustomer.setDrivingLicenseNo(customerModel.getDrivingLicenseNo());
 
-                customerRepo.save(updateCustomer);
+                return customerRepo.save(updateCustomer);
             }
         }catch(CustomerNotFoundException e){
             throw e;

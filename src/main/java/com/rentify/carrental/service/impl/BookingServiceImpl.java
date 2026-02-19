@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
     private CarService carService;
 
     @Override
-    public void booking(BookingModel bookingModel) throws Exception {
+    public BookingModel booking(BookingModel bookingModel) throws Exception {
 
         try {
             if(bookingModel.getId()==null){
@@ -45,7 +45,6 @@ public class BookingServiceImpl implements BookingService {
 
                 long days = ChronoUnit.DAYS.between(bookingModel.getStartDate(),
                         bookingModel.getEndDate()) + 1;
-
                 double totalPrice = days * car.getPricePerday();
                 bookingModel.setTotalAmount(totalPrice);
 
@@ -56,7 +55,7 @@ public class BookingServiceImpl implements BookingService {
                 payment.setBookingModel(bookingModel);
                 bookingModel.setPayment(payment);
 
-                bookingRepo.save(bookingModel);
+                return bookingRepo.save(bookingModel);
             }else{
                 Optional<BookingModel> opt = bookingRepo.findById(bookingModel.getId());
                 if(opt.isEmpty()){
@@ -87,10 +86,10 @@ public class BookingServiceImpl implements BookingService {
                 booking.setEndDate(bookingModel.getEndDate());
                 booking.setCustomer(bookingModel.getCustomer());
 
-                bookingRepo.save(booking);
+                return bookingRepo.save(booking);
             }
         } catch (Exception e) {
-            throw new Exception("Error while creating booking"+e.getMessage());
+            throw new Exception("Error while creating booking");
         }
     }
 

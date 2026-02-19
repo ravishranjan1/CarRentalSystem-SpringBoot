@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CarService {
 
-    void save(CarModel carModel) throws Exception;
+    CarModel save(CarModel carModel) throws Exception;
     void removeById(Long id) throws Exception;
 
     List<CarModel> findAll();

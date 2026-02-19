@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CompanyService {
-    void save(CompanyModel companyModel) throws Exception;
+    CompanyModel save(CompanyModel companyModel) throws Exception;
 
     List<CompanyModel> findAll();
     CompanyModel findById(Long id) throws CompanyNotFoundException;

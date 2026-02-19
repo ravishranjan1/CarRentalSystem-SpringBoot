@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookingService {
 
-    void booking(BookingModel bookingModel) throws Exception;
+    BookingModel booking(BookingModel bookingModel) throws Exception;
     void autoUpdateBookingStatus() throws Exception;
     BookingModel findById(Long id) throws BookingNotFoundException;
     void removeById(Long id) throws Exception;

@@ -18,20 +18,20 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public void save(CompanyModel companyModel) throws Exception {
+    public CompanyModel save(CompanyModel companyModel) throws Exception {
         try{
             companyModel.setName(companyModel.getName().toUpperCase());
             companyModel.setCountry(companyModel.getCountry().toUpperCase());
 
             if(companyModel.getId() == null){
-                companyRepo.save(companyModel);
+                return companyRepo.save(companyModel);
             }else{
                 Optional<CompanyModel> opt = companyRepo.findById(companyModel.getId());
                 if(opt.isPresent()){
                     CompanyModel updateCompany = opt.get();
                     updateCompany.setName(companyModel.getName());
                     updateCompany.setCountry(companyModel.getCountry());
-                    companyRepo.save(updateCompany);
+                    return companyRepo.save(updateCompany);
                 }else{
                     throw new CompanyNotFoundException("Company not found with given id : "+companyModel.getId());
                 }

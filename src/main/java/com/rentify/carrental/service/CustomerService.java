@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    void save(CustomerModel customerModel) throws Exception;
+    CustomerModel save(CustomerModel customerModel) throws Exception;
 
     List<CustomerModel> findAll();
     CustomerModel findById(Long id) throws CustomerNotFoundException;

@@ -63,22 +63,21 @@ public class BookingController {
         List<String> errors = bookingValidator.validate(bookingModel);
         if (!errors.isEmpty()) {
             model.addAttribute("error", errors);
-            model.addAttribute("bookings", bookingService.findAll());
+            model.addAttribute("bookings", List.of());
             return "booking";
         }
         try{
+            BookingModel booking = bookingService.booking(bookingModel);
             if(bookingModel.getId() == null){
-                bookingService.booking(bookingModel);
                 model.addAttribute("success", "Car is booked successfully");
-                model.addAttribute("bookings", List.of(bookingService.findById(bookingModel.getId())));
+                model.addAttribute("bookings", List.of(booking));
             }else{
-                bookingService.booking(bookingModel);
                 model.addAttribute("success", "Booking is updated successfully");
-                model.addAttribute("bookings", List.of(bookingService.findById(bookingModel.getId())));
+                model.addAttribute("bookings", List.of(booking));
             }
         }catch(Exception e){
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("bookings", null);
+            model.addAttribute("bookings", List.of());
         }
         return "booking";
     }
@@ -120,7 +119,7 @@ public class BookingController {
             model.addAttribute("bookings", List.of(booking));
         } catch (BookingNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("bookings", null);
+            model.addAttribute("bookings", List.of());
         }
         return "booking";
     }

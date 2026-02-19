@@ -24,7 +24,7 @@ public class CarServiceImpl implements CarService {
     private CompanyService companyService;
 
     @Override
-    public void save(CarModel carModel) throws Exception {
+    public CarModel save(CarModel carModel) throws Exception {
 
         try {
             CompanyModel company = companyService.findById(carModel.getCompany().getId());
@@ -32,7 +32,7 @@ public class CarServiceImpl implements CarService {
             if (carModel.getId() == null) {
                 carModel.setCompany(company);
                 carModel.setAvailable(true);
-                carRepo.save(carModel);
+                return carRepo.save(carModel);
             } else {
                 Optional<CarModel> opt = carRepo.findById(carModel.getId());
                 if(opt.isPresent()){
@@ -45,7 +45,7 @@ public class CarServiceImpl implements CarService {
                     updateCar.setPricePerday(carModel.getPricePerday());
                     updateCar.setAvailable(carModel.getAvailable());
 
-                    carRepo.save(updateCar);
+                    return carRepo.save(updateCar);
                 }else{
                     throw new CarNotFoundException("Car not found with given Id : "+carModel.getId());
                 }
@@ -53,7 +53,7 @@ public class CarServiceImpl implements CarService {
         } catch (CarNotFoundException | CompanyNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new Exception("Error while saving car : " + e.getMessage());
+            throw new Exception("Error while saving car : ");
         }
     }
 

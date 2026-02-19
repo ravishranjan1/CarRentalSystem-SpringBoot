@@ -39,7 +39,7 @@ public class PaymentController {
             model.addAttribute("payments", List.of(payment));
         }  catch (PaymentNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("payments", null);
+            model.addAttribute("payments", List.of());
         }
         return "payment";
     }

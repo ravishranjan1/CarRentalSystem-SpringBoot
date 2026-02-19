@@ -49,20 +49,23 @@ public class CustomerController {
         List<String> errors = validator.validate(customer);
         if(!errors.isEmpty()){
             model.addAttribute("error", errors);
+            model.addAttribute("customers",List.of());
         }else{
             try {
                 boolean isNew = (customer.getId() == null);
-                customerService.save(customer);
+                CustomerModel newCustomer = customerService.save(customer);
                 if(isNew){
                     model.addAttribute("success", "Customer added success fully");
+                    model.addAttribute("customers", List.of(newCustomer));
                 }else{
                     model.addAttribute("success", "Customer updated success fully");
+                    model.addAttribute("customers", List.of(newCustomer) );
                 }
             } catch (Exception e) {
                 model.addAttribute("error", e.getMessage());
+                model.addAttribute("customers",List.of());
             }
         }
-        model.addAttribute("customers", customerService.findAll());
         return "customer";
     }
 
@@ -100,7 +103,7 @@ public class CustomerController {
             model.addAttribute("customers", List.of(customer));
         }  catch (CustomerNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("customers", null);
+            model.addAttribute("customers", List.of());
         }
         return "customer";
     }

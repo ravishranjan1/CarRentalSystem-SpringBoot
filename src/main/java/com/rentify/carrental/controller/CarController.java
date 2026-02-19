@@ -77,20 +77,24 @@ public class CarController {
         List<String> errors = validator.validate(carModel);
         if(!errors.isEmpty()){
             model.addAttribute("error", errors);
+            model.addAttribute("cars", List.of());
+            return "car";
         }else{
             try {
                 boolean isNew = (carModel.getId() == null);
-                carService.save(carModel);
+                CarModel car = carService.save(carModel);
                 if(isNew){
                     model.addAttribute("success", "Car added successfully");
+                    model.addAttribute("cars", List.of(car));
                 }else{
                     model.addAttribute("success", "Car updated successfully");
+                    model.addAttribute("cars", List.of(car));
                 }
             } catch (Exception e) {
                 model.addAttribute("error", e.getMessage());
+                model.addAttribute("cars", List.of());
             }
         }
-        model.addAttribute("cars", carService.findAll());
         return "car";
     }
 
@@ -114,7 +118,7 @@ public class CarController {
             model.addAttribute("cars", List.of(car));
         } catch (CarNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("cars", null);
+            model.addAttribute("cars", List.of());
         }
         return "car";
     }

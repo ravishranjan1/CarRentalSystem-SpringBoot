@@ -44,20 +44,24 @@ public class CompanyController {
         List<String> errors = validator.validate(companyModel);
         if(!errors.isEmpty()){
             model.addAttribute("error", errors);
+            model.addAttribute("companies", List.of());
+            return "company";
         }else{
             try {
                 boolean isNew = (companyModel.getId() == null);
-                companyService.save(companyModel);
+                CompanyModel company = companyService.save(companyModel);
                 if(isNew){
                     model.addAttribute("success", "Company added successfully");
+                    model.addAttribute("companies", List.of(company));
                 }else{
                     model.addAttribute("success", "Company updated successfully");
+                    model.addAttribute("companies", List.of(company));
                 }
             } catch (Exception e) {
                 model.addAttribute("error", e.getMessage());
+                model.addAttribute("companies", List.of());
             }
         }
-        model.addAttribute("companies", companyService.findAll());
         return "company";
     }
 
@@ -94,7 +98,7 @@ public class CompanyController {
             model.addAttribute("companies", List.of(company));
         } catch (CompanyNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("companies", null);
+            model.addAttribute("companies", List.of());
         }
         return "company";
     }

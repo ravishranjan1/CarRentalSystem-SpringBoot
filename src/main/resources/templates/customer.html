@@ -251,7 +251,7 @@
     <div class="stats">
         <div class="stat-card">
             <h3>Total Customers</h3>
-            <h2 th:text="${#lists.size(customers)}">0</h2>
+            <h2 th:text="${customers != null ? #lists.size(customers) : 0}">0</h2>
         </div>
     </div>
 
