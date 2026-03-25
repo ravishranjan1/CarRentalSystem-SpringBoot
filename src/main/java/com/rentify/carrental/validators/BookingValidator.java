@@ -46,8 +46,9 @@ public class BookingValidator implements DataValidator {
             errors.add("Return date cannot be null");
         }
 
+        LocalDate today = LocalDate.now();
         if (booking.getStartDate() != null &&
-                booking.getStartDate().isBefore(LocalDate.now())) {
+                booking.getStartDate().isBefore(today)) {
             errors.add("Start date must be today or a future date");
         }
 
