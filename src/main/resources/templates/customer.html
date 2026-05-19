@@ -266,9 +266,6 @@
             <input type="text" id="searchInput" placeholder="Search customer...">
         </div>
 
-        <button class="btn-primary" onclick="location.href='/rentify/customer/new'">
-            <i class="fa-solid fa-plus"></i> Add Customer
-        </button>
     </div>
 
     <!-- TABLE -->
@@ -291,9 +288,6 @@
                 <td th:text="${c.phone}"></td>
                 <td th:text="${c.drivingLicenseNo}"></td>
                 <td class="actions">
-                    <a class="edit" th:href="@{/rentify/customer/edit/{id}(id=${c.id})}">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
                     <form th:action="@{/rentify/customer/delete/{id}(id=${c.id})}"
                           method="post"
                           style="display:inline"

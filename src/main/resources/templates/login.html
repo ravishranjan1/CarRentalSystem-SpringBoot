@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentify | Customer</title>
+    <title>Rentify | Login</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <style>
+
         :root{
             --bg-main:#020617;
             --bg-card:#0b1220;
@@ -26,12 +30,31 @@
             font-family:"Inter",sans-serif;
         }
 
+        /* BODY BACKGROUND STATES */
+
         body{
-            background:radial-gradient(circle at top,#111827,#020617);
             color:var(--text-main);
+            min-height:100vh;
         }
 
-        a{text-decoration:none;color:inherit}
+        .default-bg{
+            background:radial-gradient(circle at top,#111827,#020617);
+        }
+
+        .success-bg{
+            background:radial-gradient(circle at top,#14532d,#020617);
+        }
+
+        .error-bg{
+            background:radial-gradient(circle at top,#7f1d1d,#020617);
+        }
+
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
+
+        /* NAVBAR */
 
         .navbar{
             position:sticky;
@@ -80,11 +103,15 @@
             color:var(--accent);
         }
 
+        /* PAGE */
+
         .page-wrap{
             width:92%;
             max-width:520px;
-            margin:40px auto;
+            margin:50px auto;
         }
+
+        /* CARD */
 
         .form-card{
             background:linear-gradient(180deg,#0b1220,#020617);
@@ -93,6 +120,7 @@
             padding:28px;
             box-shadow:0 25px 70px rgba(0,0,0,.6);
             position:relative;
+            overflow:hidden;
         }
 
         .form-card::before{
@@ -106,13 +134,17 @@
             background:var(--accent-soft);
         }
 
+        /* HEADER */
+
         .form-header{
             text-align:center;
             margin-bottom:20px;
+            position:relative;
+            z-index:2;
         }
 
         .form-header h2{
-            font-size:22px;
+            font-size:24px;
             font-weight:900;
         }
 
@@ -122,8 +154,12 @@
             margin-top:6px;
         }
 
+        /* FORM */
+
         .form-row{
-            margin-top:14px;
+            margin-top:16px;
+            position:relative;
+            z-index:2;
         }
 
         label{
@@ -134,7 +170,7 @@
             margin-bottom:6px;
         }
 
-        input, select{
+        input{
             width:100%;
             padding:12px 14px;
             border-radius:14px;
@@ -146,16 +182,19 @@
             transition:.25s;
         }
 
-        input:focus,
-        select:focus{
+        input:focus{
             border-color:var(--accent);
             box-shadow:0 0 0 4px rgba(34,197,94,.15);
         }
 
+        /* BUTTONS */
+
         .btn-row{
-            margin-top:20px;
+            margin-top:22px;
             display:flex;
             gap:10px;
+            position:relative;
+            z-index:2;
         }
 
         .btn{
@@ -189,11 +228,38 @@
             background:rgba(255,255,255,0.12);
         }
 
+        /* MESSAGE */
+
+        .message{
+            padding:12px;
+            border-radius:14px;
+            margin-bottom:16px;
+            font-size:14px;
+            font-weight:600;
+            text-align:center;
+            position:relative;
+            z-index:2;
+        }
+
+        .success{
+            background:#dcfce7;
+            color:#166534;
+        }
+
+        .error{
+            background:#fee2e2;
+            color:#991b1b;
+        }
+
+        /* FOOTER LINK */
+
         .back-link{
             text-align:center;
-            margin-top:16px;
+            margin-top:18px;
             font-size:13px;
             color:var(--text-muted);
+            position:relative;
+            z-index:2;
         }
 
         .back-link a{
@@ -201,17 +267,30 @@
             font-weight:700;
         }
 
+        /* MOBILE */
+
         @media(max-width:650px){
+
             .nav-links{
                 display:none;
             }
+
+            .page-wrap{
+                margin-top:30px;
+            }
+
         }
+
     </style>
+
 </head>
 
-<body>
+<body th:classappend="${success != null} ? 'success-bg' : (${error != null} ? 'error-bg' : 'default-bg')">
+
+<!-- NAVBAR -->
 
 <div class="navbar">
+
     <div class="logo">
         <img th:src="@{/images/rentify.png}" class="app-logo">
         <h2>Rent<span>ify</span></h2>
@@ -220,107 +299,97 @@
     <div class="nav-links">
         <a href="/rentify/">Dashboard</a>
     </div>
+
 </div>
 
-<div class="page-wrap">
-    <div class="form-card">
-        <div th:if="${success}" class="message success" th:text="${success}"></div>
-        <div th:if="${error}" class="message error" th:text="${error}"></div>
-        <div class="form-header">
-            <h2 th:text="${customer.id} == null ? 'Register Customer' : 'Update Customer'">
-                Register Customer
-            </h2>
+<!-- PAGE -->
 
-            <p>Fill the details carefully to save customer info</p>
+<div class="page-wrap">
+
+    <div class="form-card">
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div th:if="${success}"
+             class="message success"
+             th:text="${success}">
         </div>
 
-        <form th:action="@{/rentify/user-create}"
-              th:object="${customer}"
+        <!-- ERROR MESSAGE -->
+
+        <div th:if="${error}"
+             class="message error"
+             th:text="${error}">
+        </div>
+
+        <!-- HEADER -->
+
+        <div class="form-header">
+            <h2>Login Account</h2>
+            <p>Enter your credentials to access Rentify</p>
+        </div>
+
+        <!-- FORM -->
+
+        <form th:action="@{/rentify/login}"
               method="post">
 
-            <input type="hidden" th:field="*{id}"/>
-
-            <!-- Name -->
             <div class="form-row">
-                <label>Customer Name</label>
-                <input type="text"
-                       th:field="*{name}"
-                       placeholder="Enter customer name"
-                       required>
-            </div>
 
-            <!-- Phone -->
-            <div class="form-row">
-                <label>Phone</label>
-                <input type="number"
-                       th:field="*{phone}"
-                       placeholder="Enter phone number"
-                       required>
-            </div>
-
-            <!-- Driving License -->
-            <div class="form-row">
-                <label>Driving License No</label>
-                <input type="text"
-                       th:field="*{drivingLicenseNo}"
-                       placeholder="Enter driving license number"
-                       required>
-            </div>
-
-            <!-- Email -->
-            <div class="form-row">
-                <label>Email</label>
-                <input type="email"
-                       th:field="*{email}"
-                       placeholder="Enter email"
-                       required>
-            </div>
-
-            <!-- Username -->
-            <div class="form-row">
                 <label>Username</label>
+
                 <input type="text"
-                       th:field="*{username}"
+                       name="username"
                        placeholder="Enter username"
                        required>
+
             </div>
 
-            <!-- Password -->
             <div class="form-row">
+
                 <label>Password</label>
+
                 <input type="password"
-                       th:field="*{password}"
+                       name="password"
                        placeholder="Enter password"
                        required>
+
             </div>
 
-            <!-- Role -->
-            <select th:field="*{role}" class="form-control" required>
-                <option value="">Select Role</option>
-                <option th:each="role : ${roles}"
-                        th:value="${role}"
-                        th:text="${role}">
-                </option>
-            </select>
+            <!-- BUTTONS -->
 
             <div class="btn-row">
 
                 <button type="submit"
-                        class="btn btn-primary"
-                        th:text="${customer.id} == null ? 'Register Customer' : 'Update Customer'">
-                    Register Customer
+                        class="btn btn-primary">
+                    Login
                 </button>
 
-                <div class="login-link">
-                    Already have an account? <a th:href="@{/rentify/login}">Login here</a>
-                </div>
+                <button type="reset"
+                        class="btn btn-secondary">
+                    Reset
+                </button>
 
             </div>
 
         </form>
 
+        <!-- REGISTER LINK -->
+
+        <div class="back-link">
+
+            Don't have an account ?
+
+            <a th:href="@{/rentify/register}">
+                Register Here
+            </a>
+
+        </div>
+
     </div>
+
 </div>
 
 </body>
+
 </html>

@@ -4,6 +4,7 @@ import com.rentify.carrental.exception.CustomerNotFoundException;
 import com.rentify.carrental.model.CustomerModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
 
@@ -13,4 +14,6 @@ public interface CustomerService {
     CustomerModel findById(Long id) throws CustomerNotFoundException;
 
     void removeById(Long id) throws Exception;
+
+    CustomerModel findByUsername(String username);
 }

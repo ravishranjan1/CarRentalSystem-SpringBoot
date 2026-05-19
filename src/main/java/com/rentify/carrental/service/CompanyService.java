@@ -15,4 +15,6 @@ public interface CompanyService {
     CompanyModel findById(Long id) throws CompanyNotFoundException;
 
     void removeById(Long id) throws Exception;
+
+    List<CompanyModel> findByCountry(String country);
 }

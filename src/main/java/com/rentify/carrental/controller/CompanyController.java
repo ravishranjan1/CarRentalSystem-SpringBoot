@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/rentify/company")
+@RequestMapping("/rentify/admin/company")
 public class CompanyController {
 
     @Autowired
@@ -102,5 +102,13 @@ public class CompanyController {
         }
         return "company";
     }
+
+    @GetMapping("/find/country/{country}")
+    public String findByCountry(@PathVariable String country, Model model){
+        List<CompanyModel> companies = companyService.findByCountry(country);
+        model.addAttribute("companies", companies);
+        return "company_demo";
+    }
+
 
 }

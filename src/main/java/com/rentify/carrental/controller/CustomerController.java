@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/rentify/customer")
+@RequestMapping("/rentify/admin/customer")
 public class CustomerController {
 
     @Autowired
@@ -37,51 +37,6 @@ public class CustomerController {
         model.addAttribute("customers", customers);
         return "customer";
     }
-
-    @GetMapping("/new")
-    public String createCustomer(Model model){
-        model.addAttribute("customer", new CustomerModel());
-        return "customer-form";
-    }
-
-    @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute CustomerModel customer, Model model){
-        List<String> errors = validator.validate(customer);
-        if(!errors.isEmpty()){
-            model.addAttribute("error", errors);
-            model.addAttribute("customers",List.of());
-        }else{
-            try {
-                boolean isNew = (customer.getId() == null);
-                CustomerModel newCustomer = customerService.save(customer);
-                if(isNew){
-                    model.addAttribute("success", "Customer added success fully");
-                    model.addAttribute("customers", List.of(newCustomer));
-                }else{
-                    model.addAttribute("success", "Customer updated success fully");
-                    model.addAttribute("customers", List.of(newCustomer) );
-                }
-            } catch (Exception e) {
-                model.addAttribute("error", e.getMessage());
-                model.addAttribute("customers",List.of());
-            }
-        }
-        return "customer";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String updateCustomer(@PathVariable Long id, Model model){
-        try{
-            CustomerModel customer = customerService.findById(id);
-            model.addAttribute("customer", customer);
-            return "customer-form";
-        } catch (CustomerNotFoundException e) {
-            model.addAttribute("customers", customerService.findAll());
-            model.addAttribute("error", "No customer found with given id : "+id);
-        }
-        return "customer";
-    }
-
 
     @DeleteMapping("/delete/{id}")
     public String deleteCustomer(@PathVariable Long id, Model model){

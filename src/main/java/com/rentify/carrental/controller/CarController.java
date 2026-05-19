@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/rentify/car")
+@RequestMapping("/rentify")
 public class CarController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class CarController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping("/")
+    @GetMapping("/admin/car/")
     public String getCar(Model model){
         try{
             bookingService.autoUpdateBookingStatus();
@@ -50,14 +50,14 @@ public class CarController {
         return "car";
     }
     
-    @GetMapping("/new")
+    @GetMapping("/admin/car/new")
     public String addCar(Model model){
         model.addAttribute("car", new CarModel());
         model.addAttribute("companies", companyService.findAll());
         return "car-form";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/car/edit/{id}")
     public String editById(@PathVariable Long id, Model model){
         try {
             CarModel car = carService.findById(id);
@@ -72,7 +72,7 @@ public class CarController {
         }
     }
 
-    @PostMapping("/save")
+    @PostMapping("/admin/car/save")
     public String saveCar(@ModelAttribute CarModel carModel, Model model){
         List<String> errors = validator.validate(carModel);
         if(!errors.isEmpty()){
@@ -98,7 +98,7 @@ public class CarController {
         return "car";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/car/delete/{id}")
     public String removeCar(@PathVariable Long id, Model model){
         try {
             carService.removeById(id);
@@ -110,7 +110,7 @@ public class CarController {
         return "car";
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/common/car/find/{id}")
     public String getCarById(@PathVariable Long id, Model model){
         try {
             CarModel car = carService.findById(id);

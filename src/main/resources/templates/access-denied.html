@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Access Denied | Rentify</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        :root{
+            --bg-main:#020617;
+            --bg-card:#0b1220;
+            --border-soft:rgba(255,255,255,0.08);
+            --text-main:#e5e7eb;
+            --text-muted:#94a3b8;
+            --danger:#ef4444;
+            --danger-soft:rgba(239,68,68,0.15);
+            --info:#60a5fa;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:"Inter",sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:radial-gradient(circle at top,#7f1d1d,#020617);
+            color:var(--text-main);
+        }
+
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
+
+        /* NAVBAR */
+
+        .navbar{
+            position:sticky;
+            top:0;
+            z-index:999;
+            background:rgba(2,6,23,.85);
+            backdrop-filter:blur(12px);
+            padding:14px 26px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid var(--border-soft);
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .app-logo{
+            width:42px;
+            height:42px;
+            border-radius:12px;
+        }
+
+        .logo h2{
+            font-weight:900;
+        }
+
+        .logo span{
+            color:var(--danger);
+        }
+
+        .nav-links a{
+            font-size:13px;
+            padding:10px 16px;
+            border-radius:14px;
+            background:rgba(255,255,255,0.05);
+            font-weight:700;
+            transition:.3s;
+        }
+
+        .nav-links a:hover{
+            background:var(--danger-soft);
+            color:var(--danger);
+        }
+
+        /* PAGE */
+
+        .page-wrap{
+            width:92%;
+            max-width:520px;
+            margin:70px auto;
+        }
+
+        /* CARD */
+
+        .error-card{
+            background:linear-gradient(180deg,#0b1220,#020617);
+            border:1px solid var(--border-soft);
+            border-radius:24px;
+            padding:40px 30px;
+            text-align:center;
+            box-shadow:0 25px 70px rgba(0,0,0,.6);
+            position:relative;
+            overflow:hidden;
+        }
+
+        .error-card::before{
+            content:"";
+            position:absolute;
+            top:-60px;
+            right:-60px;
+            width:150px;
+            height:150px;
+            border-radius:50%;
+            background:var(--danger-soft);
+        }
+
+        .error-icon{
+            font-size:70px;
+            margin-bottom:18px;
+            position:relative;
+            z-index:2;
+        }
+
+        .error-title{
+            font-size:34px;
+            font-weight:900;
+            color:var(--danger);
+            position:relative;
+            z-index:2;
+        }
+
+        .error-subtitle{
+            margin-top:12px;
+            font-size:15px;
+            color:var(--text-muted);
+            line-height:1.7;
+            position:relative;
+            z-index:2;
+        }
+
+        /* BUTTONS */
+
+        .btn-row{
+            margin-top:28px;
+            display:flex;
+            gap:12px;
+            position:relative;
+            z-index:2;
+        }
+
+        .btn{
+            width:100%;
+            padding:13px;
+            border:none;
+            border-radius:16px;
+            cursor:pointer;
+            font-weight:800;
+            font-size:14px;
+            transition:.3s;
+        }
+
+        .btn-primary{
+            background:linear-gradient(135deg,#ef4444,#dc2626);
+            color:white;
+            box-shadow:0 12px 30px rgba(239,68,68,.35);
+        }
+
+        .btn-primary:hover{
+            transform:translateY(-2px);
+        }
+
+        .btn-secondary{
+            background:rgba(255,255,255,0.07);
+            border:1px solid var(--border-soft);
+            color:white;
+        }
+
+        .btn-secondary:hover{
+            background:rgba(255,255,255,0.12);
+        }
+
+        /* FOOTER */
+
+        .footer-text{
+            margin-top:20px;
+            font-size:13px;
+            color:var(--text-muted);
+            position:relative;
+            z-index:2;
+        }
+
+        .footer-text a{
+            color:var(--info);
+            font-weight:700;
+        }
+
+        @media(max-width:650px){
+
+            .nav-links{
+                display:none;
+            }
+
+            .btn-row{
+                flex-direction:column;
+            }
+
+            .error-title{
+                font-size:28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <div class="logo">
+        <img th:src="@{/images/rentify.png}" class="app-logo">
+        <h2>Rent<span>ify</span></h2>
+    </div>
+
+    <div class="nav-links">
+        <a th:href="@{/rentify/}">
+            Dashboard
+        </a>
+    </div>
+
+</div>
+
+<!-- PAGE -->
+
+<div class="page-wrap">
+
+    <div class="error-card">
+
+        <!-- ICON -->
+
+        <div class="error-icon">
+            🚫
+        </div>
+
+        <!-- TITLE -->
+
+        <div class="error-title">
+            403 Access Denied
+        </div>
+
+        <!-- MESSAGE -->
+
+        <div class="error-subtitle">
+            You do not have permission to access this page.
+            <br>
+            Please contact administrator or login with proper credentials.
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="btn-row">
+
+            <button class="btn btn-primary"
+                    onclick="window.location.href='/rentify/'">
+
+                Go To Dashboard
+
+            </button>
+
+            <button class="btn btn-secondary"
+                    onclick="window.history.back()">
+
+                Go Back
+
+            </button>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer-text">
+
+            Need help ?
+            <a th:href="@{/rentify/login}">
+                Login Again
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

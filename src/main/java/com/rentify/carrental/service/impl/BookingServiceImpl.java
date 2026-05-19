@@ -172,4 +172,9 @@ public class BookingServiceImpl implements BookingService {
         return true;
     }
 
+    @Override
+    public List<BookingModel> findByCustomer(CustomerModel customer) {
+        return bookingRepo.findByCustomer(customer);
+    }
+
 }

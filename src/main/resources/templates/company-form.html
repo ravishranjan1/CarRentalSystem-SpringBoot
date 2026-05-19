@@ -231,7 +231,7 @@
             <p>Fill the details below to manage company records</p>
         </div>
 
-        <form th:action="@{/rentify/company/save}"
+        <form th:action="@{/rentify/admin/company/save}"
               th:object="${company}"
               method="post">
 
@@ -271,7 +271,7 @@
         </form>
 
         <a class="btn btn-secondary"
-           th:href="@{/rentify/company/}">
+           th:href="@{/rentify/admin/company/}">
             <i class="fa-solid fa-arrow-left"></i>
             Back to Company List
         </a>

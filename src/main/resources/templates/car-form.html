@@ -234,7 +234,7 @@
             <p>Fill the details below to manage your car records</p>
         </div>
 
-        <form th:action="@{/rentify/car/save}"
+        <form th:action="@{/rentify/admin/car/save}"
               th:object="${car}"
               method="post">
 
@@ -315,7 +315,7 @@
             </button>
         </form>
 
-        <a class="btn btn-secondary" th:href="@{/rentify/car/}">
+        <a class="btn btn-secondary" th:href="@{/rentify/admin/car/}">
             <i class="fa-solid fa-arrow-left"></i>
             Back to Car List
         </a>

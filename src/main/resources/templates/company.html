@@ -275,7 +275,7 @@
             <input type="text" id="searchInput" placeholder="Search company...">
         </div>
 
-        <button class="btn-primary" onclick="location.href='/rentify/company/new'">
+        <button class="btn-primary" onclick="location.href='/rentify/admin/company/new'">
             <i class="fa-solid fa-plus"></i> Add Company
         </button>
     </div>
@@ -298,10 +298,10 @@
                 <td th:text="${c.name}"></td>
                 <td><span class="badge" th:text="${c.country}"></span></td>
                 <td class="actions">
-                    <a class="edit" th:href="@{/rentify/company/edit/{id}(id=${c.id})}">
+                    <a class="edit" th:href="@{/rentify/admin/company/edit/{id}(id=${c.id})}">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <form th:action="@{/rentify/company/delete/{id}(id=${c.id})}"
+                    <form th:action="@{/rentify/admin/company/delete/{id}(id=${c.id})}"
                           method="post"
                           style="display:inline"
                           onsubmit="return confirm('Delete this company?')">

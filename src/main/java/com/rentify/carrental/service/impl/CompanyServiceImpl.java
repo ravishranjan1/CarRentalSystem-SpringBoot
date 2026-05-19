@@ -67,4 +67,9 @@ public class CompanyServiceImpl implements CompanyService {
             throw new Exception("Error while deleting company");
         }
     }
+
+    @Override
+    public List<CompanyModel> findByCountry(String country) {
+        return companyRepo.findByCountry(country);
+    }
 }

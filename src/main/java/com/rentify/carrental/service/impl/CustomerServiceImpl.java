@@ -5,6 +5,7 @@ import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.repo.CustomerRepo;
 import com.rentify.carrental.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,32 +17,40 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public CustomerModel save(CustomerModel customerModel) throws Exception {
-        try{
+        try {
             customerModel.setName(customerModel.getName().toUpperCase());
-
             if(customerModel.getId() == null){
+                customerModel.setPassword(passwordEncoder.encode(customerModel.getPassword()));
                 return customerRepo.save(customerModel);
-            }else{
+            }
+            else {
                 Optional<CustomerModel> opt = customerRepo.findById(customerModel.getId());
-
-                if(opt.isEmpty()){
+                if(opt.isEmpty()) {
                     throw new CustomerNotFoundException("Customer not found with ID: " + customerModel.getId());
                 }
                 CustomerModel updateCustomer = opt.get();
-
-                updateCustomer.setName(customerModel.getName());
+                updateCustomer.setName(customerModel.getName().toUpperCase());
                 updateCustomer.setPhone(customerModel.getPhone());
                 updateCustomer.setDrivingLicenseNo(customerModel.getDrivingLicenseNo());
-
+                updateCustomer.setEmail(customerModel.getEmail());
+                updateCustomer.setUsername(customerModel.getUsername());
+                updateCustomer.setRole(customerModel.getRole());
+                if(customerModel.getPassword() != null && !customerModel.getPassword().trim().isEmpty()) {
+                    updateCustomer.setPassword(passwordEncoder.encode(customerModel.getPassword()));
+                }
                 return customerRepo.save(updateCustomer);
             }
-        }catch(CustomerNotFoundException e){
+        }
+        catch(CustomerNotFoundException e) {
             throw e;
         }
         catch (Exception e) {
-            throw new Exception("Error while Saving the data please check the given data is correct or not");
+            throw new Exception("Error while saving the data. " + "Please check the given data.");
         }
     }
 
@@ -68,5 +77,14 @@ public class CustomerServiceImpl implements CustomerService {
         }catch(Exception e){
             throw new Exception("Error while deleting customer ");
         }
+    }
+
+    @Override
+    public CustomerModel findByUsername(String username) {
+        Optional<CustomerModel> customer = customerRepo.findByUsername(username);
+        if(customer.isPresent()){
+            return customer.get();
+        }
+        return null;
     }
 }
