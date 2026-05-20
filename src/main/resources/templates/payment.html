@@ -298,14 +298,14 @@
                 <td data-label="Booking ID">
                     <a th:if="${p.bookingModel != null}"
                        th:text="${p.bookingModel.id}"
-                       th:href="@{/rentify/booking/find/{id}(id=${p.bookingModel.id})}"
+                       th:href="@{/rentify/common/booking/find/{id}(id=${p.bookingModel.id})}"
                        style="color:var(--info);font-weight:700">
                     </a>
                     <span th:if="${p.bookingModel == null}">N/A</span>
                 </td>
 
                 <td data-label="Action" class="actions">
-                    <form th:action="@{/rentify/payment/delete/{id}(id=${p.id})}"
+                    <form th:action="@{/rentify/admin/payment/delete/{id}(id=${p.id})}"
                           method="post"
                           onsubmit="return confirm('Delete this payment?');">
                         <input type="hidden" name="_method" value="DELETE"/>

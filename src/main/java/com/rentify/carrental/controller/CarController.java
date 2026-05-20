@@ -1,12 +1,12 @@
 package com.rentify.carrental.controller;
 
+
 import com.rentify.carrental.exception.CarNotFoundException;
-import com.rentify.carrental.exception.CustomerNotFoundException;
 import com.rentify.carrental.model.CarModel;
-import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.service.BookingService;
 import com.rentify.carrental.service.CarService;
 import com.rentify.carrental.service.CompanyService;
+import com.rentify.carrental.service.CustomerService;
 import com.rentify.carrental.validators.CarValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +31,7 @@ public class CarController {
 
     @Autowired
     private BookingService bookingService;
+
 
     @GetMapping("/admin/car/")
     public String getCar(Model model){
@@ -122,5 +123,4 @@ public class CarController {
         }
         return "car";
     }
-
 }

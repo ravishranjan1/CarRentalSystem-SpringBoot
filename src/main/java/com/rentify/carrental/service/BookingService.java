@@ -18,4 +18,8 @@ public interface BookingService {
     boolean isCarAvailable(Long carId, LocalDate from, LocalDate to);
 
     List<BookingModel> findByCustomer(CustomerModel customer);
+
+    BookingModel cancelBooking(Long id) throws Exception;
+
+    BookingModel findByIdAndCustomer(Long bookingId, Long customerId);
 }

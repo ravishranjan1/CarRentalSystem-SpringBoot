@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/rentify/payment")
+@RequestMapping("/rentify")
 public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
 
-    @GetMapping("/")
+    @GetMapping("/admin/payment/")
     public String getAllPaymentDetails(Model model){
         List<PaymentModel> payments = paymentService.findAll();
         if(payments.isEmpty()){
@@ -31,7 +31,7 @@ public class PaymentController {
         return "payment";
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/user/find/{id}")
     public String getPaymentById(@PathVariable Long id, Model model){
         try {
             PaymentModel payment = paymentService.findById(id);

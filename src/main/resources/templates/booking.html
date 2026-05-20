@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
+
     <title>Rentify | Bookings</title>
 
     <!-- Font Awesome -->
+
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
     <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <style>
+
         :root{
             --bg-main:#020617;
             --bg-card:#0b1220;
@@ -37,9 +44,13 @@
             color:var(--text-main);
         }
 
-        a{text-decoration:none;color:inherit}
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
 
         /* NAVBAR */
+
         .navbar{
             position:sticky;
             top:0;
@@ -58,13 +69,20 @@
             align-items:center;
             gap:10px;
         }
+
         .app-logo{
             width:42px;
             height:42px;
             border-radius:12px;
         }
-        .logo h2{font-weight:900}
-        .logo span{color:var(--accent)}
+
+        .logo h2{
+            font-weight:900;
+        }
+
+        .logo span{
+            color:var(--accent);
+        }
 
         .nav-links a{
             font-size:13px;
@@ -75,51 +93,39 @@
             transition:.3s;
             margin-left:6px;
         }
+
         .nav-links a:hover{
             background:var(--accent-soft);
             color:var(--accent);
         }
 
         /* CONTAINER */
+
         .container{
             width:92%;
-            max-width:1200px;
+            max-width:1300px;
             margin:24px auto;
         }
 
         /* HEADER */
+
         .page-head{
             margin-bottom:18px;
         }
+
         .page-head h1{
             font-size:26px;
             font-weight:900;
         }
+
         .page-head p{
             color:var(--text-muted);
             font-size:13px;
             margin-top:6px;
         }
 
-        /* TOP BAR */
-        .top-bar{
-            display:flex;
-            justify-content:flex-start;
-            gap:12px;
-            margin:18px 0;
-        }
+        /* ALERT */
 
-        .btn-primary{
-            background:linear-gradient(135deg,#22c55e,#16a34a);
-            color:#022c16;
-            padding:12px 18px;
-            border-radius:16px;
-            font-weight:900;
-            border:none;
-            cursor:pointer;
-        }
-
-        /* ALERTS */
         .alert{
             padding:12px 14px;
             border-radius:14px;
@@ -127,16 +133,72 @@
             font-size:14px;
             font-weight:700;
         }
+
         .success{
             background:rgba(34,197,94,.15);
             color:var(--accent);
         }
+
         .error{
             background:rgba(239,68,68,.15);
             color:var(--danger);
         }
 
+        /* CANCEL CARD */
+
+        .cancel-card{
+            margin:22px 0;
+            background:linear-gradient(180deg,#0b1220,#020617);
+            border:1px solid var(--border-soft);
+            border-radius:20px;
+            padding:24px;
+        }
+
+        .cancel-card h2{
+            font-size:22px;
+            font-weight:900;
+        }
+
+        .cancel-card p{
+            margin-top:8px;
+            color:var(--text-muted);
+        }
+
+        .cancel-box{
+            margin-top:18px;
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .cancel-box input{
+            flex:1;
+            min-width:220px;
+            padding:12px 14px;
+            border:none;
+            border-radius:14px;
+            background:#111827;
+            color:white;
+            outline:none;
+        }
+
+        .cancel-btn{
+            padding:12px 18px;
+            border:none;
+            border-radius:14px;
+            background:rgba(239,68,68,.15);
+            color:#ef4444;
+            font-weight:900;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        .cancel-btn:hover{
+            background:rgba(239,68,68,.25);
+        }
+
         /* TABLE */
+
         .table-wrap{
             background:linear-gradient(180deg,#0b1220,#020617);
             border:1px solid var(--border-soft);
@@ -171,6 +233,7 @@
         }
 
         /* BADGES */
+
         .badge{
             padding:6px 12px;
             border-radius:999px;
@@ -182,20 +245,29 @@
             background:rgba(96,165,250,.15);
             color:var(--info);
         }
-        .RENTED{
+
+        .ONGOING{
             background:rgba(245,158,11,.15);
             color:var(--warning);
         }
+
         .RETURNED{
             background:rgba(34,197,94,.15);
             color:var(--accent);
         }
 
+        .CANCELLED{
+            background:rgba(239,68,68,.15);
+            color:var(--danger);
+        }
+
         /* ACTIONS */
+
         .actions{
             display:flex;
             justify-content:center;
             gap:8px;
+            flex-wrap:wrap;
         }
 
         .btn-edit{
@@ -216,66 +288,159 @@
             font-weight:800;
         }
 
+        .btn-cancel{
+            background:rgba(245,158,11,.15);
+            color:var(--warning);
+            padding:8px 12px;
+            border-radius:12px;
+            font-weight:800;
+        }
+
         @media(max-width:768px){
-            table,thead,tbody,th,td,tr{display:block;width:100%}
-            thead{display:none}
+
+            table,thead,tbody,th,td,tr{
+                display:block;
+                width:100%;
+            }
+
+            thead{
+                display:none;
+            }
+
             tr{
                 margin:12px 0;
                 padding:15px;
                 border-radius:15px;
                 background:linear-gradient(180deg,#0b1220,#020617);
             }
+
             td{
                 display:flex;
                 justify-content:space-between;
             }
+
             td::before{
                 content:attr(data-label);
                 font-weight:700;
                 color:var(--text-muted);
             }
         }
+
     </style>
+
 </head>
 
 <body>
 
 <!-- NAVBAR -->
+
 <div class="navbar">
+
     <div class="logo">
-        <img th:src="@{/images/rentify.png}" class="app-logo">
-        <h2>Rent<span>ify</span></h2>
+
+        <img th:src="@{/images/rentify.png}"
+             class="app-logo">
+
+        <h2>
+
+            Rent<span>ify</span>
+
+        </h2>
+
     </div>
+
     <div class="nav-links">
-        <a href="/rentify/">Dashboard</a>
-        <a href="/rentify/car/">Cars</a>
+
+        <a href="/rentify/">
+
+            Dashboard
+
+        </a>
+
+        <a href="/rentify/admin/car/">
+
+            Cars
+
+        </a>
+
     </div>
+
 </div>
 
 <div class="container">
 
     <!-- HEADER -->
+
     <div class="page-head">
-        <h1>Bookings 🧾</h1>
-        <p>Book, rent and return cars from one place</p>
+
+        <h1>
+
+            Bookings 🧾
+
+        </h1>
+
+        <p>
+
+            Book, rent and return cars from one place
+
+        </p>
+
     </div>
 
     <!-- ALERTS -->
-    <div th:if="${success}" class="alert success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert error" th:text="${error}"></div>
 
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        <button class="btn-primary" onclick="location.href='/rentify/booking/new'">
-            🚗 Rent Car
-        </button>
+    <div th:if="${success}"
+         class="alert success"
+         th:text="${success}"></div>
+
+    <div th:if="${error}"
+         class="alert error"
+         th:text="${error}"></div>
+
+    <!-- CANCEL BOOKING -->
+
+    <div class="cancel-card">
+
+        <h2>
+
+            Cancel Booking
+
+        </h2>
+
+        <p>
+
+            Enter booking ID to cancel booking
+
+        </p>
+
+        <div class="cancel-box">
+
+            <input type="number"
+                   id="cancelBookingId"
+                   placeholder="Enter Booking ID">
+
+            <button type="button"
+                    class="cancel-btn"
+                    onclick="cancelBooking()">
+
+                Cancel Booking
+
+            </button>
+
+        </div>
+
     </div>
 
     <!-- TABLE -->
+
     <div class="table-wrap">
+
         <table>
+
             <thead>
+
             <tr>
+
                 <th>ID</th>
                 <th>Start</th>
                 <th>End</th>
@@ -285,67 +450,178 @@
                 <th>Car</th>
                 <th>Payment</th>
                 <th>Action</th>
+
             </tr>
+
             </thead>
 
             <tbody>
+
             <tr th:each="b : ${bookings}">
-                <td data-label="ID" th:text="${b.id}"></td>
-                <td data-label="Start" th:text="${b.startDate}"></td>
-                <td data-label="End" th:text="${b.endDate}"></td>
-                <td data-label="Amount" th:text="${b.totalAmount}"></td>
+
+                <td data-label="ID"
+                    th:text="${b.id}"></td>
+
+                <td data-label="Start"
+                    th:text="${b.startDate}"></td>
+
+                <td data-label="End"
+                    th:text="${b.endDate}"></td>
+
+                <td data-label="Amount"
+                    th:text="${b.totalAmount}"></td>
+
+                <!-- STATUS -->
 
                 <td data-label="Status">
+
                     <span class="badge"
                           th:classappend="${b.status}"
                           th:text="${b.status}">
+
                     </span>
+
                 </td>
 
+                <!-- CUSTOMER -->
+
                 <td data-label="Customer">
+
                     <a th:if="${b.customer != null}"
                        th:text="${b.customer.name}"
                        th:href="@{/rentify/customer/find/{id}(id=${b.customer.id})}"
                        style="color:var(--info);font-weight:700">
+
                     </a>
-                    <span th:if="${b.customer == null}">N/A</span>
+
+                    <span th:if="${b.customer == null}">
+
+                        N/A
+
+                    </span>
+
                 </td>
 
+                <!-- CAR -->
+
                 <td data-label="Car">
+
                     <a th:if="${b.car != null}"
                        th:text="${b.car.registrationNo}"
                        th:href="@{/rentify/car/find/{id}(id=${b.car.id})}"
                        style="color:var(--info);font-weight:700">
+
                     </a>
-                    <span th:if="${b.car == null}">N/A</span>
+
+                    <span th:if="${b.car == null}">
+
+                        N/A
+
+                    </span>
+
                 </td>
 
+                <!-- PAYMENT -->
+
                 <td data-label="Payment">
+
                     <a th:if="${b.payment != null}"
                        th:text="${b.payment.id}"
                        th:href="@{/rentify/payment/find/{id}(id=${b.payment.id})}"
                        style="color:var(--info);font-weight:700">
+
                     </a>
-                    <span th:if="${b.payment == null}">N/A</span>
+
+                    <span th:if="${b.payment == null}">
+
+                        N/A
+
+                    </span>
+
                 </td>
 
-                <td data-label="Action" class="actions">
-                    <a th:href="@{/rentify/booking/edit/{id}(id=${b.id})}"
-                       class="btn-edit">✏️</a>
+                <!-- ACTIONS -->
 
-                    <form th:action="@{/rentify/booking/delete/{id}(id=${b.id})}"
+                <td data-label="Action"
+                    class="actions">
+
+                    <!-- EDIT -->
+
+                    <a th:href="@{/rentify/common/booking/edit/{id}(id=${b.id})}"
+                       class="btn-edit">
+
+                        ✏️
+
+                    </a>
+
+                    <!-- DELETE -->
+
+                    <form th:action="@{/rentify/common/booking/delete/{id}(id=${b.id})}"
                           method="post"
                           onsubmit="return confirm('Delete booking?');">
-                        <input type="hidden" name="_method" value="DELETE"/>
-                        <button class="btn-delete">🗑</button>
+
+                        <input type="hidden"
+                               name="_method"
+                               value="DELETE"/>
+
+                        <button class="btn-delete">
+
+                            🗑
+
+                        </button>
+
                     </form>
+
+                    <!-- CANCEL -->
+
+                    <a th:if="${b.status.name() != 'RETURNED'
+                            && b.status.name() != 'CANCELLED'}"
+
+                       th:href="@{'/rentify/common/booking/cancel/' + ${b.id}}"
+
+                       class="btn-cancel">
+
+                        ❌
+
+                    </a>
+
                 </td>
+
             </tr>
+
             </tbody>
+
         </table>
+
     </div>
 
 </div>
 
+<script>
+
+    function cancelBooking(){
+
+        const bookingId =
+            document.getElementById(
+                "cancelBookingId"
+            ).value;
+
+        if(!bookingId){
+
+            alert(
+                "Please enter booking ID"
+            );
+
+            return;
+        }
+
+        window.location.href =
+            "/rentify/common/booking/cancel/"
+            + bookingId;
+    }
+
+</script>
+
 </body>
+
 </html>

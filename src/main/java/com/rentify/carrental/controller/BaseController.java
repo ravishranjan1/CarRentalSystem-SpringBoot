@@ -3,6 +3,7 @@ package com.rentify.carrental.controller;
 import com.rentify.carrental.enums.Role;
 import com.rentify.carrental.exception.CustomerNotFoundException;
 import com.rentify.carrental.model.BookingModel;
+import com.rentify.carrental.model.CarModel;
 import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.model.PaymentModel;
 import com.rentify.carrental.service.*;
@@ -53,8 +54,10 @@ public class BaseController {
                 return "access-denied";
             }
             List<BookingModel> bookingList = bookingService.findByCustomer(customer);
+            List<CarModel> carList = carService.findAll();
             model.addAttribute("customer", customer);
             model.addAttribute("bookingList", bookingList);
+            model.addAttribute("carList", carList);
             return "user-home";
         }
 

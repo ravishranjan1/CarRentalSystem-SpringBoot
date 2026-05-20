@@ -3,5 +3,6 @@ package com.rentify.carrental.enums;
 public enum CarStatus {
     ONGOING,
     RETURNED,
-    SCHEDULED;
+    SCHEDULED,
+    CANCELLED;
 }

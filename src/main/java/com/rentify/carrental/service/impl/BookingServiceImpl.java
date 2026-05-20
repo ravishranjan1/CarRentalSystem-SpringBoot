@@ -138,7 +138,7 @@ public class BookingServiceImpl implements BookingService {
         Optional<BookingModel> opt = bookingRepo.findById(id);
         if(opt.isPresent()){
             BookingModel booking = opt.get();
-            if(booking.getStatus() == CarStatus.RETURNED){
+            if(booking.getStatus() == CarStatus.RETURNED || booking.getStatus() == CarStatus.CANCELLED){
                 bookingRepo.delete(booking);
             }else{
                 throw new Exception("Car is ONGOING or SCHEDULED, you cannot remove it now!");
@@ -157,13 +157,11 @@ public class BookingServiceImpl implements BookingService {
     public boolean isCarAvailable(Long carId, LocalDate from, LocalDate to) {
         List<BookingModel> bookings = bookingRepo.findAll();
         for (BookingModel booking : bookings) {
-            if (booking.getCar() != null
-                    && booking.getCar().getId().equals(carId)
-                    && booking.getStatus() != CarStatus.RETURNED) {
-
+            if (booking.getCar() != null && booking.getCar().getId().equals(carId)
+                    && booking.getStatus() != CarStatus.RETURNED
+                    && booking.getStatus() != CarStatus.CANCELLED) {
                 LocalDate existingFrom = booking.getStartDate();
                 LocalDate existingTo = booking.getEndDate();
-
                 if (from.isBefore(existingTo) && to.isAfter(existingFrom)) {
                     return false;
                 }
@@ -177,4 +175,28 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepo.findByCustomer(customer);
     }
 
+
+    @Override
+    public BookingModel cancelBooking(Long id) throws Exception {
+        Optional<BookingModel> opt = bookingRepo.findById(id);
+        if(opt.isEmpty()) {
+            throw new BookingNotFoundException("Booking not found with given id");
+        }
+        BookingModel booking = opt.get();
+        if(booking.getStatus() != CarStatus.SCHEDULED) {
+            throw new Exception("Only scheduled booking " + "can be cancelled");
+        }
+        booking.setStatus(CarStatus.CANCELLED);
+        CarModel car = booking.getCar();
+        if(car != null) {
+            car.setAvailable(true);
+        }
+        return bookingRepo.save(booking);
+    }
+
+
+    @Override
+    public BookingModel findByIdAndCustomer(Long bookingId, Long customerId) {
+        return bookingRepo.findByIdAndCustomer_Id(bookingId, customerId).orElse(null);
+    }
 }
