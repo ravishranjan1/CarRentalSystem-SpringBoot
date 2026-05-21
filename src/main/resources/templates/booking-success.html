@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+
+        Booking Success
+
+    </title>
+
+    <style>
+
+        body{
+
+            font-family:Arial,sans-serif;
+            background:#020617;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .card{
+
+            width:420px;
+            background:#0f172a;
+            padding:30px;
+            border-radius:20px;
+            text-align:center;
+            box-shadow:0 20px 50px rgba(0,0,0,.5);
+        }
+
+        h1{
+
+            color:#22c55e;
+            margin-bottom:16px;
+        }
+
+        p{
+
+            margin:10px 0;
+        }
+
+        .btn{
+
+            display:block;
+            margin-top:18px;
+            padding:12px;
+            border-radius:12px;
+            text-decoration:none;
+            font-weight:700;
+        }
+
+        .download-btn{
+
+            background:#22c55e;
+            color:#022c16;
+        }
+
+        .home-btn{
+
+            background:#1e293b;
+            color:white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>
+
+        Booking Successful 🎉
+
+    </h1>
+
+    <p>
+
+        Booking ID :
+        <strong th:text="${bookings.id}"></strong>
+
+    </p>
+
+    <p>
+
+        Customer :
+        <strong th:text="${bookings.customer.name}"></strong>
+
+    </p>
+
+    <p>
+
+        Car :
+        <strong th:text="${bookings.car.model}"></strong>
+
+    </p>
+
+    <p>
+
+        Amount :
+        ₹<strong th:text="${bookings.totalAmount}"></strong>
+
+    </p>
+
+    <!-- DOWNLOAD PDF -->
+
+    <a th:href="@{'/rentify/common/booking/pdf/' + ${bookings.id}}"
+       class="btn download-btn">
+
+        Download Receipt PDF
+
+    </a>
+
+    <!-- HOME -->
+
+    <a href="/rentify/"
+       class="btn home-btn">
+
+        Go To Dashboard
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

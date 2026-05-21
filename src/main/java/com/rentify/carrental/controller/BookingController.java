@@ -1,18 +1,24 @@
 package com.rentify.carrental.controller;
 
-import com.rentify.carrental.enums.CarStatus;
 import com.rentify.carrental.exception.BookingNotFoundException;
 import com.rentify.carrental.model.BookingModel;
 import com.rentify.carrental.model.CustomerModel;
 import com.rentify.carrental.service.BookingService;
 import com.rentify.carrental.service.CarService;
 import com.rentify.carrental.service.CustomerService;
+import com.rentify.carrental.service.PdfService;
 import com.rentify.carrental.validators.BookingValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import java.io.ByteArrayInputStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +38,9 @@ public class BookingController {
 
     @Autowired
     private BookingValidator bookingValidator;
+
+    @Autowired
+    private PdfService pdfService;
 
     @GetMapping("/admin/booking/")
     public String getBooking(Model model){
@@ -89,11 +98,12 @@ public class BookingController {
             BookingModel booking = bookingService.booking(bookingModel);
             if(bookingModel.getId() == null){
                 model.addAttribute("success", "Car is booked successfully");
-                model.addAttribute("bookings", List.of(booking));
+                model.addAttribute("bookings", booking);
             }else{
                 model.addAttribute("success", "Booking is updated successfully");
-                model.addAttribute("bookings", List.of(booking));
+                model.addAttribute("bookings", booking);
             }
+            return "booking-success";
         }catch(Exception e){
             model.addAttribute("error", e.getMessage());
             model.addAttribute("bookings", List.of());
@@ -242,5 +252,37 @@ public class BookingController {
 
             return "access-denied";
         }
+    }
+
+    @GetMapping("/common/booking/pdf/{id}")
+    public ResponseEntity<InputStreamResource>
+    downloadBookingPdf(@PathVariable Long id)
+            throws Exception {
+
+        BookingModel booking =
+                bookingService.findById(id);
+
+        ByteArrayInputStream pdf =
+                pdfService.generateBookingPdf(
+                        booking
+                );
+
+        HttpHeaders headers =
+                new HttpHeaders();
+
+        headers.add(
+                "Content-Disposition",
+                "attachment; filename=booking-receipt.pdf"
+        );
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(
+                        MediaType.APPLICATION_PDF
+                )
+                .body(
+                        new InputStreamResource(pdf)
+                );
     }
 }
