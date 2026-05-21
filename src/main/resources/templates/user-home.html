@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -8,10 +9,18 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Rentify | User Dashboard</title>
+    <title>
+
+        Rentify | User Dashboard
+
+    </title>
+
+    <!-- GOOGLE FONT -->
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
           rel="stylesheet">
+
+    <!-- FONT AWESOME -->
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -19,18 +28,20 @@
     <style>
 
         :root{
+
             --bg-main:#020617;
             --bg-card:#0f172a;
             --text-main:#f8fafc;
             --text-muted:#94a3b8;
             --accent:#22c55e;
             --danger:#ef4444;
-            --info:#60a5fa;
             --warning:#facc15;
+            --info:#60a5fa;
             --border:rgba(255,255,255,0.08);
         }
 
         *{
+
             margin:0;
             padding:0;
             box-sizing:border-box;
@@ -38,11 +49,16 @@
         }
 
         body{
-            background:radial-gradient(circle at top,#111827,#020617);
+
+            background:radial-gradient(circle at top,
+            #111827,
+            #020617);
+
             color:var(--text-main);
         }
 
         a{
+
             text-decoration:none;
             color:inherit;
         }
@@ -50,88 +66,128 @@
         /* NAVBAR */
 
         .navbar{
+
             position:sticky;
             top:0;
             z-index:999;
+
             display:flex;
             justify-content:space-between;
             align-items:center;
+
             padding:18px 32px;
+
             background:rgba(2,6,23,.92);
+
             border-bottom:1px solid var(--border);
         }
 
         .logo{
+
             font-size:28px;
             font-weight:900;
         }
 
         .logo span{
+
             color:var(--accent);
         }
 
         .nav-links{
+
             display:flex;
             align-items:center;
             gap:12px;
         }
 
         .nav-links a{
+
             padding:10px 16px;
             border-radius:12px;
+
             background:rgba(255,255,255,0.05);
+
             font-weight:700;
+
             transition:.3s;
         }
 
         .nav-links a:hover{
+
             background:rgba(34,197,94,.15);
+
             color:var(--accent);
         }
 
         .logout-btn{
+
             padding:10px 16px;
+
             border:none;
             border-radius:12px;
+
             background:rgba(255,255,255,0.05);
+
             color:white;
+
             font-weight:700;
+
             cursor:pointer;
+
             transition:.3s;
         }
 
         .logout-btn:hover{
+
             background:rgba(239,68,68,.15);
+
             color:var(--danger);
         }
 
-        /* MAIN */
+        /* CONTAINER */
 
         .container{
+
             width:92%;
             max-width:1400px;
+
             margin:28px auto;
         }
 
+        /* HERO */
+
         .hero{
+
             padding:34px;
+
             border-radius:24px;
-            background:linear-gradient(135deg,#0f172a,#020617);
+
+            background:linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #020617
+            );
+
             border:1px solid var(--border);
         }
 
         .hero h1{
+
             font-size:36px;
             font-weight:900;
         }
 
         .hero p{
+
             margin-top:10px;
+
             color:var(--text-muted);
         }
 
         .actions{
+
             margin-top:24px;
+
             display:flex;
             flex-wrap:wrap;
             gap:14px;
@@ -139,257 +195,374 @@
         }
 
         .btn{
+
             padding:12px 18px;
+
             border:none;
             border-radius:14px;
+
             font-weight:800;
+
             cursor:pointer;
+
             transition:.3s;
         }
 
         .btn-primary{
-            background:linear-gradient(135deg,#22c55e,#16a34a);
+
+            background:linear-gradient(
+                    135deg,
+                    #22c55e,
+                    #16a34a
+            );
+
             color:#022c16;
         }
 
-        .btn-primary:hover{
+        .btn-dark{
+
+            background:#111827;
+            color:white;
+        }
+
+        .btn:hover{
+
             transform:translateY(-2px);
         }
 
-        .btn-dark{
-            background:#111827;
-            color:white;
+        /* ALERT */
+
+        .alert{
+
+            margin-top:20px;
+
+            padding:14px;
+
+            border-radius:14px;
+
+            font-weight:700;
         }
 
-        .btn-dark:hover{
-            background:#1e293b;
+        .success{
+
+            background:rgba(34,197,94,.15);
+
+            color:#22c55e;
         }
 
-        /* CANCEL CARD */
+        .error{
 
-        .cancel-card{
+            background:rgba(239,68,68,.15);
+
+            color:#ef4444;
+        }
+
+        /* CAR SECTION */
+
+        .availability-card{
+
             margin-top:28px;
+
             background:#0f172a;
+
             border:1px solid rgba(255,255,255,.08);
+
             border-radius:22px;
+
             padding:24px;
         }
 
-        .cancel-card h2{
+        .availability-card h2{
+
             font-size:24px;
         }
 
-        .cancel-card p{
+        .availability-card p{
+
             margin-top:8px;
+
             color:#94a3b8;
         }
 
-        .cancel-box{
-            margin-top:18px;
+        .availability-form{
+
+            margin-top:20px;
+
+            display:grid;
+
+            grid-template-columns:
+                    repeat(auto-fit,minmax(220px,1fr));
+
+            gap:18px;
+        }
+
+        .form-group{
+
             display:flex;
-            gap:12px;
-            flex-wrap:wrap;
+            flex-direction:column;
         }
 
-        .cancel-box input{
-            flex:1;
-            min-width:220px;
-            padding:12px 16px;
+        .form-group label{
+
+            margin-bottom:8px;
+
+            font-weight:700;
+        }
+
+        .form-group input,
+        .form-group select{
+
+            padding:12px 14px;
+
             border:none;
             border-radius:14px;
+
             background:#111827;
+
             color:white;
-            font-size:14px;
         }
 
-        .cancel-btn{
-            padding:12px 18px;
+        .check-btn{
+
+            padding:12px;
+
             border:none;
             border-radius:14px;
-            background:rgba(239,68,68,.15);
-            color:#ef4444;
-            font-weight:800;
+
+            background:linear-gradient(
+                    135deg,
+                    #22c55e,
+                    #16a34a
+            );
+
+            color:#022c16;
+
+            font-weight:900;
+
             cursor:pointer;
+        }
+
+        /* CAR RESULT */
+
+        .car-dropdown{
+
+            margin-top:28px;
+
+            background:#0f172a;
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            border-radius:22px;
+
+            padding:24px;
+        }
+
+        .dropdown-header{
+
+            margin-bottom:22px;
+        }
+
+        .car-grid{
+
+            display:grid;
+
+            grid-template-columns:
+                    repeat(auto-fit,minmax(280px,1fr));
+
+            gap:18px;
+        }
+
+        .car-card{
+
+            background:linear-gradient(
+                    180deg,
+                    #111827,
+                    #020617
+            );
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            border-radius:20px;
+
+            padding:22px;
+
             transition:.3s;
         }
 
-        .cancel-btn:hover{
-            background:rgba(239,68,68,.25);
+        .car-card:hover{
+
+            transform:translateY(-4px);
         }
 
-        /* SECTION */
+        .car-card h3{
 
-        .section-title{
-            margin:38px 0 18px;
+            color:#22c55e;
+
+            margin-bottom:14px;
+
+            font-size:22px;
         }
 
-        .section-title h2{
-            font-size:26px;
+        .car-card p{
+
+            margin-top:8px;
+
+            color:#cbd5e1;
+
+            font-size:14px;
+        }
+
+        /* STATUS */
+
+        .status{
+
+            padding:7px 14px;
+
+            border-radius:30px;
+
+            font-size:12px;
+            font-weight:800;
+
+            display:inline-block;
+        }
+
+        .ongoing-status{
+
+            background:rgba(34,197,94,.15);
+
+            color:#22c55e;
+        }
+
+        .returned-status{
+
+            background:rgba(239,68,68,.15);
+
+            color:#ef4444;
+        }
+
+        .scheduled-status{
+
+            background:rgba(250,204,21,.15);
+
+            color:#facc15;
+        }
+
+        .cancelled-status{
+
+            background:rgba(107,114,128,.2);
+
+            color:#9ca3af;
         }
 
         /* TABLE */
 
+        .section-title{
+
+            margin:38px 0 18px;
+        }
+
+        .section-title h2{
+
+            font-size:26px;
+        }
+
         .booking-table{
+
             width:100%;
+
             border-collapse:collapse;
+
             background:var(--bg-card);
+
             border-radius:18px;
+
             overflow:hidden;
         }
 
         .booking-table th,
         .booking-table td{
+
             padding:16px;
+
             text-align:left;
+
             border-bottom:1px solid rgba(255,255,255,.05);
         }
 
         .booking-table th{
+
             background:#111827;
+
             font-size:14px;
         }
 
         .booking-table tr:hover{
+
             background:rgba(255,255,255,.03);
         }
 
         /* ACTION BUTTONS */
 
         .action-buttons{
+
             display:flex;
             gap:10px;
             align-items:center;
         }
 
         .edit-btn,
-        .delete-btn{
+        .delete-btn,
+        .cancel-btn-small{
+
             padding:8px 12px;
+
             border-radius:10px;
+
             font-size:13px;
             font-weight:700;
+
             transition:.3s;
         }
 
         .edit-btn{
+
             background:rgba(96,165,250,.15);
+
             color:#60a5fa;
         }
 
-        .edit-btn:hover{
-            background:rgba(96,165,250,.25);
-        }
-
         .delete-btn{
+
             background:rgba(239,68,68,.15);
+
             color:#ef4444;
         }
 
-        .delete-btn:hover{
-            background:rgba(239,68,68,.25);
-        }
+        .cancel-btn-small{
 
-        /* STATUS */
-
-        .status{
-            padding:7px 14px;
-            border-radius:30px;
-            font-size:12px;
-            font-weight:800;
-            display:inline-block;
-        }
-
-        .ongoing-status{
-            background:rgba(34,197,94,.15);
-            color:#22c55e;
-        }
-
-        .returned-status{
-            background:rgba(239,68,68,.15);
-            color:#ef4444;
-        }
-
-        .scheduled-status{
             background:rgba(250,204,21,.15);
+
             color:#facc15;
-        }
-
-        .cancelled-status{
-            background:rgba(107,114,128,.2);
-            color:#9ca3af;
-        }
-
-        /* CAR DROPDOWN */
-
-        .car-dropdown{
-            display:none;
-            margin-top:28px;
-            background:#0f172a;
-            border:1px solid rgba(255,255,255,0.08);
-            border-radius:22px;
-            padding:24px;
-        }
-
-        .dropdown-header{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:22px;
-            flex-wrap:wrap;
-            gap:14px;
-        }
-
-        .car-select{
-            padding:12px 16px;
-            border:none;
-            border-radius:14px;
-            background:#111827;
-            color:white;
-            font-weight:700;
-        }
-
-        .car-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:18px;
-        }
-
-        .car-card{
-            background:linear-gradient(180deg,#111827,#020617);
-            border:1px solid rgba(255,255,255,0.08);
-            border-radius:20px;
-            padding:22px;
-            transition:.3s;
-        }
-
-        .car-card:hover{
-            transform:translateY(-4px);
-        }
-
-        .car-card h3{
-            color:#22c55e;
-            margin-bottom:14px;
-            font-size:22px;
-        }
-
-        .car-card p{
-            margin-top:8px;
-            color:#cbd5e1;
-            font-size:14px;
         }
 
         @media(max-width:768px){
 
             .booking-table{
+
                 font-size:13px;
             }
 
             .action-buttons{
+
                 flex-direction:column;
                 align-items:flex-start;
             }
-
         }
-
+        .app-logo{
+            width:42px;
+            height:42px;
+            border-radius:12px;
+        }
     </style>
 
 </head>
@@ -401,7 +574,7 @@
 <div class="navbar">
 
     <div class="logo">
-
+        <img th:src="@{/images/rentify.png}" class="app-logo">
         Rent<span>ify</span>
 
     </div>
@@ -464,236 +637,193 @@
 
             </a>
 
-            <button type="button"
-                    class="btn btn-dark"
-                    onclick="toggleCars()">
-
-                Browse Cars
-
-            </button>
-
         </div>
 
     </div>
 
-    <!-- CANCEL BOOKING -->
+    <!-- ALERT -->
 
-    <div class="cancel-card">
+    <div th:if="${success}"
+         class="alert success"
+         th:text="${success}"></div>
+
+    <div th:if="${error}"
+         class="alert error"
+         th:text="${error}"></div>
+
+    <!-- FIND AVAILABLE CARS -->
+
+    <div class="availability-card">
 
         <h2>
 
-            Cancel Booking
+            Find Available Cars 🚗
 
         </h2>
 
         <p>
 
-            Enter booking ID to cancel booking
+            Select date range to see available cars
 
         </p>
 
-        <div class="cancel-box">
+        <form th:action="@{/rentify/user/available-cars}"
+              method="post"
+              class="availability-form">
 
-            <input type="number"
-                   id="cancelBookingId"
-                   placeholder="Enter Booking ID">
+            <div class="form-group">
 
-            <button type="button"
-                    class="cancel-btn"
-                    onclick="cancelBooking()">
+                <label>
 
-                Cancel Booking
+                    From Date
+
+                </label>
+
+                <input type="date"
+                       name="fromDate"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    To Date
+
+                </label>
+
+                <input type="date"
+                       name="toDate"
+                       required>
+
+            </div>
+
+            <button type="submit"
+                    class="check-btn">
+
+                Find Cars
 
             </button>
 
-        </div>
+        </form>
 
     </div>
 
-    <!-- BOOKING HISTORY -->
+    <!-- AVAILABLE CAR RESULT -->
 
-    <div class="section-title">
-
-        <h2>
-
-            My Booking History
-
-        </h2>
-
-    </div>
-
-    <table class="booking-table">
-
-        <thead>
-
-        <tr>
-
-            <th>Booking ID</th>
-            <th>Customer</th>
-            <th>Car</th>
-            <th>Status</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
-
-        </tr>
-
-        </thead>
-
-        <tbody>
-
-        <tr th:each="booking : ${bookingList}">
-
-            <!-- BOOKING ID -->
-
-            <td th:text="${booking.id}"></td>
-
-            <!-- CUSTOMER -->
-
-            <td th:text="${booking.customer.name}"></td>
-
-            <!-- CAR -->
-
-            <td>
-
-                <div>
-
-                    <strong th:text="${booking.car.model}"></strong>
-
-                </div>
-
-                <small style="color:#94a3b8"
-                       th:text="${booking.car.registrationNo}">
-
-                </small>
-
-            </td>
-
-            <!-- STATUS -->
-
-            <td>
-
-                <span th:if="${booking.status.name() == 'ONGOING'}"
-                      class="status ongoing-status">
-
-                    Ongoing
-
-                </span>
-
-                <span th:if="${booking.status.name() == 'RETURNED'}"
-                      class="status returned-status">
-
-                    Returned
-
-                </span>
-
-                <span th:if="${booking.status.name() == 'SCHEDULED'}"
-                      class="status scheduled-status">
-
-                    Scheduled
-
-                </span>
-
-                <span th:if="${booking.status.name() == 'CANCELLED'}"
-                      class="status cancelled-status">
-
-                    Cancelled
-
-                </span>
-
-            </td>
-
-            <!-- START DATE -->
-
-            <td th:text="${booking.startDate}"></td>
-
-            <!-- END DATE -->
-
-            <td th:text="${booking.endDate}"></td>
-
-            <!-- AMOUNT -->
-
-            <td>
-
-                ₹<span th:text="${booking.totalAmount}"></span>
-
-            </td>
-
-            <!-- ACTIONS -->
-
-            <td class="action-buttons">
-
-                <!-- EDIT -->
-
-                <a th:href="@{'/rentify/common/booking/edit/' + ${booking.id}}"
-                   class="edit-btn">
-
-                    <i class="fa-solid fa-pen"></i>
-
-                    Edit
-
-                </a>
-
-                <!-- DELETE -->
-
-                <a th:href="@{'/rentify/common/booking/delete/' + ${booking.id}}"
-                   class="delete-btn">
-
-                    <i class="fa-solid fa-trash"></i>
-
-                    Delete
-
-                </a>
-
-            </td>
-
-        </tr>
-
-        </tbody>
-
-    </table>
-
-    <!-- CAR DROPDOWN -->
-
-    <div id="carDropdown"
+    <div th:if="${availableCars != null}"
          class="car-dropdown">
 
         <div class="dropdown-header">
 
             <h2>
 
-                Available Cars
+                Available Cars 🚘
 
             </h2>
-
-            <select id="carTypeSelect"
-                    class="car-select"
-                    onchange="filterCars()">
-
-                <option value="ALL">
-                    All Cars
-                </option>
-
-                <option value="SEDAN">
-                    Sedan
-                </option>
-
-                <option value="SUV">
-                    SUV
-                </option>
-
-                <option value="LUXURY">
-                    Luxury
-                </option>
-
-            </select>
 
         </div>
 
         <div class="car-grid">
 
             <div class="car-card"
+                 th:each="car : ${availableCars}">
+
+                <h3 th:text="${car.model}"></h3>
+
+                <p>
+                    <strong>Registration No:</strong>
+                    <span th:text="${car.registrationNo}"></span>
+                </p>
+
+                <p>
+                    <strong>Type:</strong>
+                    <span th:text="${car.type}"></span>
+                </p>
+
+                <p>
+                    <strong>Price Per Day:</strong>
+                    ₹<span th:text="${car.pricePerday}"></span>
+                </p>
+
+                <p>
+                    <strong>Company:</strong>
+                    <span th:text="${car.company.name}"></span>
+                </p>
+
+                <div class="status ongoing-status">
+
+                    Available
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FILTER BY TYPE -->
+
+    <div class="availability-card">
+
+        <h2>
+
+            Filter Cars By Type 🚘
+
+        </h2>
+
+        <p>
+
+            Select car type to view cars
+
+        </p>
+
+        <div class="form-group"
+             style="margin-top:20px;">
+
+            <label>
+
+                Select Car Type
+
+            </label>
+
+            <select id="carTypeFilter"
+                    onchange="filterCarsByType()">
+
+                <option value="ALL">
+
+                    All Cars
+
+                </option>
+
+                <option value="SEDAN">
+
+                    Sedan
+
+                </option>
+
+                <option value="SUV">
+
+                    SUV
+
+                </option>
+
+                <option value="LUXURY">
+
+                    Luxury
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="car-grid"
+             style="margin-top:24px;">
+
+            <div class="car-card filter-car-card"
                  th:each="car : ${carList}"
                  th:attr="data-type=${car.type}">
 
@@ -751,49 +881,179 @@
 
     </div>
 
+    <!-- BOOKING HISTORY -->
+
+    <div class="section-title">
+
+        <h2>
+
+            My Booking History
+
+        </h2>
+
+    </div>
+
+    <table class="booking-table">
+
+        <thead>
+
+        <tr>
+
+            <th>Booking ID</th>
+            <th>Car</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr th:each="booking : ${bookingList}">
+
+            <td th:text="${booking.id}"></td>
+
+            <td>
+
+                <div>
+
+                    <strong th:text="${booking.car.model}"></strong>
+
+                </div>
+
+                <small style="color:#94a3b8"
+                       th:text="${booking.car.registrationNo}">
+
+                </small>
+
+            </td>
+
+            <!-- STATUS -->
+
+            <td>
+
+                <span th:if="${booking.status.name() == 'ONGOING'}"
+                      class="status ongoing-status">
+
+                    Ongoing
+
+                </span>
+
+                <span th:if="${booking.status.name() == 'RETURNED'}"
+                      class="status returned-status">
+
+                    Returned
+
+                </span>
+
+                <span th:if="${booking.status.name() == 'SCHEDULED'}"
+                      class="status scheduled-status">
+
+                    Scheduled
+
+                </span>
+
+                <span th:if="${booking.status.name() == 'CANCELLED'}"
+                      class="status cancelled-status">
+
+                    Cancelled
+
+                </span>
+
+            </td>
+
+            <td th:text="${booking.startDate}"></td>
+
+            <td th:text="${booking.endDate}"></td>
+
+            <td>
+
+                ₹<span th:text="${booking.totalAmount}"></span>
+
+            </td>
+
+            <!-- ACTIONS -->
+
+            <td class="action-buttons">
+
+                <!-- EDIT -->
+
+                <a th:if="${booking.status.name() != 'RETURNED'
+                && booking.status.name() != 'CANCELLED'}"
+
+                   th:href="@{'/rentify/common/booking/edit/' + ${booking.id}}"
+
+                   class="edit-btn">
+
+                    Edit
+
+                </a>
+
+                <!-- DELETE -->
+
+                <a th:if="${booking.status.name() == 'RETURNED'
+                || booking.status.name() == 'CANCELLED'}"
+
+                   th:href="@{'/rentify/common/booking/delete/' + ${booking.id}}"
+
+                   class="delete-btn">
+
+                    Delete
+
+                </a>
+
+                <!-- CANCEL -->
+
+                <a th:if="${booking.status.name() != 'RETURNED'
+                && booking.status.name() != 'CANCELLED'}"
+
+                   th:href="@{'/rentify/common/booking/cancel/' + ${booking.id}}"
+
+                   class="cancel-btn-small">
+
+                    Cancel
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
 </div>
+
+<!-- JAVASCRIPT -->
 
 <script>
 
-    function toggleCars(){
-
-        const dropdown =
-            document.getElementById(
-                "carDropdown"
-            );
-
-        if(dropdown.style.display === "block"){
-
-            dropdown.style.display = "none";
-        }
-
-        else{
-
-            dropdown.style.display = "block";
-        }
-    }
-
-    function filterCars(){
+    function filterCarsByType(){
 
         const selectedType =
             document.getElementById(
-                "carTypeSelect"
+                "carTypeFilter"
             ).value;
 
         const cards =
             document.querySelectorAll(
-                ".car-card"
+                ".filter-car-card"
             );
 
         cards.forEach(card => {
 
-            const type =
+            const carType =
                 card.getAttribute(
                     "data-type"
                 );
 
             if(selectedType === "ALL"
-                || type === selectedType){
+                || carType === selectedType){
 
                 card.style.display = "block";
             }
@@ -804,26 +1064,6 @@
             }
 
         });
-
-    }
-
-    function cancelBooking(){
-
-        const bookingId =
-            document.getElementById(
-                "cancelBookingId"
-            ).value;
-
-        if(!bookingId){
-
-            alert("Please enter booking ID");
-
-            return;
-        }
-
-        window.location.href =
-            "/rentify/common/booking/cancel/"
-            + bookingId;
     }
 
 </script>

@@ -43,14 +43,14 @@ public class BookingController {
     private PdfService pdfService;
 
     @GetMapping("/admin/booking/")
-    public String getBooking(Model model){
-        try{
+    public String getBooking(Model model) {
+        try {
             bookingService.autoUpdateBookingStatus();
             List<BookingModel> bookings = bookingService.findAll();
-            if(bookings.isEmpty()){
+            if (bookings.isEmpty()) {
                 model.addAttribute("error", "No booking found");
-            }else{
-                model.addAttribute("success", bookings.size()+" Booking found");
+            } else {
+                model.addAttribute("success", bookings.size() + " Booking found");
             }
             model.addAttribute("bookings", bookings);
         } catch (Exception e) {
@@ -61,17 +61,13 @@ public class BookingController {
     }
 
     @GetMapping("/user/booking/new")
-    public String bookingPage(Authentication authentication,
-                              Model model) {
+    public String bookingPage(Authentication authentication, Model model) {
 
-        String username =
-                authentication.getName();
+        String username = authentication.getName();
 
-        CustomerModel customer =
-                customerService.findByUsername(username);
+        CustomerModel customer = customerService.findByUsername(username);
 
-        BookingModel booking =
-                new BookingModel();
+        BookingModel booking = new BookingModel();
 
         // AUTO SET CUSTOMER
 
@@ -79,14 +75,13 @@ public class BookingController {
 
         model.addAttribute("booking", booking);
 
-        model.addAttribute("cars",
-                carService.findAll());
+        model.addAttribute("cars", carService.findAll());
 
         return "booking-form";
     }
 
     @PostMapping("/common/booking/save")
-    public String submitRentForm (@ModelAttribute BookingModel bookingModel, Model model){
+    public String submitRentForm(@ModelAttribute BookingModel bookingModel, Model model) {
 
         List<String> errors = bookingValidator.validate(bookingModel);
         if (!errors.isEmpty()) {
@@ -94,17 +89,17 @@ public class BookingController {
             model.addAttribute("bookings", List.of());
             return "booking";
         }
-        try{
+        try {
             BookingModel booking = bookingService.booking(bookingModel);
-            if(bookingModel.getId() == null){
+            if (bookingModel.getId() == null) {
                 model.addAttribute("success", "Car is booked successfully");
                 model.addAttribute("bookings", booking);
-            }else{
+            } else {
                 model.addAttribute("success", "Booking is updated successfully");
                 model.addAttribute("bookings", booking);
             }
             return "booking-success";
-        }catch(Exception e){
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("bookings", List.of());
         }
@@ -122,14 +117,14 @@ public class BookingController {
             return "booking-edit-form";
         } catch (BookingNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("bookings",bookingService.findAll());
+            model.addAttribute("bookings", bookingService.findAll());
             return "booking";
         }
     }
 
 
     @DeleteMapping("/common/booking/delete/{id}")
-    public String deleteBooking(@PathVariable Long id, Model model){
+    public String deleteBooking(@PathVariable Long id, Model model) {
         try {
             bookingService.removeById(id);
             model.addAttribute("success", "booking removed successfully");
@@ -141,7 +136,7 @@ public class BookingController {
     }
 
     @GetMapping("/common/booking/find/{id}")
-    public String getBookingById(@PathVariable Long id, Model model){
+    public String getBookingById(@PathVariable Long id, Model model) {
         try {
             BookingModel booking = bookingService.findById(id);
             model.addAttribute("success", "Booking found");
@@ -154,135 +149,42 @@ public class BookingController {
     }
 
     @GetMapping("/common/booking/cancel/{id}")
-    public String cancelBooking(@PathVariable Long id,
-                                Authentication authentication,
-                                Model model){
-
-        try{
-
-            BookingModel booking =
-                    bookingService.findById(id);
-
-            String username =
-                    authentication.getName();
-
-            boolean isAdmin =
-                    authentication.getAuthorities()
-                            .stream()
-                            .anyMatch(a ->
-                                    a.getAuthority()
-                                            .equals("ROLE_ADMIN"));
-
-            // USER CAN CANCEL ONLY
-            // HIS OWN BOOKING
-
-            if(!isAdmin){
-
-                CustomerModel loggedInCustomer =
-                        customerService.findByUsername(username);
-
-                BookingModel ownBooking =
-                        bookingService.findByIdAndCustomer(
-                                id,
-                                loggedInCustomer.getId()
-                        );
-
-                if(ownBooking == null){
-
-                    model.addAttribute(
-                            "error",
-                            "You cannot cancel another user's booking"
-                    );
-
+    public String cancelBooking(@PathVariable Long id, Authentication authentication, Model model) {
+        try {
+            BookingModel booking = bookingService.findById(id);
+            String username = authentication.getName();
+            boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            if (!isAdmin) {
+                CustomerModel loggedInCustomer = customerService.findByUsername(username);
+                BookingModel ownBooking = bookingService.findByIdAndCustomer(id, loggedInCustomer.getId());
+                if (ownBooking == null) {
+                    model.addAttribute("error", "You cannot cancel another user's booking");
                     return "access-denied";
                 }
             }
-
-            // CANCEL BOOKING
-
             bookingService.cancelBooking(id);
-
-            model.addAttribute(
-                    "success",
-                    "Booking has been cancelled successfully"
-            );
-
-            // ADMIN PAGE
-
-            if(isAdmin){
-
-                model.addAttribute(
-                        "bookings",
-                        bookingService.findAll()
-                );
-
+            model.addAttribute("success", "Booking has been cancelled successfully");
+            if (isAdmin) {
+                model.addAttribute("bookings", bookingService.findAll());
                 return "booking";
             }
-
-            // USER PAGE
-
-            CustomerModel customer =
-                    customerService.findByUsername(username);
-
-            model.addAttribute(
-                    "customer",
-                    customer
-            );
-
-            model.addAttribute(
-                    "bookingList",
-                    bookingService.findByCustomer(customer)
-            );
-
-            model.addAttribute(
-                    "carList",
-                    carService.findAll()
-            );
-
+            CustomerModel customer = customerService.findByUsername(username);
+            model.addAttribute("customer", customer);
+            model.addAttribute("bookingList", bookingService.findByCustomer(customer));
+            model.addAttribute("carList", carService.findAll());
             return "user-home";
-
-        }
-
-        catch (Exception e){
-
-            model.addAttribute(
-                    "error",
-                    e.getMessage()
-            );
-
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
             return "access-denied";
         }
     }
 
     @GetMapping("/common/booking/pdf/{id}")
-    public ResponseEntity<InputStreamResource>
-    downloadBookingPdf(@PathVariable Long id)
-            throws Exception {
-
-        BookingModel booking =
-                bookingService.findById(id);
-
-        ByteArrayInputStream pdf =
-                pdfService.generateBookingPdf(
-                        booking
-                );
-
-        HttpHeaders headers =
-                new HttpHeaders();
-
-        headers.add(
-                "Content-Disposition",
-                "attachment; filename=booking-receipt.pdf"
-        );
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(
-                        MediaType.APPLICATION_PDF
-                )
-                .body(
-                        new InputStreamResource(pdf)
-                );
+    public ResponseEntity<InputStreamResource> downloadBookingPdf(@PathVariable Long id) throws Exception {
+        BookingModel booking = bookingService.findById(id);
+        ByteArrayInputStream pdf = pdfService.generateBookingPdf(booking);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=booking-receipt.pdf");
+        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(pdf));
     }
 }

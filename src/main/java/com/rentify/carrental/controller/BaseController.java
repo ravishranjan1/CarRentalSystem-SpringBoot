@@ -16,9 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/rentify")
@@ -45,8 +46,7 @@ public class BaseController {
             return "redirect:/rentify/login";
         }
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        if (authorities.stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+        if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
             String username = authentication.getName();
             CustomerModel customer = customerService.findByUsername(username);
             if (customer == null) {
@@ -61,38 +61,25 @@ public class BaseController {
             return "user-home";
         }
 
-        if (authorities.stream()
-                .anyMatch(a -> a.getAuthority()
-                        .equals("ROLE_ADMIN"))) {
+        if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
 
-            String username =
-                    authentication.getName();
+            String username = authentication.getName();
 
-            CustomerModel customer =
-                    customerService.findByUsername(username);
+            CustomerModel customer = customerService.findByUsername(username);
 
             model.addAttribute("customer", customer);
 
-            List<PaymentModel> paymentList =
-                    paymentService.findAll();
+            List<PaymentModel> paymentList = paymentService.findAll();
 
-            BigDecimal totalAmount = BigDecimal.valueOf(
-                    paymentList.stream()
-                            .mapToDouble(PaymentModel::getAmount)
-                            .sum()
-            );
+            BigDecimal totalAmount = BigDecimal.valueOf(paymentList.stream().mapToDouble(PaymentModel::getAmount).sum());
 
-            model.addAttribute("totalCustomers",
-                    customerService.findAll().size());
+            model.addAttribute("totalCustomers", customerService.findAll().size());
 
-            model.addAttribute("totalCars",
-                    carService.findAll().size());
+            model.addAttribute("totalCars", carService.findAll().size());
 
-            model.addAttribute("totalBookings",
-                    bookingService.findAll().size());
+            model.addAttribute("totalBookings", bookingService.findAll().size());
 
-            model.addAttribute("totalPayments",
-                    totalAmount);
+            model.addAttribute("totalPayments", totalAmount);
 
             return "admin-home";
         }
@@ -100,18 +87,17 @@ public class BaseController {
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage(Model model){
+    public String getRegistrationPage(Model model) {
         model.addAttribute("customer", new CustomerModel());
         model.addAttribute("roles", Role.getAllRoleNames());
         return "customer-form";
     }
 
     @PostMapping("/user-create")
-    public String registerCustomer(Model model,
-                                   @ModelAttribute CustomerModel customerModel){
+    public String registerCustomer(Model model, @ModelAttribute CustomerModel customerModel) {
 
         List<String> errors = customerValidator.validate(customerModel);
-        if(!errors.isEmpty()) {
+        if (!errors.isEmpty()) {
             model.addAttribute("error", errors);
             model.addAttribute("customer", new CustomerModel());
             model.addAttribute("roles", Role.getAllRoleNames());
@@ -132,63 +118,99 @@ public class BaseController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout){
-        if(error != null){
-            model.addAttribute("error","Invalid username OR password");
+    public String getLoginPage(Model model, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout) {
+        if (error != null) {
+            model.addAttribute("error", "Invalid username OR password");
         }
-        if(logout != null){
+        if (logout != null) {
             model.addAttribute("success", "You have been logged out successfully");
         }
 
         return "login";
     }
+
     @GetMapping("/access-denied")
-    public String accessDenied(){
+    public String accessDenied() {
         return "access-denied";
     }
 
     @GetMapping("/profile/edit/{id}")
-    public String editProfile(@PathVariable Long id,
-                              Authentication authentication,
-                              Model model) {
+    public String editProfile(@PathVariable Long id, Authentication authentication, Model model) {
 
         try {
 
-            if(authentication == null
-                    || !authentication.isAuthenticated()) {
+            if (authentication == null || !authentication.isAuthenticated()) {
 
                 return "redirect:/rentify/login";
             }
 
-            CustomerModel customer =
-                    customerService.findById(id);
+            CustomerModel customer = customerService.findById(id);
 
-            if(customer == null) {
+            if (customer == null) {
 
                 return "access-denied";
             }
 
-            String loggedInUsername =
-                    authentication.getName();
+            String loggedInUsername = authentication.getName();
 
             // SECURITY CHECK
 
-            if(customer.getUsername() == null
-                    || !customer.getUsername()
-                    .equals(loggedInUsername)) {
+            if (customer.getUsername() == null || !customer.getUsername().equals(loggedInUsername)) {
 
                 return "access-denied";
             }
 
             model.addAttribute("customer", customer);
 
-            model.addAttribute("roles",
-                    Role.getAllRoleNames());
+            model.addAttribute("roles", Role.getAllRoleNames());
 
             return "customer-form";
-        }
+        } catch (CustomerNotFoundException e) {
 
-        catch (CustomerNotFoundException e) {
+            return "access-denied";
+        }
+    }
+
+    @PostMapping("/user/available-cars")
+    public String findAvailableCars(@RequestParam String fromDate, @RequestParam String toDate, Authentication authentication, Model model) {
+
+        try {
+
+            LocalDate from = LocalDate.parse(fromDate);
+
+            LocalDate to = LocalDate.parse(toDate);
+
+            List<CarModel> allCars = carService.findAll();
+
+            List<CarModel> availableCars = new ArrayList<>();
+
+            for (CarModel car : allCars) {
+
+                boolean available = bookingService.isCarAvailable(car.getId(), from, to);
+
+                if (available) {
+
+                    availableCars.add(car);
+                }
+            }
+
+            String username = authentication.getName();
+
+            CustomerModel customer = customerService.findByUsername(username);
+
+            model.addAttribute("customer", customer);
+
+            model.addAttribute("bookingList", bookingService.findByCustomer(customer));
+
+            model.addAttribute("carList", allCars);
+
+            model.addAttribute("availableCars", availableCars);
+
+            return "user-home";
+
+        } catch (Exception e) {
+
+            model.addAttribute("error", e.getMessage());
 
             return "access-denied";
         }
