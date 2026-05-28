@@ -16,7 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -176,13 +176,19 @@ public class BaseController {
 
         try {
 
-            LocalDate from = LocalDate.parse(fromDate);
+            // PARSE DATETIME
 
-            LocalDate to = LocalDate.parse(toDate);
+            LocalDateTime from = LocalDateTime.parse(fromDate);
+
+            LocalDateTime to = LocalDateTime.parse(toDate);
+
+            // GET ALL CARS
 
             List<CarModel> allCars = carService.findAll();
 
             List<CarModel> availableCars = new ArrayList<>();
+
+            // CHECK AVAILABILITY
 
             for (CarModel car : allCars) {
 
@@ -194,9 +200,13 @@ public class BaseController {
                 }
             }
 
+            // CURRENT USER
+
             String username = authentication.getName();
 
             CustomerModel customer = customerService.findByUsername(username);
+
+            // MODEL DATA
 
             model.addAttribute("customer", customer);
 
@@ -205,6 +215,10 @@ public class BaseController {
             model.addAttribute("carList", allCars);
 
             model.addAttribute("availableCars", availableCars);
+
+            model.addAttribute("selectedFromDate", fromDate);
+
+            model.addAttribute("selectedToDate", toDate);
 
             return "user-home";
 

@@ -25,8 +25,9 @@ public class PdfService {
             document.add(new Paragraph("Customer : " + booking.getCustomer().getName()));
             document.add(new Paragraph("Car : " + booking.getCar().getModel()));
             document.add(new Paragraph("Registration No : " + booking.getCar().getRegistrationNo()));
-            document.add(new Paragraph("Start Date : " + booking.getStartDate()));
-            document.add(new Paragraph("End Date : " + booking.getEndDate()));
+            document.add(new Paragraph("Price Per Hour : ₹" + booking.getCar().getPricePerHour() + "/hour"));
+            document.add(new Paragraph("Start Date Time : " + booking.getStartDateTime()));
+            document.add(new Paragraph("End Date Time : " + booking.getEndDateTime()));
             document.add(new Paragraph("Status : " + booking.getStatus()));
             document.add(new Paragraph("Total Amount : ₹" + booking.getTotalAmount()));
             document.add(new Paragraph(" "));
@@ -35,8 +36,6 @@ public class PdfService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ByteArrayInputStream(
-                out.toByteArray()
-        );
+        return new ByteArrayInputStream(out.toByteArray());
     }
 }

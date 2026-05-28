@@ -1,18 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Rentify | Payments</title>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-    <!-- Font Awesome -->
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Rentify | Payments
+    </title>
+
+    <!-- FONT AWESOME -->
+
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- GOOGLE FONT -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <style>
+
         :root{
+
             --bg-main:#020617;
             --bg-card:#0b1220;
             --border-soft:rgba(255,255,255,0.08);
@@ -22,6 +36,7 @@
             --accent-soft:rgba(34,197,94,0.18);
             --danger:#ef4444;
             --info:#60a5fa;
+            --warning:#facc15;
         }
 
         *{
@@ -32,302 +47,829 @@
         }
 
         body{
-            background:radial-gradient(circle at top,#111827,#020617);
+
+            background:
+                    radial-gradient(circle at top,
+                    #111827,
+                    #020617);
+
             color:var(--text-main);
+
+            min-height:100vh;
         }
 
-        a{text-decoration:none;color:inherit}
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
 
         /* NAVBAR */
+
         .navbar{
+
             position:sticky;
             top:0;
             z-index:999;
+
             background:rgba(2,6,23,.85);
+
             backdrop-filter:blur(12px);
+
             padding:14px 26px;
+
             display:flex;
             justify-content:space-between;
             align-items:center;
+
             border-bottom:1px solid var(--border-soft);
         }
 
         .logo{
+
             display:flex;
             align-items:center;
             gap:10px;
         }
+
         .app-logo{
+
             width:42px;
             height:42px;
             border-radius:12px;
         }
-        .logo h2{font-weight:900}
-        .logo span{color:var(--accent)}
+
+        .logo h2{
+            font-weight:900;
+        }
+
+        .logo span{
+            color:var(--accent);
+        }
+
+        .nav-links{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
 
         .nav-links a{
+
             font-size:13px;
+
             padding:10px 16px;
+
             border-radius:14px;
+
             background:rgba(255,255,255,0.05);
+
             font-weight:700;
+
             transition:.3s;
         }
+
         .nav-links a:hover{
+
             background:var(--accent-soft);
+
             color:var(--accent);
         }
 
         /* CONTAINER */
+
         .container{
+
             width:92%;
-            max-width:1200px;
+            max-width:1350px;
+
             margin:24px auto;
         }
 
-        /* HEADER */
-        .page-head{
-            margin-bottom:18px;
-        }
-        .page-head h1{
-            font-size:26px;
-            font-weight:900;
-        }
-        .page-head p{
-            color:var(--text-muted);
-            font-size:13px;
-            margin-top:6px;
-        }
+        /* PAGE HEADER */
 
-        /* STATS */
-        .stats{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-            gap:14px;
+        .page-head{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:16px;
+            flex-wrap:wrap;
+
             margin-bottom:22px;
         }
 
-        .stat-card{
-            background:linear-gradient(180deg,#0b1220,#020617);
-            border:1px solid var(--border-soft);
-            border-radius:20px;
-            padding:18px;
-            box-shadow:0 20px 60px rgba(0,0,0,.55);
-        }
-        .stat-card h3{
-            color:var(--text-muted);
-            font-size:13px;
-        }
-        .stat-card h2{
-            font-size:28px;
+        .page-head h1{
+
+            font-size:34px;
+
             font-weight:900;
-            margin-top:6px;
         }
 
-        /* TOP BAR */
-        .top-bar{
-            display:flex;
-            justify-content:flex-start;
-            margin-bottom:14px;
-        }
+        .page-head p{
 
-        .search-box{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            background:#020617;
-            border:1px solid var(--border-soft);
-            padding:12px 14px;
-            border-radius:14px;
-            width:320px;
-        }
+            color:var(--text-muted);
 
-        .search-box input{
-            background:transparent;
-            border:none;
-            outline:none;
-            color:white;
-            width:100%;
-        }
-
-        /* ALERTS */
-        .alert{
-            padding:12px 14px;
-            border-radius:14px;
-            margin-bottom:14px;
             font-size:14px;
+
+            margin-top:8px;
+        }
+
+        /* STATS */
+
+        .stats{
+
+            display:grid;
+
+            grid-template-columns:
+                    repeat(auto-fit,minmax(240px,1fr));
+
+            gap:16px;
+
+            margin-bottom:24px;
+        }
+
+        .stat-card{
+
+            background:
+                    linear-gradient(180deg,
+                    #0b1220,
+                    #020617);
+
+            border:1px solid var(--border-soft);
+
+            border-radius:22px;
+
+            padding:20px;
+
+            transition:.3s;
+
+            box-shadow:0 20px 60px rgba(0,0,0,.45);
+        }
+
+        .stat-card:hover{
+
+            transform:translateY(-4px);
+
+            border-color:rgba(34,197,94,.22);
+        }
+
+        .stat-top{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .stat-icon{
+
+            width:54px;
+            height:54px;
+
+            border-radius:16px;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            background:rgba(34,197,94,.12);
+
+            color:#22c55e;
+
+            font-size:22px;
+        }
+
+        .stat-card h3{
+
+            color:var(--text-muted);
+
+            font-size:13px;
+
+            margin-top:16px;
+        }
+
+        .stat-card h2{
+
+            font-size:32px;
+
+            font-weight:900;
+
+            margin-top:8px;
+        }
+
+        /* ALERT */
+
+        .alert{
+
+            padding:14px 16px;
+
+            border-radius:16px;
+
+            margin-bottom:16px;
+
+            font-size:14px;
+
             font-weight:700;
         }
+
         .success{
+
             background:rgba(34,197,94,.15);
+
             color:var(--accent);
         }
+
         .error{
+
             background:rgba(239,68,68,.15);
+
             color:var(--danger);
         }
 
-        /* TABLE */
-        .table-wrap{
-            background:linear-gradient(180deg,#0b1220,#020617);
+        /* TOP BAR */
+
+        .top-bar{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:14px;
+            flex-wrap:wrap;
+
+            margin-bottom:18px;
+        }
+
+        .search-box{
+
+            display:flex;
+            align-items:center;
+            gap:10px;
+
+            background:#020617;
+
             border:1px solid var(--border-soft);
-            border-radius:20px;
-            overflow:hidden;
-            box-shadow:0 20px 60px rgba(0,0,0,.55);
+
+            padding:14px 16px;
+
+            border-radius:16px;
+
+            width:340px;
+        }
+
+        .search-box i{
+            color:var(--text-muted);
+        }
+
+        .search-box input{
+
+            background:transparent;
+
+            border:none;
+
+            outline:none;
+
+            color:white;
+
+            width:100%;
+        }
+
+        .search-box input::placeholder{
+            color:#64748b;
+        }
+
+        /* TABLE */
+
+        .table-wrap{
+
+            background:
+                    linear-gradient(
+                    180deg,
+                    #0b1220,
+                    #020617
+                    );
+
+            border:1px solid var(--border-soft);
+
+            border-radius:24px;
+
+            overflow-x:auto;
+            overflow-y:hidden;
+
+            box-shadow:0 20px 60px rgba(0,0,0,.45);
+
+            width:100%;
+        }
+
+        .table-wrap::-webkit-scrollbar{
+
+            height:8px;
+        }
+
+        .table-wrap::-webkit-scrollbar-thumb{
+
+            background:#1e293b;
+
+            border-radius:999px;
         }
 
         table{
+
             width:100%;
+
+            min-width:1200px;
+
             border-collapse:collapse;
         }
 
-        th,td{
-            padding:14px 12px;
+        th,
+        td{
+
+            padding:16px 14px;
+
             text-align:center;
+
             font-size:14px;
+
+            white-space:nowrap;
         }
 
         th{
+
             background:#020617;
+
             color:var(--text-muted);
+
             font-weight:800;
         }
 
         tr{
+
             border-bottom:1px solid var(--border-soft);
+
+            transition:.25s;
         }
 
         tr:hover{
-            background:rgba(34,197,94,0.06);
+
+            background:rgba(34,197,94,0.05);
         }
 
-        .actions button{
-            background:rgba(239,68,68,.15);
-            color:var(--danger);
-            border:none;
-            padding:8px 12px;
-            border-radius:12px;
-            cursor:pointer;
-            font-weight:800;
+        /* AMOUNT */
+
+        .amount{
+
+            color:#22c55e;
+
+            font-size:18px;
+
+            font-weight:900;
         }
+
+        /* BADGES */
+
+        .badge{
+
+            padding:8px 14px;
+
+            border-radius:999px;
+
+            font-size:12px;
+
+            font-weight:900;
+
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:6px;
+
+            min-width:100px;
+        }
+
+        .paid{
+
+            background:rgba(34,197,94,.14);
+
+            color:#22c55e;
+        }
+
+        .pending{
+
+            background:rgba(250,204,21,.14);
+
+            color:#facc15;
+        }
+
+        .failed{
+
+            background:rgba(239,68,68,.14);
+
+            color:#ef4444;
+        }
+
+        .mode-badge{
+
+            background:rgba(96,165,250,.14);
+
+            color:#60a5fa;
+        }
+
+        /* BOOKING LINK */
+
+        .booking-link{
+
+            color:#60a5fa;
+
+            font-weight:700;
+        }
+
+        .booking-link:hover{
+
+            text-decoration:underline;
+        }
+
+        /* ACTIONS */
+
+        .actions{
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+
+            min-width:90px;
+        }
+
+        .action-btn{
+
+            width:42px;
+            height:42px;
+
+            border-radius:14px;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            border:none;
+
+            cursor:pointer;
+
+            transition:.3s;
+
+            flex-shrink:0;
+        }
+
+        .delete-btn{
+
+            background:rgba(239,68,68,.14);
+
+            color:#ef4444;
+        }
+
+        .delete-btn:hover{
+
+            transform:translateY(-2px);
+
+            background:rgba(239,68,68,.24);
+        }
+
+        /* RESPONSIVE */
 
         @media(max-width:768px){
-            table,thead,tbody,th,td,tr{display:block;width:100%}
-            thead{display:none}
-            tr{
-                margin:12px 0;
-                padding:15px;
-                border-radius:15px;
-                background:linear-gradient(180deg,#0b1220,#020617);
+
+            .page-head{
+
+                flex-direction:column;
+
+                align-items:flex-start;
             }
+
+            .top-bar{
+
+                flex-direction:column;
+
+                align-items:stretch;
+            }
+
+            .search-box{
+                width:100%;
+            }
+
+            table{
+
+                min-width:100%;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr{
+
+                display:block;
+
+                width:100%;
+            }
+
+            thead{
+                display:none;
+            }
+
+            tr{
+
+                margin:14px;
+
+                border-radius:20px;
+
+                padding:12px;
+
+                background:
+                        linear-gradient(180deg,
+                        #0b1220,
+                        #020617);
+            }
+
             td{
+
                 display:flex;
                 justify-content:space-between;
+                align-items:center;
+
+                border:none;
+
+                padding:12px 10px;
+
+                text-align:right;
             }
+
             td::before{
+
                 content:attr(data-label);
-                font-weight:700;
+
+                font-weight:800;
+
                 color:var(--text-muted);
+
+                text-align:left;
+            }
+
+            .actions{
+                justify-content:flex-end;
             }
         }
+
     </style>
+
 </head>
 
 <body>
 
 <!-- NAVBAR -->
+
 <div class="navbar">
+
     <div class="logo">
-        <img th:src="@{/images/rentify.png}" class="app-logo">
-        <h2>Rent<span>ify</span></h2>
+
+        <img th:src="@{/images/rentify.png}"
+             class="app-logo">
+
+        <h2>
+            Rent<span>ify</span>
+        </h2>
+
     </div>
+
     <div class="nav-links">
-        <a href="/rentify/">Dashboard</a>
+
+        <a href="/rentify/">
+
+            <i class="fa-solid fa-house"></i>
+
+            Dashboard
+
+        </a>
+
     </div>
+
 </div>
+
+<!-- CONTAINER -->
 
 <div class="container">
 
     <!-- HEADER -->
+
     <div class="page-head">
-        <h1>Payments 💳</h1>
-        <p>Manage all payment details in one place</p>
-    </div>
 
-    <!-- STATS -->
-    <div class="stats">
-        <div class="stat-card">
-            <h3>Total Payments</h3>
-            <h2 th:text="${payments != null ? #lists.size(payments) : 0}">0</h2>
+        <div>
+
+            <h1>
+                Payments 💳
+            </h1>
+
+            <p>
+                Manage rental payment transactions
+            </p>
+
         </div>
+
     </div>
 
-    <!-- ALERTS -->
-    <div th:if="${success}" class="alert success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert error" th:text="${error}"></div>
+    <!-- SEARCH -->
 
-    <!-- TOP BAR -->
     <div class="top-bar">
+
         <div class="search-box">
+
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Search by booking id...">
+
+            <input type="text"
+                   id="searchInput"
+                   placeholder="Search by Booking ID...">
+
         </div>
+
     </div>
 
     <!-- TABLE -->
+
     <div class="table-wrap">
+
         <table id="paymentTable">
+
             <thead>
+
             <tr>
+
                 <th>ID</th>
                 <th>Amount</th>
-                <th>Mode</th>
-                <th>Status</th>
+                <th>Payment Mode</th>
+                <th>Payment Status</th>
                 <th>Booking ID</th>
-                <th>Action</th>
+                <th>Actions</th>
+
             </tr>
+
             </thead>
 
             <tbody>
+
             <tr th:each="p : ${payments}">
-                <td data-label="ID" th:text="${p.id}"></td>
-                <td data-label="Amount" th:text="${p.amount}"></td>
-                <td data-label="Mode" th:text="${p.mode}"></td>
-                <td data-label="Status" th:text="${p.status}"></td>
+
+                <!-- ID -->
+
+                <td data-label="ID"
+                    th:text="${p.id}">
+                </td>
+
+                <!-- AMOUNT -->
+
+                <td data-label="Amount">
+
+                    <span class="amount">
+
+                        ₹<span th:text="${p.amount}"></span>
+
+                    </span>
+
+                </td>
+
+                <!-- MODE -->
+
+                <td data-label="Payment Mode">
+
+                    <span class="badge mode-badge"
+                          th:text="${p.mode}">
+                    </span>
+
+                </td>
+
+                <!-- STATUS -->
+
+                <td data-label="Status">
+
+                    <span th:if="${p.status != null && p.status.toString() == 'SUCCESS'}"
+                          class="badge paid">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        SUCCESS
+
+                    </span>
+
+                    <span th:if="${p.status != null && p.status.toString() == 'PENDING'}"
+                          class="badge pending">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        PENDING
+
+                    </span>
+
+                    <span th:if="${p.status != null && p.status.toString() == 'FAILED'}"
+                          class="badge failed">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                        FAILED
+
+                    </span>
+
+                    <span th:if="${p.status == null}"
+                          class="badge pending">
+
+                        PENDING
+
+                    </span>
+
+                </td>
+
+                <!-- BOOKING -->
 
                 <td data-label="Booking ID">
+
                     <a th:if="${p.bookingModel != null}"
                        th:text="${p.bookingModel.id}"
-                       th:href="@{/rentify/common/booking/find/{id}(id=${p.bookingModel.id})}"
-                       style="color:var(--info);font-weight:700">
+                       th:href="${#authorization.expression('hasRole(''ADMIN'')')}
+                         ? @{/rentify/admin/booking/find/{id}(id=${p.bookingModel.id})}
+                         : @{/rentify/user/booking/find/{id}(id=${p.bookingModel.id})}"
+                       class="booking-link">
                     </a>
-                    <span th:if="${p.bookingModel == null}">N/A</span>
+
+                    <span th:if="${p.bookingModel == null}">
+                        N/A
+                    </span>
+
                 </td>
 
-                <td data-label="Action" class="actions">
-                    <form th:action="@{/rentify/admin/payment/delete/{id}(id=${p.id})}"
-                          method="post"
-                          onsubmit="return confirm('Delete this payment?');">
-                        <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit">🗑</button>
-                    </form>
+                <!-- ACTION -->
+
+                <td data-label="Actions">
+
+                    <div class="actions">
+
+                        <form th:action="@{/rentify/admin/payment/delete/{id}(id=${p.id})}"
+                              method="post"
+                              onsubmit="return confirm('Delete this payment?');">
+
+                            <input type="hidden"
+                                   name="_method"
+                                   value="DELETE"/>
+
+                            <button type="submit"
+                                    class="action-btn delete-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
                 </td>
+
             </tr>
+
             </tbody>
+
         </table>
+
     </div>
 
 </div>
 
+<!-- SEARCH SCRIPT -->
+
 <script>
-    document.getElementById("searchInput").addEventListener("keyup", function () {
-        let value = this.value.toLowerCase();
-        document.querySelectorAll("#paymentTable tbody tr").forEach(row => {
-            let bookingId = row.children[4].innerText.toLowerCase();
-            row.style.display = bookingId.includes(value) ? "" : "none";
-        });
-    });
+
+    document.getElementById(
+        "searchInput"
+    ).addEventListener(
+        "keyup",
+        function () {
+
+            let value =
+                this.value.toLowerCase();
+
+            document.querySelectorAll(
+                "#paymentTable tbody tr"
+            ).forEach(row => {
+
+                let bookingId =
+                    row.children[4]
+                    .innerText
+                    .toLowerCase();
+
+                row.style.display =
+                    bookingId.includes(value)
+                    ? ""
+                    : "none";
+            });
+        }
+    );
+
 </script>
 
 </body>
+
 </html>

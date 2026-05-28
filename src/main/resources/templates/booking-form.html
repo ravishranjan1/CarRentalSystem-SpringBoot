@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -8,40 +9,46 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Rentify | Rent Car</title>
+    <title>Rentify | Book Car</title>
 
-    <!-- Font Awesome -->
+    <!-- FONT AWESOME -->
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <!-- Google Font -->
+    <!-- GOOGLE FONT -->
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
 
     <style>
 
         :root{
-            --bg-main:#020617;
-            --bg-card:#0b1220;
-            --border-soft:rgba(255,255,255,0.08);
-            --text-main:#e5e7eb;
-            --text-muted:#94a3b8;
-            --accent:#22c55e;
-            --accent-soft:rgba(34,197,94,0.18);
+            --bg:#020617;
+            --card:#0f172a;
+            --card2:#111827;
+            --border:rgba(255,255,255,.08);
+            --text:#f8fafc;
+            --muted:#94a3b8;
+            --primary:#22c55e;
+            --primaryDark:#16a34a;
+            --primarySoft:rgba(34,197,94,.14);
         }
 
         *{
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:"Inter",sans-serif;
+            font-family:'Inter',sans-serif;
         }
 
         body{
-            background:radial-gradient(circle at top,#111827,#020617);
-            color:var(--text-main);
+            background:
+                    radial-gradient(circle at top left,#1e293b 0%,#020617 45%),
+                    linear-gradient(to bottom,#020617,#020617);
+            min-height:100vh;
+            color:var(--text);
+            overflow-x:hidden;
         }
 
         a{
@@ -49,109 +56,144 @@
             color:inherit;
         }
 
-        /* NAVBAR */
-
         .navbar{
-            position:sticky;
-            top:0;
-            z-index:999;
-            background:rgba(2,6,23,.85);
-            backdrop-filter:blur(12px);
-            padding:14px 26px;
+            width:100%;
+            padding:18px 40px;
             display:flex;
             justify-content:space-between;
             align-items:center;
-            border-bottom:1px solid var(--border-soft);
+            background:rgba(2,6,23,.72);
+            backdrop-filter:blur(18px);
+            border-bottom:1px solid var(--border);
+            position:sticky;
+            top:0;
+            z-index:999;
         }
 
         .logo{
             display:flex;
             align-items:center;
-            gap:10px;
+            gap:12px;
         }
 
         .app-logo{
-            width:42px;
-            height:42px;
-            border-radius:12px;
+            width:48px;
+            height:48px;
+            border-radius:14px;
+            object-fit:cover;
         }
 
         .logo h2{
+            font-size:26px;
             font-weight:900;
         }
 
         .logo span{
-            color:var(--accent);
+            color:var(--primary);
         }
 
-        .nav-links a{
-            font-size:13px;
-            padding:10px 16px;
+        .nav-btn{
+            padding:12px 18px;
             border-radius:14px;
-            background:rgba(255,255,255,0.05);
+            background:rgba(255,255,255,.06);
+            border:1px solid var(--border);
+            color:white;
+            font-size:13px;
             font-weight:700;
-            transition:.3s;
         }
 
-        .nav-links a:hover{
-            background:var(--accent-soft);
-            color:var(--accent);
+        .page{
+            width:95%;
+            max-width:1250px;
+            margin:50px auto;
+            display:grid;
+            grid-template-columns:1fr 420px;
+            gap:28px;
+            align-items:start;
         }
 
-        /* FORM WRAPPER */
-
-        .page-wrap{
-            width:92%;
-            max-width:560px;
-            margin:40px auto;
-        }
-
-        .form-card{
-            background:linear-gradient(180deg,#0b1220,#020617);
-            border:1px solid var(--border-soft);
-            border-radius:22px;
-            padding:28px;
-            box-shadow:0 25px 70px rgba(0,0,0,.6);
+        .hero-card{
             position:relative;
+            overflow:hidden;
+            border-radius:32px;
+            background:
+                    linear-gradient(135deg,
+                    rgba(34,197,94,.12),
+                    rgba(255,255,255,.03));
+            border:1px solid var(--border);
+            padding:55px;
+            min-height:700px;
         }
 
-        .form-card::before{
-            content:"";
-            position:absolute;
-            top:-60px;
-            right:-60px;
-            width:140px;
-            height:140px;
-            border-radius:50%;
-            background:var(--accent-soft);
-        }
-
-        .form-header{
-            text-align:center;
+        .hero-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 18px;
+            border-radius:999px;
+            background:rgba(255,255,255,.06);
+            border:1px solid var(--border);
+            font-size:13px;
+            font-weight:700;
+            color:var(--primary);
             margin-bottom:22px;
         }
 
-        .form-header h2{
-            font-size:24px;
+        .hero-title{
+            font-size:58px;
+            line-height:1.05;
+            font-weight:900;
+            max-width:650px;
+        }
+
+        .hero-title span{
+            color:var(--primary);
+        }
+
+        .hero-text{
+            margin-top:22px;
+            color:var(--muted);
+            font-size:16px;
+            line-height:1.8;
+            max-width:560px;
+        }
+
+        .booking-card{
+            position:sticky;
+            top:100px;
+            border-radius:30px;
+            background:linear-gradient(180deg,#111827,#0b1120);
+            border:1px solid var(--border);
+            padding:32px;
+            box-shadow:0 20px 70px rgba(0,0,0,.45);
+        }
+
+        .booking-top{
+            text-align:center;
+            margin-bottom:28px;
+        }
+
+        .booking-top h2{
+            font-size:30px;
             font-weight:900;
         }
 
-        .form-header p{
-            font-size:13px;
-            color:var(--text-muted);
-            margin-top:6px;
+        .booking-top p{
+            margin-top:8px;
+            color:var(--muted);
+            font-size:14px;
         }
 
-        .form-row{
-            margin-top:16px;
+        .input-group{
+            margin-bottom:18px;
         }
 
-        label{
+        .input-group label{
             display:block;
-            font-weight:700;
+            margin-bottom:8px;
             font-size:13px;
-            color:var(--text-muted);
-            margin-bottom:6px;
+            font-weight:700;
+            color:#cbd5e1;
         }
 
         .input-box{
@@ -160,82 +202,224 @@
 
         .input-box i{
             position:absolute;
+            left:16px;
             top:50%;
-            left:14px;
             transform:translateY(-50%);
-            color:var(--text-muted);
-            font-size:14px;
+            color:var(--muted);
+            font-size:15px;
         }
 
-        input,
-        select{
+        .input-box input,
+        .input-box select{
             width:100%;
-            padding:12px 14px 12px 40px;
-            border-radius:14px;
-            border:1px solid var(--border-soft);
+            height:58px;
+            border-radius:18px;
+            border:1px solid var(--border);
             background:#020617;
             color:white;
+            padding:0 18px 0 48px;
             font-size:14px;
             outline:none;
-            transition:.25s;
         }
 
-        input:focus,
-        select:focus{
-            border-color:var(--accent);
-            box-shadow:0 0 0 4px rgba(34,197,94,.15);
+        .input-box input:focus,
+        .input-box select:focus{
+            border-color:var(--primary);
+            box-shadow:0 0 0 5px rgba(34,197,94,.12);
         }
 
-        select option{
-            background:#020617;
-            color:white;
+        .booking-info{
+            margin-top:22px;
+            background:rgba(255,255,255,.04);
+            border:1px solid var(--border);
+            border-radius:20px;
+            padding:18px;
         }
 
-        /* BUTTONS */
+        .booking-info-item{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:12px;
+            font-size:14px;
+        }
 
         .btn{
             width:100%;
-            padding:12px;
             border:none;
-            border-radius:16px;
             cursor:pointer;
-            font-weight:900;
-            font-size:14px;
             transition:.3s;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:10px;
+            font-weight:800;
+            font-size:15px;
+            border-radius:18px;
         }
 
-        .btn-primary{
-            background:linear-gradient(135deg,#22c55e,#16a34a);
-            color:#022c16;
-            box-shadow:0 12px 30px rgba(34,197,94,.35);
-            margin-top:22px;
+        .btn-book{
+            margin-top:24px;
+            height:58px;
+            background:linear-gradient(135deg,var(--primary),var(--primaryDark));
+            color:#052e16;
         }
 
-        .btn-primary:hover{
-            transform:translateY(-2px);
-        }
-
-        .btn-secondary{
-            margin-top:12px;
-            background:rgba(255,255,255,0.07);
-            border:1px solid var(--border-soft);
+        .btn-back{
+            margin-top:14px;
+            height:54px;
+            background:rgba(255,255,255,.05);
+            border:1px solid var(--border);
             color:white;
         }
 
-        .btn-secondary:hover{
-            background:rgba(255,255,255,0.12);
-        }
+        @media(max-width:1100px){
 
-        @media(max-width:650px){
+            .page{
+                grid-template-columns:1fr;
+            }
 
-            .nav-links{
-                display:none;
+            .booking-card{
+                position:relative;
+                top:0;
             }
         }
+
+        /* LEFT SIDE */
+
+.hero-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:32px;
+    background:
+            linear-gradient(135deg,
+            rgba(34,197,94,.12),
+            rgba(255,255,255,.03));
+    border:1px solid var(--border);
+    padding:55px;
+    min-height:700px;
+}
+
+.hero-card::before{
+    content:"";
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    background:rgba(34,197,94,.10);
+    top:-120px;
+    right:-100px;
+    filter:blur(10px);
+}
+
+.hero-card::after{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    border-radius:50%;
+    background:rgba(59,130,246,.10);
+    bottom:-120px;
+    left:-80px;
+    filter:blur(20px);
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    border-radius:999px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--border);
+    font-size:13px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:22px;
+}
+
+.hero-title{
+    font-size:58px;
+    line-height:1.05;
+    font-weight:900;
+    max-width:650px;
+}
+
+.hero-title span{
+    color:var(--primary);
+}
+
+.hero-text{
+    margin-top:22px;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.8;
+    max-width:560px;
+}
+
+.feature-grid{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.feature-card{
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:24px;
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(34,197,94,.25);
+}
+
+.feature-card i{
+    width:54px;
+    height:54px;
+    border-radius:16px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:var(--primarySoft);
+    color:var(--primary);
+    font-size:20px;
+    margin-bottom:16px;
+}
+
+.feature-card h4{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.feature-card p{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .hero-title{
+        font-size:44px;
+    }
+}
+
+@media(max-width:700px){
+
+    .hero-card{
+        padding:30px;
+        min-height:auto;
+    }
+
+    .hero-title{
+        font-size:34px;
+    }
+
+    .feature-grid{
+        grid-template-columns:1fr;
+    }
+}
 
     </style>
 
@@ -243,9 +427,7 @@
 
 <body>
 
-<!-- NAVBAR -->
-
-<div class="navbar">
+<nav class="navbar">
 
     <div class="logo">
 
@@ -260,60 +442,159 @@
 
     </div>
 
-    <div class="nav-links">
+    <a th:href="@{/rentify/}"
+       class="nav-btn">
 
-        <a href="/rentify/">
+        <i class="fa-solid fa-house"></i>
 
-            Dashboard
+        Dashboard
 
-        </a>
+    </a>
+
+</nav>
+
+<div class="page">
+
+    <!-- LEFT -->
+
+    <div class="hero-card">
+
+        <div class="hero-badge">
+
+            <i class="fa-solid fa-bolt"></i>
+
+            Smart Hourly Car Rental
+
+        </div>
+
+        <h1 class="hero-title">
+
+            Book Your Perfect <span>Ride</span> Anytime
+
+        </h1>
+
+        <p class="hero-text">
+
+            Experience premium hourly car rentals with real-time booking,
+            flexible timing, transparent pricing, and a seamless driving experience.
+            Choose your car, select your booking hours, and hit the road instantly.
+
+        </p>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <h4>Hourly Booking</h4>
+
+                <p>
+
+                    Book cars by hours instead of full-day rentals for maximum flexibility.
+
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-car-side"></i>
+
+                <h4>Premium Cars</h4>
+
+                <p>
+
+                    Choose from SUVs, Sedans, Luxury Cars, and Hatchbacks.
+
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <h4>Safe & Secure</h4>
+
+                <p>
+
+                    Verified drivers, secure payment methods, and trusted vehicles.
+
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-credit-card"></i>
+
+                <h4>Easy Payment</h4>
+
+                <p>
+
+                    Fast online payments with multiple payment mode options.
+
+                </p>
+
+            </div>
+
+        </div>
 
     </div>
 
-</div>
+    <!-- RIGHT -->
 
-<!-- FORM -->
+    <div class="booking-card">
 
-<div class="page-wrap">
-
-    <div class="form-card">
-
-        <div class="form-header">
+        <div class="booking-top">
 
             <h2>
 
-                Rent a Car
+                Confirm Booking
 
             </h2>
 
             <p>
 
-                Choose your car and confirm booking
+                Fill booking details carefully
 
             </p>
 
         </div>
 
-        <form th:action="@{/rentify/common/booking/save}"
+        <form th:action="${#authorization.expression('hasRole(''ADMIN'')')}
+              ? @{/rentify/admin/booking/save}
+              : @{/rentify/user/booking/save}"
               th:object="${booking}"
               method="post">
 
             <!-- START DATE -->
 
-            <div class="form-row">
+            <div class="input-group">
 
                 <label>
 
-                    Start Date
+                    Start Date & Time
 
                 </label>
 
                 <div class="input-box">
 
-                    <i class="fa-solid fa-calendar-day"></i>
+                    <i class="fa-solid fa-calendar-check"></i>
 
-                    <input type="date"
-                           th:field="*{startDate}"
+                    <input type="datetime-local"
+
+                           id="startDate"
+
+                           th:field="*{startDateTime}"
+
+                           step="3600"
+
+                           min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+
+                           onchange="validateBookingTime()"
+
                            required>
 
                 </div>
@@ -322,20 +603,30 @@
 
             <!-- END DATE -->
 
-            <div class="form-row">
+            <div class="input-group">
 
                 <label>
 
-                    End Date
+                    End Date & Time
 
                 </label>
 
                 <div class="input-box">
 
-                    <i class="fa-solid fa-calendar-days"></i>
+                    <i class="fa-solid fa-calendar-xmark"></i>
 
-                    <input type="date"
-                           th:field="*{endDate}"
+                    <input type="datetime-local"
+
+                           id="endDate"
+
+                           th:field="*{endDateTime}"
+
+                           step="3600"
+
+                           min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+
+                           onchange="validateBookingTime()"
+
                            required>
 
                 </div>
@@ -344,11 +635,11 @@
 
             <!-- CUSTOMER -->
 
-            <div class="form-row">
+            <div class="input-group">
 
                 <label>
 
-                    Customer
+                    Customer Name
 
                 </label>
 
@@ -356,12 +647,8 @@
 
                     <i class="fa-solid fa-user"></i>
 
-                    <!-- HIDDEN CUSTOMER ID -->
-
                     <input type="hidden"
                            th:field="*{customer.id}">
-
-                    <!-- DISPLAY NAME -->
 
                     <input type="text"
                            th:value="${booking.customer.name}"
@@ -371,13 +658,13 @@
 
             </div>
 
-            <!-- CAR -->
+            <!-- SELECTED CAR -->
 
-            <div class="form-row">
+            <div class="input-group">
 
                 <label>
 
-                    Select Car
+                    Selected Car
 
                 </label>
 
@@ -385,36 +672,30 @@
 
                     <i class="fa-solid fa-car"></i>
 
-                    <select th:field="*{car}"
-                            required>
+                    <input type="text"
 
-                        <option value="">
+                           th:value="${booking.car.model}
+                           + ' | '
+                           + ${booking.car.registrationNo}
+                           + ' | ₹'
+                           + ${booking.car.pricePerHour}
+                           + '/hour | '
+                           + ${booking.car.type}"
 
-                            Select Car
-
-                        </option>
-
-                        <option th:each="car : ${cars}"
-                                th:value="${car.id}"
-                                th:text="${car.model}
-                                + ' | '
-                                + ${car.registrationNo}
-                                + ' | ₹'
-                                + ${car.pricePerday}
-                                + ' | '
-                                + ${car.type}">
-
-                        </option>
-
-                    </select>
+                           readonly>
 
                 </div>
 
             </div>
 
-            <!-- PAYMENT MODE -->
+            <!-- HIDDEN CAR -->
 
-            <div class="form-row">
+            <input type="hidden"
+                   th:field="*{car}">
+
+            <!-- PAYMENT -->
+
+            <div class="input-group">
 
                 <label>
 
@@ -424,14 +705,14 @@
 
                 <div class="input-box">
 
-                    <i class="fa-solid fa-credit-card"></i>
+                    <i class="fa-solid fa-wallet"></i>
 
                     <select th:field="*{payment.mode}"
                             required>
 
                         <option value="">
 
-                            -- Select Payment Mode --
+                            Select Payment Mode
 
                         </option>
 
@@ -450,10 +731,32 @@
 
             </div>
 
-            <!-- SUBMIT -->
+            <!-- INFO -->
+
+            <div class="booking-info">
+
+                <div class="booking-info-item">
+
+                    <span>Booking Type</span>
+
+                    <strong>Hourly Rental</strong>
+
+                </div>
+
+                <div class="booking-info-item">
+
+                    <span>Support</span>
+
+                    <strong>24×7 Available</strong>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
 
             <button type="submit"
-                    class="btn btn-primary">
+                    class="btn btn-book">
 
                 <i class="fa-solid fa-circle-check"></i>
 
@@ -465,18 +768,76 @@
 
         <!-- BACK -->
 
-        <a class="btn btn-secondary"
-           th:href="@{/rentify/}">
+        <a th:href="@{/rentify/}">
 
-            <i class="fa-solid fa-arrow-left"></i>
+            <button class="btn btn-back">
 
-            Back to Dashboard
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </button>
 
         </a>
 
     </div>
 
 </div>
+
+<script>
+
+    function validateBookingTime(){
+
+        const start =
+            document.querySelector('[name="startDateTime"]').value;
+
+        const end =
+            document.querySelector('[name="endDateTime"]').value;
+
+        if(start && end){
+
+            if(new Date(end) <= new Date(start)){
+
+                alert('End time must be greater than start time');
+
+            }
+        }
+    }
+
+    window.onload = function () {
+
+        const startInput =
+            document.getElementById('startDate');
+
+        const endInput =
+            document.getElementById('endDate');
+
+        // START DATE LOCK
+        if(startInput.value){
+
+            startInput.readOnly = true;
+
+            startInput.style.pointerEvents = "none";
+
+            startInput.style.background = "#0f172a";
+
+            startInput.style.color = "#94a3b8";
+        }
+
+        // END DATE LOCK
+        if(endInput.value){
+
+            endInput.readOnly = true;
+
+            endInput.style.pointerEvents = "none";
+
+            endInput.style.background = "#0f172a";
+
+            endInput.style.color = "#94a3b8";
+        }
+    }
+
+</script>
 
 </body>
 

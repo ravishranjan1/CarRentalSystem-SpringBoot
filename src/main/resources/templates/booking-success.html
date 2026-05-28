@@ -6,66 +6,275 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>
 
-        Booking Success
+        Rentify | Booking Success
 
     </title>
 
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <!-- GOOGLE FONT -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
     <style>
 
-        body{
+        :root{
+            --bg:#020617;
+            --card:#0f172a;
+            --border:rgba(255,255,255,.08);
+            --text:#f8fafc;
+            --muted:#94a3b8;
+            --primary:#22c55e;
+            --primaryDark:#16a34a;
+            --primarySoft:rgba(34,197,94,.14);
+            --info:#60a5fa;
+        }
 
-            font-family:Arial,sans-serif;
-            background:#020617;
-            color:white;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:
+                    radial-gradient(circle at top left,#1e293b 0%,#020617 45%);
             display:flex;
             justify-content:center;
             align-items:center;
-            height:100vh;
+            padding:20px;
+            color:var(--text);
         }
 
-        .card{
+        .success-card{
+            width:100%;
+            max-width:520px;
+            background:linear-gradient(180deg,#111827,#0b1120);
+            border:1px solid var(--border);
+            border-radius:34px;
+            overflow:hidden;
+            position:relative;
+            box-shadow:0 30px 80px rgba(0,0,0,.45);
+        }
 
-            width:420px;
-            background:#0f172a;
-            padding:30px;
-            border-radius:20px;
+        .success-card::before{
+            content:"";
+            position:absolute;
+            width:240px;
+            height:240px;
+            border-radius:50%;
+            background:rgba(34,197,94,.08);
+            top:-120px;
+            right:-90px;
+        }
+
+        .top-section{
+            padding:42px 32px 28px;
             text-align:center;
-            box-shadow:0 20px 50px rgba(0,0,0,.5);
+            border-bottom:1px solid var(--border);
         }
 
-        h1{
-
-            color:#22c55e;
-            margin-bottom:16px;
+        .success-icon{
+            width:92px;
+            height:92px;
+            margin:auto;
+            border-radius:50%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:rgba(34,197,94,.14);
+            color:var(--primary);
+            font-size:42px;
+            box-shadow:0 0 35px rgba(34,197,94,.22);
         }
 
-        p{
+        .top-section h1{
+            margin-top:24px;
+            font-size:36px;
+            font-weight:900;
+        }
 
-            margin:10px 0;
+        .top-section p{
+            margin-top:10px;
+            color:var(--muted);
+            line-height:1.7;
+            font-size:14px;
+        }
+
+        /* BOOKING INFO */
+
+        .booking-info{
+            padding:30px;
+        }
+
+        .info-card{
+            background:rgba(255,255,255,.04);
+            border:1px solid var(--border);
+            border-radius:24px;
+            padding:22px;
+        }
+
+        .info-row{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:14px;
+            padding:14px 0;
+            border-bottom:1px solid rgba(255,255,255,.05);
+        }
+
+        .info-row:last-child{
+            border-bottom:none;
+        }
+
+        .label{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:var(--muted);
+            font-size:14px;
+            font-weight:600;
+        }
+
+        .label i{
+            color:var(--primary);
+        }
+
+        .value{
+            font-weight:800;
+            text-align:right;
+            font-size:14px;
+        }
+
+        .amount{
+            color:var(--primary);
+            font-size:22px;
+            font-weight:900;
+        }
+
+        /* DATETIME */
+
+        .date-time{
+            display:flex;
+            flex-direction:column;
+            align-items:flex-end;
+            gap:4px;
+        }
+
+        .date{
+            font-weight:800;
+        }
+
+        .time{
+            display:flex;
+            align-items:center;
+            gap:6px;
+            color:var(--primary);
+            font-size:13px;
+            font-weight:800;
+        }
+
+        .time-badge{
+            padding:3px 8px;
+            border-radius:999px;
+            background:rgba(34,197,94,.14);
+            color:var(--primary);
+            font-size:10px;
+            font-weight:900;
+        }
+
+        /* BUTTONS */
+
+        .buttons{
+            margin-top:28px;
+            display:flex;
+            flex-direction:column;
+            gap:14px;
         }
 
         .btn{
-
-            display:block;
-            margin-top:18px;
-            padding:12px;
-            border-radius:12px;
+            width:100%;
+            height:58px;
+            border:none;
+            border-radius:18px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            font-size:15px;
+            font-weight:800;
+            cursor:pointer;
+            transition:.3s;
             text-decoration:none;
-            font-weight:700;
         }
 
         .download-btn{
+            background:linear-gradient(135deg,var(--primary),var(--primaryDark));
+            color:#052e16;
+            box-shadow:0 18px 45px rgba(34,197,94,.28);
+        }
 
-            background:#22c55e;
-            color:#022c16;
+        .download-btn:hover{
+            transform:translateY(-3px);
         }
 
         .home-btn{
-
-            background:#1e293b;
+            background:rgba(255,255,255,.05);
+            border:1px solid var(--border);
             color:white;
+        }
+
+        .home-btn:hover{
+            background:rgba(255,255,255,.08);
+        }
+
+        /* FOOTER */
+
+        .footer{
+            margin-top:22px;
+            text-align:center;
+            color:var(--muted);
+            font-size:12px;
+            line-height:1.7;
+        }
+
+        @media(max-width:600px){
+
+            .top-section{
+                padding:34px 22px 24px;
+            }
+
+            .booking-info{
+                padding:22px;
+            }
+
+            .top-section h1{
+                font-size:28px;
+            }
+
+            .info-row{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            .date-time{
+                align-items:flex-start;
+            }
+
+            .value{
+                text-align:left;
+            }
         }
 
     </style>
@@ -74,61 +283,333 @@
 
 <body>
 
-<div class="card">
+<div class="success-card">
 
-    <h1>
+    <!-- TOP -->
 
-        Booking Successful 🎉
+    <div class="top-section">
 
-    </h1>
+        <div class="success-icon">
 
-    <p>
+            <i class="fa-solid fa-circle-check"></i>
 
-        Booking ID :
-        <strong th:text="${bookings.id}"></strong>
+        </div>
 
-    </p>
+        <h1>
 
-    <p>
+            Booking Confirmed
 
-        Customer :
-        <strong th:text="${bookings.customer.name}"></strong>
+        </h1>
 
-    </p>
+        <p>
 
-    <p>
+            Your hourly booking has been successfully created.
+            Download receipt or go back to dashboard.
 
-        Car :
-        <strong th:text="${bookings.car.model}"></strong>
+        </p>
 
-    </p>
+    </div>
 
-    <p>
+    <!-- INFO -->
 
-        Amount :
-        ₹<strong th:text="${bookings.totalAmount}"></strong>
+    <div class="booking-info">
 
-    </p>
+        <div class="info-card">
 
-    <!-- DOWNLOAD PDF -->
+            <!-- BOOKING ID -->
 
-    <a th:href="@{'/rentify/common/booking/pdf/' + ${bookings.id}}"
-       class="btn download-btn">
+            <div class="info-row">
 
-        Download Receipt PDF
+                <div class="label">
 
-    </a>
+                    <i class="fa-solid fa-hashtag"></i>
 
-    <!-- HOME -->
+                    Booking ID
 
-    <a href="/rentify/"
-       class="btn home-btn">
+                </div>
 
-        Go To Dashboard
+                <div class="value"
+                     th:text="${bookings.id}">
 
-    </a>
+                </div>
+
+            </div>
+
+            <!-- CUSTOMER -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Customer
+
+                </div>
+
+                <div class="value"
+                     th:text="${bookings.customer.name}">
+
+                </div>
+
+            </div>
+
+            <!-- CAR -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-car"></i>
+
+                    Car
+
+                </div>
+
+                <div class="value"
+                     th:text="${bookings.car.model}">
+
+                </div>
+
+            </div>
+
+            <!-- START DATETIME -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                    Start Date & Time
+
+                </div>
+
+                <div class="date-time">
+
+                    <div class="date"
+                         th:text="${#temporals.format(
+                         bookings.startDateTime,
+                         'dd MMM yyyy')}">
+
+                    </div>
+
+                    <div class="time">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        <span th:text="${#temporals.format(
+                        bookings.startDateTime,
+                        'HH:mm')}">
+
+                        </span>
+
+                        <span class="time-badge">
+
+                            24H
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- END DATETIME -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-calendar-xmark"></i>
+
+                    End Date & Time
+
+                </div>
+
+                <div class="date-time">
+
+                    <div class="date"
+                         th:text="${#temporals.format(
+                         bookings.endDateTime,
+                         'dd MMM yyyy')}">
+
+                    </div>
+
+                    <div class="time">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        <span th:text="${#temporals.format(
+                        bookings.endDateTime,
+                        'HH:mm')}">
+
+                        </span>
+
+                        <span class="time-badge">
+
+                            24H
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TOTAL HOURS -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    Total Hours
+
+                </div>
+
+                <div class="value total-hours"
+                     th:data-start="${bookings.startDateTime}"
+                     th:data-end="${bookings.endDateTime}">
+                </div>
+
+            </div>
+
+            <!-- AMOUNT -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-money-bill-wave"></i>
+
+                    Total Amount
+
+                </div>
+
+                <div class="amount">
+
+                    ₹<span th:text="${bookings.totalAmount}"></span>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    Booking Status
+
+                </div>
+
+                <div class="value"
+                     style="color:#22c55e;">
+
+                    CONFIRMED
+
+                </div>
+
+            </div>
+
+            <!-- PAYMENT MODE -->
+
+            <div class="info-row">
+
+                <div class="label">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                    Payment Mode
+
+                </div>
+
+                <div class="value"
+                     th:text="${bookings.payment.mode}">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <!-- DOWNLOAD PDF -->
+
+            <a th:if="${bookings != null}"
+               th:href="${#authentication.authorities.?[authority=='ROLE_ADMIN'].size() > 0}
+                ? @{/rentify/admin/booking/pdf/{id}(id=${bookings.id})}
+                : @{/rentify/user/booking/pdf/{id}(id=${bookings.id})}"
+               class="btn download-btn">
+
+                <i class="fa-solid fa-file-arrow-down"></i>
+
+                Download Receipt PDF
+
+            </a>
+
+            <!-- HOME -->
+
+            <a href="/rentify/"
+               class="btn home-btn">
+
+                <i class="fa-solid fa-house"></i>
+
+                Go To Dashboard
+
+            </a>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            Thank you for choosing Rentify 🚗 <br>
+
+            Enjoy your ride and drive safely.
+
+        </div>
+
+    </div>
 
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const hourCells = document.querySelectorAll(".total-hours");
+
+        hourCells.forEach(cell => {
+
+            const start = cell.getAttribute("data-start");
+            const end = cell.getAttribute("data-end");
+
+            if (start && end) {
+
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+
+                const diffMs = endDate - startDate;
+
+                // Decimal hour aaye to next integer
+                const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+
+                cell.innerText = hours + " Hours";
+            }
+        });
+    });
+</script>
 
 </body>
 

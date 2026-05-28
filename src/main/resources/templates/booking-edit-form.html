@@ -1,136 +1,182 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Rentify | Edit Booking</title>
 
-    <!-- Font Awesome -->
+    <!-- FONT AWESOME -->
+
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- GOOGLE FONT -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <style>
+
         :root{
-            --bg-main:#020617;
-            --bg-card:#0b1220;
-            --border-soft:rgba(255,255,255,0.08);
-            --text-main:#e5e7eb;
-            --text-muted:#94a3b8;
-            --accent:#22c55e;
-            --accent-soft:rgba(34,197,94,0.18);
-            --info:#60a5fa;
+            --bg:#020617;
+            --card:#0f172a;
+            --card2:#111827;
+            --border:rgba(255,255,255,.08);
+            --text:#f8fafc;
+            --muted:#94a3b8;
+            --primary:#22c55e;
+            --primaryDark:#16a34a;
+            --primarySoft:rgba(34,197,94,.14);
         }
 
         *{
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:"Inter",sans-serif;
+            font-family:'Inter',sans-serif;
         }
 
         body{
-            background:radial-gradient(circle at top,#111827,#020617);
-            color:var(--text-main);
+            background:
+                    radial-gradient(circle at top left,#1e293b 0%,#020617 45%);
+            min-height:100vh;
+            color:var(--text);
         }
 
-        a{text-decoration:none;color:inherit}
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
 
         /* NAVBAR */
+
         .navbar{
-            position:sticky;
-            top:0;
-            z-index:999;
-            background:rgba(2,6,23,.85);
-            backdrop-filter:blur(12px);
-            padding:14px 26px;
+            width:100%;
+            padding:18px 32px;
             display:flex;
             justify-content:space-between;
             align-items:center;
-            border-bottom:1px solid var(--border-soft);
+            background:rgba(2,6,23,.82);
+            backdrop-filter:blur(18px);
+            border-bottom:1px solid var(--border);
+            position:sticky;
+            top:0;
+            z-index:999;
         }
 
         .logo{
             display:flex;
             align-items:center;
-            gap:10px;
+            gap:12px;
         }
-        .app-logo{
-            width:42px;
-            height:42px;
-            border-radius:12px;
-        }
-        .logo h2{font-weight:900}
-        .logo span{color:var(--accent)}
 
-        .nav-links a{
-            font-size:13px;
-            padding:10px 16px;
+        .app-logo{
+            width:46px;
+            height:46px;
             border-radius:14px;
-            background:rgba(255,255,255,0.05);
+        }
+
+        .logo h2{
+            font-size:26px;
+            font-weight:900;
+        }
+
+        .logo span{
+            color:var(--primary);
+        }
+
+        .nav-btn{
+            padding:12px 18px;
+            border-radius:14px;
+            background:rgba(255,255,255,.05);
+            border:1px solid var(--border);
+            font-size:13px;
             font-weight:700;
             transition:.3s;
         }
-        .nav-links a:hover{
-            background:var(--accent-soft);
-            color:var(--accent);
+
+        .nav-btn:hover{
+            background:var(--primarySoft);
+            color:var(--primary);
         }
 
-        /* FORM */
-        .page-wrap{
-            width:92%;
-            max-width:520px;
-            margin:40px auto;
+        /* PAGE */
+
+        .page{
+            width:95%;
+            max-width:650px;
+            margin:45px auto;
         }
 
         .form-card{
-            background:linear-gradient(180deg,#0b1220,#020617);
-            border:1px solid var(--border-soft);
-            border-radius:22px;
-            padding:28px;
-            box-shadow:0 25px 70px rgba(0,0,0,.6);
+            background:linear-gradient(180deg,#111827,#0b1120);
+            border:1px solid var(--border);
+            border-radius:32px;
+            padding:34px;
             position:relative;
+            overflow:hidden;
+            box-shadow:0 25px 70px rgba(0,0,0,.45);
         }
 
         .form-card::before{
             content:"";
             position:absolute;
-            top:-60px;
-            right:-60px;
-            width:140px;
-            height:140px;
+            width:240px;
+            height:240px;
             border-radius:50%;
-            background:var(--accent-soft);
+            background:rgba(34,197,94,.08);
+            top:-120px;
+            right:-90px;
         }
 
-        .form-header{
+        .header{
             text-align:center;
-            margin-bottom:20px;
+            margin-bottom:28px;
         }
 
-        .form-header h2{
-            font-size:22px;
+        .badge{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 18px;
+            border-radius:999px;
+            background:rgba(255,255,255,.05);
+            border:1px solid var(--border);
+            color:var(--primary);
+            font-size:13px;
+            font-weight:700;
+            margin-bottom:18px;
+        }
+
+        .header h1{
+            font-size:34px;
             font-weight:900;
         }
 
-        .form-header p{
-            font-size:13px;
-            color:var(--text-muted);
-            margin-top:6px;
+        .header p{
+            margin-top:10px;
+            color:var(--muted);
+            font-size:14px;
         }
 
-        .form-row{
-            margin-top:14px;
+        /* FORM */
+
+        .input-group{
+            margin-bottom:18px;
         }
 
-        label{
+        .input-group label{
             display:block;
-            font-weight:700;
+            margin-bottom:8px;
             font-size:13px;
-            color:var(--text-muted);
-            margin-bottom:6px;
+            font-weight:700;
+            color:#cbd5e1;
         }
 
         .input-box{
@@ -139,28 +185,31 @@
 
         .input-box i{
             position:absolute;
+            left:16px;
             top:50%;
-            left:14px;
             transform:translateY(-50%);
-            color:var(--text-muted);
-            font-size:14px;
+            color:var(--muted);
+            font-size:15px;
         }
 
-        input, select{
+        .input-box input,
+        .input-box select{
             width:100%;
-            padding:12px 14px 12px 38px;
-            border-radius:14px;
-            border:1px solid var(--border-soft);
+            height:58px;
+            border-radius:18px;
+            border:1px solid var(--border);
             background:#020617;
             color:white;
+            padding:0 18px 0 48px;
             font-size:14px;
             outline:none;
             transition:.25s;
         }
 
-        input:focus, select:focus{
-            border-color:var(--accent);
-            box-shadow:0 0 0 4px rgba(34,197,94,.15);
+        .input-box input:focus,
+        .input-box select:focus{
+            border-color:var(--primary);
+            box-shadow:0 0 0 5px rgba(34,197,94,.12);
         }
 
         select option{
@@ -168,124 +217,388 @@
             color:white;
         }
 
-        /* BUTTON */
+        /* INFO CARD */
+
+        .info-card{
+            margin-top:22px;
+            background:rgba(255,255,255,.04);
+            border:1px solid var(--border);
+            border-radius:22px;
+            padding:20px;
+        }
+
+        .info-item{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:14px;
+            font-size:14px;
+        }
+
+        .info-item:last-child{
+            margin-bottom:0;
+        }
+
+        .info-item span{
+            color:var(--muted);
+        }
+
+        .info-item strong{
+            color:white;
+        }
+
+        /* BUTTONS */
+
         .btn{
             width:100%;
-            padding:12px;
+            height:58px;
             border:none;
-            border-radius:16px;
+            border-radius:18px;
             cursor:pointer;
-            font-weight:900;
-            font-size:14px;
+            font-size:15px;
+            font-weight:800;
             transition:.3s;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:10px;
-            margin-top:18px;
         }
 
-        .btn-primary{
-            background:linear-gradient(135deg,#22c55e,#16a34a);
-            color:#022c16;
-            box-shadow:0 12px 30px rgba(34,197,94,.35);
+        .btn-update{
+            margin-top:24px;
+            background:linear-gradient(135deg,var(--primary),var(--primaryDark));
+            color:#052e16;
+            box-shadow:0 18px 45px rgba(34,197,94,.30);
         }
 
-        .btn-primary:hover{
-            transform:translateY(-2px);
+        .btn-update:hover{
+            transform:translateY(-3px);
         }
 
-        @media(max-width:650px){
-            .nav-links{display:none}
+        .btn-back{
+            margin-top:14px;
+            background:rgba(255,255,255,.05);
+            border:1px solid var(--border);
+            color:white;
         }
+
+        .btn-back:hover{
+            background:rgba(255,255,255,.08);
+        }
+
+        @media(max-width:700px){
+
+            .navbar{
+                padding:16px 18px;
+            }
+
+            .form-card{
+                padding:24px;
+            }
+
+            .header h1{
+                font-size:28px;
+            }
+        }
+
     </style>
+
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<div class="navbar">
-    <div class="logo">
-        <img th:src="@{/images/rentify.png}" class="app-logo">
-        <h2>Rent<span>ify</span></h2>
-    </div>
-    <div class="nav-links">
-        <a href="/rentify/">Dashboard</a>
-    </div>
-</div>
 
-<!-- FORM -->
-<div class="page-wrap">
+<nav class="navbar">
+
+    <div class="logo">
+
+        <img th:src="@{/images/rentify.png}"
+             class="app-logo">
+
+        <h2>
+
+            Rent<span>ify</span>
+
+        </h2>
+
+    </div>
+
+    <a th:href="@{/rentify/}"
+       class="nav-btn">
+
+        <i class="fa-solid fa-house"></i>
+
+        Dashboard
+
+    </a>
+
+</nav>
+
+<!-- PAGE -->
+
+<div class="page">
+
     <div class="form-card">
 
-        <div class="form-header">
-            <h2>Edit Booking</h2>
-            <p>Update booking dates, car or payment mode</p>
+        <div class="header">
+
+            <div class="badge">
+
+                <i class="fa-solid fa-pen"></i>
+
+                Edit Existing Booking
+
+            </div>
+
+            <h1>
+
+                Update Booking
+
+            </h1>
+
+            <p>
+
+                Modify booking timing, car selection and payment mode
+
+            </p>
+
         </div>
 
-        <form th:action="@{/rentify/common/booking/save}"
+        <form th:action="${#authorization.expression('hasRole(''ADMIN'')')}
+                    ? @{/rentify/admin/booking/save}
+                    : @{/rentify/user/booking/save}"
               th:object="${booking}"
               method="post">
 
-            <!-- Hidden Fields -->
-            <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{customer.id}">
+            <!-- HIDDEN -->
 
-            <!-- Start Date -->
-            <div class="form-row">
-                <label>Start Date</label>
+            <input type="hidden"
+                   th:field="*{id}">
+
+            <input type="hidden"
+                   th:field="*{customer.id}">
+
+            <!-- START DATE TIME -->
+
+            <div class="input-group">
+
+                <label>
+
+                    Start Date & Time (24 Hours)
+
+                </label>
+
                 <div class="input-box">
-                    <i class="fa-solid fa-calendar-day"></i>
-                    <input type="date" th:field="*{startDate}" required>
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                    <input type="datetime-local"
+                           th:field="*{startDateTime}"
+                           step="3600"
+                           min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+                           onchange="validateBookingTime()"
+                           required>
+
                 </div>
+
             </div>
 
-            <!-- End Date -->
-            <div class="form-row">
-                <label>End Date</label>
+            <!-- END DATE TIME -->
+
+            <div class="input-group">
+
+                <label>
+
+                    End Date & Time (24 Hours)
+
+                </label>
+
                 <div class="input-box">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <input type="date" th:field="*{endDate}" required>
+
+                    <i class="fa-solid fa-calendar-xmark"></i>
+
+                    <input type="datetime-local"
+                           th:field="*{endDateTime}"
+                           step="3600"
+                           min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+                           onchange="validateBookingTime()"
+                           required>
+
                 </div>
+
             </div>
 
-            <!-- Car -->
-            <div class="form-row">
-                <label>Select Car</label>
+            <!-- CAR -->
+
+            <div class="input-group">
+
+                <label>
+
+                    Booked Car
+
+                </label>
+
                 <div class="input-box">
+
                     <i class="fa-solid fa-car"></i>
-                    <select th:field="*{car}" required>
-                        <option th:each="c : ${cars}"
-                                th:value="${c.id}"
-                                th:text="${c.model + ' | ' + c.registrationNo}">
-                        </option>
-                    </select>
+
+                    <input type="text"
+                           th:value="${booking.car.model}
+                               + ' | '
+                               + ${booking.car.registrationNo}
+                               + ' | ₹'
+                               + ${booking.car.pricePerHour}
+                               + '/hour | '
+                               + ${booking.car.type}"
+                           readonly>
+
                 </div>
+
             </div>
 
-            <!-- Payment Mode -->
-            <div class="form-row">
-                <label>Payment Mode</label>
+            <!-- HIDDEN CAR ID -->
+
+            <input type="hidden" th:field="*{car.id}">
+
+            <!-- PAYMENT -->
+
+            <div class="input-group">
+
+                <label>
+
+                    Payment Mode
+
+                </label>
+
                 <div class="input-box">
+
                     <i class="fa-solid fa-credit-card"></i>
-                    <select th:field="*{payment.mode}" required>
-                        <option th:each="pm : ${T(com.rentify.carrental.enums.PaymentMode).values()}"
+
+                    <select th:field="*{payment.mode}"
+                            required>
+
+                        <option value="">
+
+                            Select Payment Mode
+
+                        </option>
+
+                        <option th:each="pm :
+                        ${T(com.rentify.carrental.enums.PaymentMode).values()}"
                                 th:value="${pm}"
                                 th:text="${pm}">
+
                         </option>
+
                     </select>
+
                 </div>
+
             </div>
 
-            <button class="btn btn-primary">
-                <i class="fa-solid fa-pen-to-square"></i>
+            <!-- INFO -->
+
+            <div class="info-card">
+
+                <div class="info-item">
+
+                    <span>
+
+                        Booking Type
+
+                    </span>
+
+                    <strong>
+
+                        Hourly Rental
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>
+
+                        Time Format
+
+                    </span>
+
+                    <strong>
+
+                        24 Hours
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>
+
+                        Billing
+
+                    </span>
+
+                    <strong>
+
+                        Price Per Hour
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
+
+            <button type="submit"
+                    class="btn btn-update">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
                 Update Booking
+
             </button>
 
         </form>
 
+        <!-- BACK -->
+
+        <a th:href="@{/rentify/}">
+
+            <button class="btn btn-back">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </button>
+
+        </a>
+
     </div>
+
 </div>
 
+<script>
+
+    function validateBookingTime(){
+
+        const start =
+            document.querySelector('[name=\"startDateTime\"]').value;
+
+        const end =
+            document.querySelector('[name=\"endDateTime\"]').value;
+
+        if(start && end){
+
+            if(new Date(end) <= new Date(start)){
+
+                alert('End time must be greater than start time');
+
+            }
+        }
+    }
+
+</script>
+
 </body>
+
 </html>

@@ -111,8 +111,21 @@ public class CarController {
         return "car";
     }
 
-    @GetMapping("/common/car/find/{id}")
-    public String getCarById(@PathVariable Long id, Model model){
+    @GetMapping("/admin/car/find/{id}")
+    public String adminGetCarById(@PathVariable Long id, Model model){
+        try {
+            CarModel car = carService.findById(id);
+            model.addAttribute("success", "Car found");
+            model.addAttribute("cars", List.of(car));
+        } catch (CarNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("cars", List.of());
+        }
+        return "car";
+    }
+
+    @GetMapping("/user/car/find/{id}")
+    public String userGetCarById(@PathVariable Long id, Model model){
         try {
             CarModel car = carService.findById(id);
             model.addAttribute("success", "Car found");

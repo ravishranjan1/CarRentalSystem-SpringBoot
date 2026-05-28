@@ -3,7 +3,6 @@ package com.rentify.carrental.service.impl;
 import com.rentify.carrental.enums.CarStatus;
 import com.rentify.carrental.enums.PaymentStatus;
 import com.rentify.carrental.exception.BookingNotFoundException;
-import com.rentify.carrental.exception.CarNotAvailableException;
 import com.rentify.carrental.model.BookingModel;
 import com.rentify.carrental.model.CarModel;
 import com.rentify.carrental.model.CustomerModel;
@@ -15,7 +14,7 @@ import com.rentify.carrental.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingModel booking(BookingModel bookingModel) throws Exception {
 
         try {
-            if(bookingModel.getId()==null){
+            if (bookingModel.getId() == null) {
                 CustomerModel customer = customerService.findById(bookingModel.getCustomer().getId());
                 CarModel car = carService.findById(bookingModel.getCar().getId());
 
@@ -43,9 +42,12 @@ public class BookingServiceImpl implements BookingService {
                 bookingModel.setCar(car);
                 bookingModel.setStatus(CarStatus.SCHEDULED);
 
-                long days = ChronoUnit.DAYS.between(bookingModel.getStartDate(),
-                        bookingModel.getEndDate()) + 1;
-                double totalPrice = days * car.getPricePerday();
+                long minutes = ChronoUnit.MINUTES.between(bookingModel.getStartDateTime(), bookingModel.getEndDateTime());
+                long hours = (long) Math.ceil(minutes / 60.0);
+                if (hours <= 0) {
+                    throw new Exception("Invalid booking hours");
+                }
+                double totalPrice = hours * car.getPricePerHour();
                 bookingModel.setTotalAmount(totalPrice);
 
                 PaymentModel payment = new PaymentModel();
@@ -56,35 +58,77 @@ public class BookingServiceImpl implements BookingService {
                 bookingModel.setPayment(payment);
 
                 return bookingRepo.save(bookingModel);
-            }else{
+            } else {
+
                 Optional<BookingModel> opt = bookingRepo.findById(bookingModel.getId());
-                if(opt.isEmpty()){
+
+                if (opt.isEmpty()) {
+
                     throw new Exception("Booking not found");
                 }
+
                 BookingModel booking = opt.get();
+
                 if (booking.getStatus() != CarStatus.SCHEDULED) {
+
                     throw new Exception("Booking cannot be edited after rent");
                 }
+
                 CarModel car = carService.findById(bookingModel.getCar().getId());
-                booking.setCar(bookingModel.getCar());
 
-                long days = ChronoUnit.DAYS.between(bookingModel.getStartDate(),
-                        bookingModel.getEndDate()) + 1;
+                LocalDateTime newStart = bookingModel.getStartDateTime();
 
-                double totalPrice = days * car.getPricePerday();
+                LocalDateTime newEnd = bookingModel.getEndDateTime();
+
+                // CHECK CONFLICT
+
+                List<BookingModel> conflicts = bookingRepo.findConflictingBookings(car.getId(), booking.getId(), newStart, newEnd);
+
+                if (!conflicts.isEmpty()) {
+
+                    throw new Exception("Car already booked for selected time!");
+                }
+
+                // CALCULATE HOURS
+
+                long minutes = ChronoUnit.MINUTES.between(newStart, newEnd);
+
+                long hours = (long) Math.ceil(minutes / 60.0);
+
+                if (hours <= 0) {
+
+                    throw new Exception("Invalid booking hours");
+                }
+
+                double totalPrice = hours * car.getPricePerHour();
+
                 booking.setTotalAmount(totalPrice);
 
-                PaymentModel payment = bookingModel.getPayment();
-                payment.setAmount(totalPrice);
-                payment.setMode(bookingModel.getPayment().getMode());
-                payment.setStatus(PaymentStatus.SUCCESS);
-                payment.setBookingModel(bookingModel);
+                // PAYMENT
 
-                booking.setStatus(bookingModel.getStatus());
+                PaymentModel payment = booking.getPayment();
+
+                payment.setAmount(totalPrice);
+
+                payment.setMode(bookingModel.getPayment().getMode());
+
+                payment.setStatus(PaymentStatus.SUCCESS);
+
+                payment.setBookingModel(booking);
+
+                // UPDATE DATA
+
+                booking.setCar(car);
+
                 booking.setPayment(payment);
-                booking.setStartDate(bookingModel.getStartDate());
-                booking.setEndDate(bookingModel.getEndDate());
+
+                booking.setStartDateTime(newStart);
+
+                booking.setEndDateTime(newEnd);
+
                 booking.setCustomer(bookingModel.getCustomer());
+
+                //booking.setStatus(bookingModel.getStatus());
 
                 return bookingRepo.save(booking);
             }
@@ -93,12 +137,12 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public void autoUpdateBookingStatus() throws Exception{
-        try{
-            LocalDate today = LocalDate.now();
+    public void autoUpdateBookingStatus() throws Exception {
+        try {
+            LocalDateTime now = LocalDateTime.now();
             List<BookingModel> bookings = bookingRepo.findAll();
             for (BookingModel booking : bookings) {
-                if (booking.getStatus() == CarStatus.SCHEDULED && booking.getStartDate() != null && booking.getStartDate().equals(today)) {
+                if (booking.getStatus() == CarStatus.SCHEDULED && booking.getStartDateTime() != null && !booking.getStartDateTime().isAfter(now)) {
                     booking.setStatus(CarStatus.ONGOING);
                     if (booking.getCar() != null) {
                         CarModel car = booking.getCar();
@@ -106,7 +150,8 @@ public class BookingServiceImpl implements BookingService {
                         carService.save(car);
                     }
                 }
-                if (booking.getStatus() == CarStatus.ONGOING && booking.getEndDate() != null && booking.getEndDate().isBefore(today)) {
+
+                if (booking.getStatus() == CarStatus.ONGOING && booking.getEndDateTime() != null && booking.getEndDateTime().isBefore(now)) {
                     booking.setStatus(CarStatus.RETURNED);
                     if (booking.getCar() != null) {
                         CarModel car = booking.getCar();
@@ -116,35 +161,34 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
             bookingRepo.saveAll(bookings);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
 
-
     @Override
     public BookingModel findById(Long id) throws BookingNotFoundException {
         Optional<BookingModel> opt = bookingRepo.findById(id);
-        if(opt.isPresent()){
+        if (opt.isPresent()) {
             return opt.get();
-        }else{
-            throw new BookingNotFoundException("Booking not found with id : "+id);
+        } else {
+            throw new BookingNotFoundException("Booking not found with id : " + id);
         }
     }
 
     @Override
     public void removeById(Long id) throws Exception {
         Optional<BookingModel> opt = bookingRepo.findById(id);
-        if(opt.isPresent()){
+        if (opt.isPresent()) {
             BookingModel booking = opt.get();
-            if(booking.getStatus() == CarStatus.RETURNED || booking.getStatus() == CarStatus.CANCELLED){
+            if (booking.getStatus() == CarStatus.RETURNED || booking.getStatus() == CarStatus.CANCELLED) {
                 bookingRepo.delete(booking);
-            }else{
+            } else {
                 throw new Exception("Car is ONGOING or SCHEDULED, you cannot remove it now!");
             }
-        }else{
-            throw new BookingNotFoundException("Booking not found with id : "+id);
+        } else {
+            throw new BookingNotFoundException("Booking not found with id : " + id);
         }
     }
 
@@ -154,14 +198,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public boolean isCarAvailable(Long carId, LocalDate from, LocalDate to) {
+    public boolean isCarAvailable(Long carId, LocalDateTime from, LocalDateTime to) {
         List<BookingModel> bookings = bookingRepo.findAll();
         for (BookingModel booking : bookings) {
-            if (booking.getCar() != null && booking.getCar().getId().equals(carId)
-                    && booking.getStatus() != CarStatus.RETURNED
-                    && booking.getStatus() != CarStatus.CANCELLED) {
-                LocalDate existingFrom = booking.getStartDate();
-                LocalDate existingTo = booking.getEndDate();
+            if (booking.getCar() != null && booking.getCar().getId().equals(carId) && booking.getStatus() != CarStatus.RETURNED && booking.getStatus() != CarStatus.CANCELLED) {
+                LocalDateTime existingFrom = booking.getStartDateTime();
+                LocalDateTime existingTo = booking.getEndDateTime();
                 if (from.isBefore(existingTo) && to.isAfter(existingFrom)) {
                     return false;
                 }
@@ -179,16 +221,16 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingModel cancelBooking(Long id) throws Exception {
         Optional<BookingModel> opt = bookingRepo.findById(id);
-        if(opt.isEmpty()) {
+        if (opt.isEmpty()) {
             throw new BookingNotFoundException("Booking not found with given id");
         }
         BookingModel booking = opt.get();
-        if(booking.getStatus() != CarStatus.SCHEDULED) {
+        if (booking.getStatus() != CarStatus.SCHEDULED) {
             throw new Exception("Only scheduled booking " + "can be cancelled");
         }
         booking.setStatus(CarStatus.CANCELLED);
         CarModel car = booking.getCar();
-        if(car != null) {
+        if (car != null) {
             car.setAvailable(true);
         }
         return bookingRepo.save(booking);
@@ -198,5 +240,39 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingModel findByIdAndCustomer(Long bookingId, Long customerId) {
         return bookingRepo.findByIdAndCustomer_Id(bookingId, customerId).orElse(null);
+    }
+
+    @Override
+    public boolean isCarAvailableForEdit(Long bookingId, Long carId, LocalDateTime from, LocalDateTime to) {
+
+        List<BookingModel> bookings = bookingRepo.findAll();
+
+        for (BookingModel booking : bookings) {
+
+            // IGNORE CURRENT BOOKING
+
+            if (booking.getId().equals(bookingId)) {
+
+                continue;
+            }
+
+            // SAME CAR CHECK
+
+            if (booking.getCar() != null && booking.getCar().getId().equals(carId) && booking.getStatus() != CarStatus.RETURNED && booking.getStatus() != CarStatus.CANCELLED) {
+
+                LocalDateTime existingFrom = booking.getStartDateTime();
+
+                LocalDateTime existingTo = booking.getEndDateTime();
+
+                // OVERLAP CHECK
+
+                if (from.isBefore(existingTo) && to.isAfter(existingFrom)) {
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

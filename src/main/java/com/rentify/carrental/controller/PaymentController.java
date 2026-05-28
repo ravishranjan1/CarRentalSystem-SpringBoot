@@ -31,8 +31,21 @@ public class PaymentController {
         return "payment";
     }
 
-    @GetMapping("/user/find/{id}")
-    public String getPaymentById(@PathVariable Long id, Model model){
+    @GetMapping("/admin/payment/find/{id}")
+    public String adminGetPaymentById(@PathVariable Long id, Model model){
+        try {
+            PaymentModel payment = paymentService.findById(id);
+            model.addAttribute("success", "Payment found");
+            model.addAttribute("payments", List.of(payment));
+        }  catch (PaymentNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("payments", List.of());
+        }
+        return "payment";
+    }
+
+    @GetMapping("/user/payment/find/{id}")
+    public String userGetPaymentById(@PathVariable Long id, Model model){
         try {
             PaymentModel payment = paymentService.findById(id);
             model.addAttribute("success", "Payment found");

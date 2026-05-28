@@ -17,7 +17,7 @@ public class CarModel extends BaseModel{
     @Enumerated(EnumType.STRING)
     private CarType type;
 
-    private double pricePerday;
+    private double pricePerHour;
 
     @ManyToOne
     private CompanyModel company;
@@ -54,12 +54,12 @@ public class CarModel extends BaseModel{
         this.type = type;
     }
 
-    public double getPricePerday() {
-        return pricePerday;
+    public double getPricePerHour() {
+        return pricePerHour;
     }
 
-    public void setPricePerday(double pricePerday) {
-        this.pricePerday = pricePerday;
+    public void setPricePerHour(double pricePerHour) {
+        this.pricePerHour = pricePerHour;
     }
 
     public CompanyModel getCompany() {

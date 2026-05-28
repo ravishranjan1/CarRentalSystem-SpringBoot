@@ -17,13 +17,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/rentify/login", "/rentify/register","/rentify/user-create","/css/**","/js/**").permitAll()
+                        .requestMatchers("/rentify/login", "/rentify/register","/rentify/user-create","/css/**","/js/**","/images/**").permitAll()
                         .requestMatchers("/rentify/admin/**")
                         .hasAnyRole(Role.ADMIN.getRoleName())
                         .requestMatchers("/rentify/user/**")
                         .hasAnyRole(Role.USER.getRoleName())
-                        .requestMatchers("/rentify/common/**")
-                        .hasAnyRole(Role.ADMIN.getRoleName(), Role.USER.getRoleName())
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
