@@ -4,7 +4,7 @@ import com.rentify.carrental.exception.BookingNotFoundException;
 import com.rentify.carrental.model.BookingModel;
 import com.rentify.carrental.model.CustomerModel;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingService {
@@ -15,11 +15,13 @@ public interface BookingService {
     void removeById(Long id) throws Exception;
     List<BookingModel> findAll();
 
-    boolean isCarAvailable(Long carId, LocalDate from, LocalDate to);
+    boolean isCarAvailable(Long carId, LocalDateTime from, LocalDateTime to);
 
     List<BookingModel> findByCustomer(CustomerModel customer);
 
     BookingModel cancelBooking(Long id) throws Exception;
 
     BookingModel findByIdAndCustomer(Long bookingId, Long customerId);
+
+    boolean isCarAvailableForEdit(Long bookingId, Long carId, LocalDateTime from, LocalDateTime to);
 }

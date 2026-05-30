@@ -42,7 +42,7 @@ public class CarServiceImpl implements CarService {
                     updateCar.setModel(carModel.getModel());
                     updateCar.setRegistrationNo(carModel.getRegistrationNo());
                     updateCar.setType(carModel.getType());
-                    updateCar.setPricePerday(carModel.getPricePerday());
+                    updateCar.setPricePerHour(carModel.getPricePerHour());
                     updateCar.setAvailable(carModel.getAvailable());
 
                     return carRepo.save(updateCar);

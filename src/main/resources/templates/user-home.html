@@ -10,14 +10,12 @@
           content="width=device-width, initial-scale=1.0">
 
     <title>
-
-        Rentify | User Dashboard
-
+        Rentify | Self Drive Car Rental
     </title>
 
     <!-- GOOGLE FONT -->
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
 
     <!-- FONT AWESOME -->
@@ -29,19 +27,20 @@
 
         :root{
 
-            --bg-main:#020617;
-            --bg-card:#0f172a;
-            --text-main:#f8fafc;
-            --text-muted:#94a3b8;
-            --accent:#22c55e;
+            --bg:#020617;
+            --card:#0f172a;
+            --card2:#111827;
+            --text:#f8fafc;
+            --muted:#94a3b8;
+            --primary:#22c55e;
+            --primarySoft:rgba(34,197,94,.14);
             --danger:#ef4444;
             --warning:#facc15;
             --info:#60a5fa;
-            --border:rgba(255,255,255,0.08);
+            --border:rgba(255,255,255,.08);
         }
 
         *{
-
             margin:0;
             padding:0;
             box-sizing:border-box;
@@ -49,16 +48,15 @@
         }
 
         body{
-
-            background:radial-gradient(circle at top,
-            #111827,
-            #020617);
-
-            color:var(--text-main);
+            background:
+                    radial-gradient(circle at top left,
+                    #1e293b 0%,
+                    #020617 45%);
+            color:var(--text);
+            overflow-x:hidden;
         }
 
         a{
-
             text-decoration:none;
             color:inherit;
         }
@@ -77,35 +75,49 @@
 
             padding:18px 32px;
 
-            background:rgba(2,6,23,.92);
+            background:rgba(2,6,23,.88);
+
+            backdrop-filter:blur(18px);
 
             border-bottom:1px solid var(--border);
         }
 
         .logo{
 
-            font-size:28px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+
+            font-size:30px;
             font-weight:900;
         }
 
         .logo span{
+            color:var(--primary);
+        }
 
-            color:var(--accent);
+        .app-logo{
+            width:44px;
+            height:44px;
+            border-radius:14px;
         }
 
         .nav-links{
-
             display:flex;
             align-items:center;
             gap:12px;
         }
 
-        .nav-links a{
+        .nav-links a,
+        .logout-btn{
 
-            padding:10px 16px;
-            border-radius:12px;
+            padding:11px 18px;
 
-            background:rgba(255,255,255,0.05);
+            border-radius:14px;
+
+            background:rgba(255,255,255,.05);
+
+            border:1px solid var(--border);
 
             font-weight:700;
 
@@ -114,32 +126,20 @@
 
         .nav-links a:hover{
 
-            background:rgba(34,197,94,.15);
+            background:var(--primarySoft);
 
-            color:var(--accent);
+            color:var(--primary);
         }
 
         .logout-btn{
 
-            padding:10px 16px;
-
-            border:none;
-            border-radius:12px;
-
-            background:rgba(255,255,255,0.05);
-
             color:white;
-
-            font-weight:700;
-
             cursor:pointer;
-
-            transition:.3s;
         }
 
         .logout-btn:hover{
 
-            background:rgba(239,68,68,.15);
+            background:rgba(239,68,68,.14);
 
             color:var(--danger);
         }
@@ -148,350 +148,363 @@
 
         .container{
 
-            width:92%;
-            max-width:1400px;
+            width:95%;
+            max-width:1450px;
 
-            margin:28px auto;
+            margin:auto;
+        }
+
+        section{
+            padding:70px 0;
+        }
+
+        .section-title{
+
+            text-align:center;
+            margin-bottom:40px;
+        }
+
+        .section-title h2{
+
+            font-size:42px;
+            font-weight:900;
+        }
+
+        .section-title p{
+
+            margin-top:12px;
+            color:var(--muted);
         }
 
         /* HERO */
 
         .hero{
 
-            padding:34px;
+            display:grid;
+            grid-template-columns:1.1fr 1fr;
 
-            border-radius:24px;
+            gap:28px;
 
-            background:linear-gradient(
-                    135deg,
-                    #0f172a,
-                    #020617
-            );
+            align-items:center;
+
+            padding:50px 0;
+        }
+
+        .booking-box{
+
+            background:
+                    linear-gradient(180deg,
+                    #111827,
+                    #020617);
 
             border:1px solid var(--border);
+
+            border-radius:34px;
+
+            padding:40px;
+
+            box-shadow:0 20px 60px rgba(0,0,0,.35);
         }
 
-        .hero h1{
+        .booking-box h1{
 
-            font-size:36px;
-            font-weight:900;
+            font-size:54px;
+            line-height:1.1;
+            margin-bottom:16px;
         }
 
-        .hero p{
+        .booking-box p{
 
-            margin-top:10px;
-
-            color:var(--text-muted);
-        }
-
-        .actions{
-
-            margin-top:24px;
-
-            display:flex;
-            flex-wrap:wrap;
-            gap:14px;
-            align-items:center;
-        }
-
-        .btn{
-
-            padding:12px 18px;
-
-            border:none;
-            border-radius:14px;
-
-            font-weight:800;
-
-            cursor:pointer;
-
-            transition:.3s;
-        }
-
-        .btn-primary{
-
-            background:linear-gradient(
-                    135deg,
-                    #22c55e,
-                    #16a34a
-            );
-
-            color:#022c16;
-        }
-
-        .btn-dark{
-
-            background:#111827;
-            color:white;
-        }
-
-        .btn:hover{
-
-            transform:translateY(-2px);
-        }
-
-        /* ALERT */
-
-        .alert{
-
-            margin-top:20px;
-
-            padding:14px;
-
-            border-radius:14px;
-
-            font-weight:700;
-        }
-
-        .success{
-
-            background:rgba(34,197,94,.15);
-
-            color:#22c55e;
-        }
-
-        .error{
-
-            background:rgba(239,68,68,.15);
-
-            color:#ef4444;
-        }
-
-        /* CAR SECTION */
-
-        .availability-card{
-
-            margin-top:28px;
-
-            background:#0f172a;
-
-            border:1px solid rgba(255,255,255,.08);
-
-            border-radius:22px;
-
-            padding:24px;
-        }
-
-        .availability-card h2{
-
-            font-size:24px;
-        }
-
-        .availability-card p{
-
-            margin-top:8px;
-
-            color:#94a3b8;
-        }
-
-        .availability-form{
-
-            margin-top:20px;
-
-            display:grid;
-
-            grid-template-columns:
-                    repeat(auto-fit,minmax(220px,1fr));
-
-            gap:18px;
+            color:var(--muted);
+            line-height:1.7;
+            margin-bottom:28px;
         }
 
         .form-group{
-
-            display:flex;
-            flex-direction:column;
+            margin-bottom:20px;
         }
 
         .form-group label{
 
-            margin-bottom:8px;
+            display:block;
+            margin-bottom:10px;
 
+            font-size:14px;
             font-weight:700;
         }
 
         .form-group input,
         .form-group select{
 
-            padding:12px 14px;
+            width:100%;
+            height:58px;
 
             border:none;
-            border-radius:14px;
+            outline:none;
 
-            background:#111827;
+            border-radius:18px;
+
+            background:#020617;
+
+            border:1px solid var(--border);
 
             color:white;
+
+            padding:0 18px;
+
+            font-size:15px;
         }
 
-        .check-btn{
+        .form-group input:focus,
+        .form-group select:focus{
 
-            padding:12px;
+            border-color:var(--primary);
+
+            box-shadow:0 0 0 5px rgba(34,197,94,.12);
+        }
+
+        .search-btn{
+
+            width:100%;
+            height:58px;
 
             border:none;
-            border-radius:14px;
+            border-radius:18px;
 
-            background:linear-gradient(
-                    135deg,
+            background:
+                    linear-gradient(135deg,
                     #22c55e,
-                    #16a34a
-            );
+                    #16a34a);
 
-            color:#022c16;
+            color:#052e16;
 
+            font-size:18px;
             font-weight:900;
 
             cursor:pointer;
         }
 
-        /* CAR RESULT */
+        .hero-banner img{
 
-        .car-dropdown{
+            width:100%;
+            height:100%;
 
-            margin-top:28px;
+            object-fit:cover;
 
-            background:#0f172a;
-
-            border:1px solid rgba(255,255,255,0.08);
-
-            border-radius:22px;
-
-            padding:24px;
+            border-radius:34px;
         }
 
-        .dropdown-header{
+        /* CARD */
 
-            margin-bottom:22px;
-        }
-
-        .car-grid{
+        .cards{
 
             display:grid;
 
             grid-template-columns:
                     repeat(auto-fit,minmax(280px,1fr));
 
-            gap:18px;
+            gap:24px;
         }
 
-        .car-card{
+        .card{
 
-            background:linear-gradient(
-                    180deg,
+            background:
+                    linear-gradient(180deg,
                     #111827,
-                    #020617
-            );
+                    #020617);
 
-            border:1px solid rgba(255,255,255,0.08);
+            border:1px solid var(--border);
 
-            border-radius:20px;
+            border-radius:26px;
 
-            padding:22px;
+            overflow:hidden;
 
             transition:.3s;
         }
 
-        .car-card:hover{
+        .card:hover{
 
-            transform:translateY(-4px);
+            transform:translateY(-6px);
         }
 
-        .car-card h3{
+        .card img{
 
-            color:#22c55e;
+            width:100%;
+            height:230px;
 
-            margin-bottom:14px;
-
-            font-size:22px;
+            object-fit:cover;
         }
 
-        .car-card p{
-
-            margin-top:8px;
-
-            color:#cbd5e1;
-
-            font-size:14px;
+        .card-content{
+            padding:24px;
         }
 
-        /* STATUS */
+        .card-content h3{
 
-        .status{
+            font-size:24px;
+            margin-bottom:12px;
+        }
 
-            padding:7px 14px;
+        .card-content p{
+
+            color:var(--muted);
+            line-height:1.7;
+        }
+
+        .price{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            margin-top:20px;
+        }
+
+        .price strong{
+
+            color:var(--primary);
+
+            font-size:24px;
+        }
+
+        .book-btn{
+
+            background:var(--primarySoft);
+
+            color:var(--primary);
+
+            padding:10px 18px;
+
+            border-radius:12px;
+
+            font-weight:700;
+        }
+
+        /* WHY */
+
+        .why-grid,
+        .city-grid,
+        .service-grid{
+
+            display:grid;
+
+            grid-template-columns:
+                    repeat(auto-fit,minmax(220px,1fr));
+
+            gap:24px;
+        }
+
+        .why-card,
+        .city-card,
+        .service-card{
+
+            background:
+                    linear-gradient(180deg,
+                    #111827,
+                    #020617);
+
+            border:1px solid var(--border);
+
+            border-radius:24px;
+
+            padding:35px;
+
+            text-align:center;
+        }
+
+        .why-card i{
+
+            font-size:42px;
+
+            color:var(--primary);
+
+            margin-bottom:20px;
+        }
+
+        .why-card h3{
+            margin-bottom:12px;
+        }
+
+        .why-card p{
+
+            color:var(--muted);
+            line-height:1.7;
+        }
+
+        /* CONTENT */
+
+        .story-content,
+        .self-drive-content{
+
+            background:
+                    linear-gradient(180deg,
+                    #111827,
+                    #020617);
+
+            border:1px solid var(--border);
 
             border-radius:30px;
 
-            font-size:12px;
-            font-weight:800;
-
-            display:inline-block;
+            padding:40px;
         }
 
-        .ongoing-status{
+        .story-content p,
+        .self-drive-content p{
 
-            background:rgba(34,197,94,.15);
+            color:var(--muted);
 
-            color:#22c55e;
-        }
+            line-height:1.9;
 
-        .returned-status{
-
-            background:rgba(239,68,68,.15);
-
-            color:#ef4444;
-        }
-
-        .scheduled-status{
-
-            background:rgba(250,204,21,.15);
-
-            color:#facc15;
-        }
-
-        .cancelled-status{
-
-            background:rgba(107,114,128,.2);
-
-            color:#9ca3af;
+            margin-bottom:20px;
         }
 
         /* TABLE */
 
-        .section-title{
+        .table-wrap{
 
-            margin:38px 0 18px;
-        }
+            overflow-x:auto;
 
-        .section-title h2{
+            border-radius:26px;
 
-            font-size:26px;
+            border:1px solid var(--border);
+
+            background:
+                    linear-gradient(180deg,
+                    #111827,
+                    #0b1120);
         }
 
         .booking-table{
 
             width:100%;
 
+            min-width:1200px;
+
             border-collapse:collapse;
-
-            background:var(--bg-card);
-
-            border-radius:18px;
-
-            overflow:hidden;
-        }
-
-        .booking-table th,
-        .booking-table td{
-
-            padding:16px;
-
-            text-align:left;
-
-            border-bottom:1px solid rgba(255,255,255,.05);
         }
 
         .booking-table th{
 
-            background:#111827;
+            background:#020617;
+
+            color:var(--muted);
+
+            padding:18px 14px;
+
+            font-size:13px;
+
+            font-weight:800;
+
+            text-align:center;
+        }
+
+        .booking-table td{
+
+            padding:18px 14px;
+
+            text-align:center;
+
+            border-bottom:1px solid rgba(255,255,255,.05);
 
             font-size:14px;
         }
@@ -501,68 +514,187 @@
             background:rgba(255,255,255,.03);
         }
 
-        /* ACTION BUTTONS */
+        .status{
+
+            display:inline-flex;
+
+            align-items:center;
+
+            gap:8px;
+
+            padding:8px 14px;
+
+            border-radius:999px;
+
+            font-size:12px;
+            font-weight:800;
+        }
+
+        .ongoing-status{
+
+            background:rgba(34,197,94,.14);
+
+            color:#22c55e;
+        }
+
+        .returned-status{
+
+            background:rgba(239,68,68,.14);
+
+            color:#ef4444;
+        }
+
+        .scheduled-status{
+
+            background:rgba(250,204,21,.14);
+
+            color:#facc15;
+        }
+
+        .cancelled-status{
+
+            background:rgba(107,114,128,.18);
+
+            color:#9ca3af;
+        }
 
         .action-buttons{
 
             display:flex;
+
+            justify-content:center;
+
             gap:10px;
-            align-items:center;
+
+            flex-wrap:wrap;
         }
 
         .edit-btn,
         .delete-btn,
         .cancel-btn-small{
 
-            padding:8px 12px;
+            padding:10px 14px;
 
-            border-radius:10px;
+            border-radius:12px;
 
             font-size:13px;
-            font-weight:700;
+
+            font-weight:800;
 
             transition:.3s;
         }
 
         .edit-btn{
 
-            background:rgba(96,165,250,.15);
+            background:rgba(96,165,250,.14);
 
             color:#60a5fa;
         }
 
         .delete-btn{
 
-            background:rgba(239,68,68,.15);
+            background:rgba(239,68,68,.14);
 
             color:#ef4444;
         }
 
         .cancel-btn-small{
 
-            background:rgba(250,204,21,.15);
+            background:rgba(250,204,21,.14);
 
             color:#facc15;
         }
 
-        @media(max-width:768px){
+        /* FOOTER */
 
-            .booking-table{
+        footer{
 
-                font-size:13px;
+            background:#01040d;
+
+            padding:80px 0 30px;
+
+            margin-top:60px;
+        }
+
+        .footer-grid{
+
+            display:grid;
+
+            grid-template-columns:
+                    repeat(auto-fit,minmax(220px,1fr));
+
+            gap:30px;
+        }
+
+        footer h3{
+            margin-bottom:18px;
+        }
+
+        footer ul{
+            list-style:none;
+        }
+
+        footer ul li{
+
+            margin-bottom:12px;
+
+            color:#94a3b8;
+        }
+
+        .copyright{
+
+            text-align:center;
+
+            margin-top:50px;
+
+            border-top:1px solid rgba(255,255,255,.08);
+
+            padding-top:25px;
+
+            color:#64748b;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:950px){
+
+            .hero{
+                grid-template-columns:1fr;
             }
 
-            .action-buttons{
+            .booking-box h1{
+                font-size:42px;
+            }
+
+            .section-title h2{
+                font-size:34px;
+            }
+        }
+
+        @media(max-width:700px){
+
+            .navbar{
+
+                padding:16px 18px;
 
                 flex-direction:column;
-                align-items:flex-start;
+
+                gap:16px;
+            }
+
+            .booking-box{
+                padding:28px;
+            }
+
+            .booking-box h1{
+                font-size:34px;
+            }
+
+            .section-title h2{
+                font-size:28px;
             }
         }
-        .app-logo{
-            width:42px;
-            height:42px;
-            border-radius:12px;
-        }
+
     </style>
 
 </head>
@@ -574,7 +706,10 @@
 <div class="navbar">
 
     <div class="logo">
-        <img th:src="@{/images/rentify.png}" class="app-logo">
+
+        <img th:src="@{/images/rentify.png}"
+             class="app-logo">
+
         Rent<span>ify</span>
 
     </div>
@@ -582,6 +717,8 @@
     <div class="nav-links">
 
         <a th:href="@{'/rentify/profile/edit/' + ${customer.id}}">
+
+            <i class="fa-solid fa-user-pen"></i>
 
             Edit Profile
 
@@ -593,6 +730,8 @@
             <button type="submit"
                     class="logout-btn">
 
+                <i class="fa-solid fa-right-from-bracket"></i>
+
                 Logout
 
             </button>
@@ -603,185 +742,193 @@
 
 </div>
 
-<!-- MAIN -->
-
 <div class="container">
 
     <!-- HERO -->
 
-    <div class="hero">
+    <section class="hero">
 
-        <h1>
+        <div class="booking-box">
 
-            Welcome,
-            <span th:text="${customer.name}"></span>
+            <h1>
 
-            👋
+                Self Drive Car Rentals In India
 
-        </h1>
+            </h1>
 
-        <p>
+            <p>
 
-            Browse available cars,
-            view booking history
-            and manage your account.
+                Book premium self-drive cars anywhere in India with Rentify.
 
-        </p>
+            </p>
 
-        <div class="actions">
+            <!-- BOOKING FORM -->
 
-            <a href="/rentify/user/booking/new"
-               class="btn btn-primary">
+            <form th:action="@{/rentify/user/available-cars}"
+                  method="post">
 
-                🚗 Book Car
+                <!-- START DATE -->
 
-            </a>
+                <div class="form-group">
 
-        </div>
+                    <label>
+                        Start Date & Time
+                    </label>
 
-    </div>
+                    <input type="datetime-local"
+                           id="fromDate"
+                           name="fromDate"
+                           required>
+                </div>
 
-    <!-- ALERT -->
+                <!-- END DATE -->
 
-    <div th:if="${success}"
-         class="alert success"
-         th:text="${success}"></div>
+                <div class="form-group">
 
-    <div th:if="${error}"
-         class="alert error"
-         th:text="${error}"></div>
+                    <label>
+                        End Date & Time
+                    </label>
 
-    <!-- FIND AVAILABLE CARS -->
+                    <input type="datetime-local"
+                           id="toDate"
+                           name="toDate"
+                           required>
+                </div>
 
-    <div class="availability-card">
+                <!-- BUTTON -->
 
-        <h2>
+                <button type="submit"
+                        class="search-btn">
 
-            Find Available Cars 🚗
+                    <i class="fa-solid fa-magnifying-glass"></i>
 
-        </h2>
+                    Search Cars
 
-        <p>
+                </button>
 
-            Select date range to see available cars
-
-        </p>
-
-        <form th:action="@{/rentify/user/available-cars}"
-              method="post"
-              class="availability-form">
-
-            <div class="form-group">
-
-                <label>
-
-                    From Date
-
-                </label>
-
-                <input type="date"
-                       name="fromDate"
-                       required>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>
-
-                    To Date
-
-                </label>
-
-                <input type="date"
-                       name="toDate"
-                       required>
-
-            </div>
-
-            <button type="submit"
-                    class="check-btn">
-
-                Find Cars
-
-            </button>
-
-        </form>
-
-    </div>
-
-    <!-- AVAILABLE CAR RESULT -->
-
-    <div th:if="${availableCars != null}"
-         class="car-dropdown">
-
-        <div class="dropdown-header">
-
-            <h2>
-
-                Available Cars 🚘
-
-            </h2>
+            </form>
 
         </div>
 
-        <div class="car-grid">
+        <div class="hero-banner">
 
-            <div class="car-card"
-                 th:each="car : ${availableCars}">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop">
 
-                <h3 th:text="${car.model}"></h3>
+        </div>
+
+    </section>
+
+    <!-- AVAILABLE CARS -->
+
+    <div th:if="${availableCars != null and !#lists.isEmpty(availableCars)}">
+        <section>
+
+            <div class="section-title">
+
+                <h2>
+
+                    Available Cars
+
+                </h2>
 
                 <p>
-                    <strong>Registration No:</strong>
-                    <span th:text="${car.registrationNo}"></span>
+
+                    Cars available for selected timing
+
                 </p>
 
-                <p>
-                    <strong>Type:</strong>
-                    <span th:text="${car.type}"></span>
-                </p>
+            </div>
 
-                <p>
-                    <strong>Price Per Day:</strong>
-                    ₹<span th:text="${car.pricePerday}"></span>
-                </p>
+            <div class="cards">
 
-                <p>
-                    <strong>Company:</strong>
-                    <span th:text="${car.company.name}"></span>
-                </p>
+                <div class="card"
+                     th:each="car : ${availableCars}">
 
-                <div class="status ongoing-status">
+                    <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1200&auto=format&fit=crop">
 
-                    Available
+                    <div class="card-content">
+
+                        <h3 th:text="${car.model}"></h3>
+
+                        <p>
+
+                            Premium self drive experience
+
+                        </p>
+
+                        <div class="price">
+
+                            <strong>
+
+                                ₹<span th:text="${car.pricePerHour}"></span>/hour
+
+                            </strong>
+
+                            <a th:href="@{'/rentify/user/booking/new'(
+
+                                    carId=${car.id},
+
+                                    startDate=${param.fromDate},
+
+                                    endDate=${param.toDate}
+                            )}"
+                               class="book-btn">
+
+                                Book
+
+                            </a>
+
+                        </div>
+
+                        <div style="margin-top:16px;">
+
+                            <p>
+
+                                Registration:
+                                <span th:text="${car.registrationNo}"></span>
+
+                            </p>
+
+                            <p>
+
+                                Type:
+                                <span th:text="${car.type}"></span>
+
+                            </p>
+
+                            <p>
+
+                                Company:
+                                <span th:text="${car.company.name}"></span>
+
+                            </p>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
-
+        </section>
     </div>
 
-    <!-- FILTER BY TYPE -->
+    <!-- FILTER -->
 
-    <div class="availability-card">
+    <section>
 
-        <h2>
+        <div class="section-title">
 
-            Filter Cars By Type 🚘
+            <h2>
 
-        </h2>
+                Filter Cars By Type
 
-        <p>
+            </h2>
 
-            Select car type to view cars
+        </div>
 
-        </p>
-
-        <div class="form-group"
-             style="margin-top:20px;">
+        <div class="form-group">
 
             <label>
 
@@ -792,86 +939,116 @@
             <select id="carTypeFilter"
                     onchange="filterCarsByType()">
 
+                <option value="" selected disabled>
+                    Select Car Type
+                </option>
+
                 <option value="ALL">
-
                     All Cars
-
                 </option>
 
                 <option value="SEDAN">
-
                     Sedan
-
                 </option>
 
                 <option value="SUV">
-
                     SUV
-
                 </option>
 
                 <option value="LUXURY">
-
                     Luxury
-
                 </option>
 
             </select>
 
         </div>
 
-        <div class="car-grid"
-             style="margin-top:24px;">
+        <div class="cards">
 
-            <div class="car-card filter-car-card"
+            <div class="card filter-car-card"
                  th:each="car : ${carList}"
                  th:attr="data-type=${car.type}">
 
-                <h3 th:text="${car.model}"></h3>
+                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop">
 
-                <p>
+                <div class="card-content">
 
-                    <strong>Registration No:</strong>
+                    <h3 th:text="${car.model}"></h3>
 
-                    <span th:text="${car.registrationNo}"></span>
+                    <p>
 
-                </p>
+                        Self drive rental available
 
-                <p>
+                    </p>
 
-                    <strong>Type:</strong>
+                    <div class="price">
 
-                    <span th:text="${car.type}"></span>
+                        <strong>
 
-                </p>
+                            ₹<span th:text="${car.pricePerHour}"></span>/hour
 
-                <p>
+                        </strong>
 
-                    <strong>Price Per Day:</strong>
+                        <a th:if="${car.available}"
 
-                    ₹<span th:text="${car.pricePerday}"></span>
+                           th:href="@{'/rentify/user/booking/new'(
 
-                </p>
+                                carId=${car.id},
 
-                <p>
+                                startDate=${param.fromDate},
 
-                    <strong>Company:</strong>
+                                endDate=${param.toDate}
+                           )}"
 
-                    <span th:text="${car.company.name}"></span>
+                           class="book-btn">
 
-                </p>
+                            Book
+                        </a>
 
-                <div th:if="${car.available}"
-                     class="status ongoing-status">
+                    </div>
 
-                    Available
+                    <div style="margin-top:16px;">
 
-                </div>
+                        <p>
 
-                <div th:unless="${car.available}"
-                     class="status returned-status">
+                            Registration:
+                            <span th:text="${car.registrationNo}"></span>
 
-                    Not Available
+                        </p>
+
+                        <p>
+
+                            Type:
+                            <span th:text="${car.type}"></span>
+
+                        </p>
+
+                        <p>
+
+                            Company:
+                            <span th:text="${car.company.name}"></span>
+
+                        </p>
+
+                    </div>
+
+                    <div style="margin-top:18px;">
+
+                    <span th:if="${car.available}"
+                          class="status ongoing-status">
+
+                        Available
+
+                    </span>
+
+                        <span th:unless="${car.available}"
+                              class="status returned-status">
+
+                        Not Available
+
+                    </span>
+
+                    </div>
 
                 </div>
 
@@ -879,159 +1056,374 @@
 
         </div>
 
-    </div>
+    </section>
+
+    <!-- WHY RENTIFY -->
+
+    <section>
+
+        <div class="section-title">
+
+            <h2>
+
+                Why Rentify?
+
+            </h2>
+
+        </div>
+
+        <div class="why-grid">
+
+            <div class="why-card">
+
+                <i class="fa-solid fa-road"></i>
+
+                <h3>
+
+                    Freedom To Drive
+
+                </h3>
+
+                <p>
+
+                    Unlimited kilometers and complete travel freedom.
+
+                </p>
+
+            </div>
+
+            <div class="why-card">
+
+                <i class="fa-solid fa-headset"></i>
+
+                <h3>
+
+                    24x7 Support
+
+                </h3>
+
+                <p>
+
+                    Roadside assistance anytime during your trip.
+
+                </p>
+
+            </div>
+
+            <div class="why-card">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <h3>
+
+                    Affordable Pricing
+
+                </h3>
+
+                <p>
+
+                    Transparent pricing without hidden charges.
+
+                </p>
+
+            </div>
+
+            <div class="why-card">
+
+                <i class="fa-solid fa-car-side"></i>
+
+                <h3>
+
+                    Sanitized Cars
+
+                </h3>
+
+                <p>
+
+                    Professionally cleaned cars after every ride.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
 
     <!-- BOOKING HISTORY -->
 
-    <div class="section-title">
+    <section>
 
-        <h2>
+        <div class="section-title">
 
-            My Booking History
+            <h2>
 
-        </h2>
+                My Booking History
 
-    </div>
+            </h2>
 
-    <table class="booking-table">
+        </div>
 
-        <thead>
+        <div class="table-wrap">
 
-        <tr>
+            <table class="booking-table">
 
-            <th>Booking ID</th>
-            <th>Car</th>
-            <th>Status</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
+                <thead>
 
-        </tr>
+                <tr>
 
-        </thead>
+                    <th>ID</th>
+                    <th>Car</th>
+                    <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Hours</th>
+                    <th>Total Amount</th>
+                    <th>Actions</th>
 
-        <tbody>
+                </tr>
 
-        <tr th:each="booking : ${bookingList}">
+                </thead>
 
-            <td th:text="${booking.id}"></td>
+                <tbody>
 
-            <td>
+                <tr th:each="booking : ${bookingList}">
 
-                <div>
+                    <td th:text="${booking.id}"></td>
 
-                    <strong th:text="${booking.car.model}"></strong>
+                    <td>
 
-                </div>
+                        <strong th:text="${booking.car.model}"></strong>
 
-                <small style="color:#94a3b8"
-                       th:text="${booking.car.registrationNo}">
+                    </td>
 
-                </small>
+                    <td>
 
-            </td>
+                    <span th:if="${booking.status.name() == 'ONGOING'}"
+                          class="status ongoing-status">
 
-            <!-- STATUS -->
+                        Ongoing
 
-            <td>
+                    </span>
 
-                <span th:if="${booking.status.name() == 'ONGOING'}"
-                      class="status ongoing-status">
+                        <span th:if="${booking.status.name() == 'RETURNED'}"
+                              class="status returned-status">
 
-                    Ongoing
+                        Returned
 
-                </span>
+                    </span>
 
-                <span th:if="${booking.status.name() == 'RETURNED'}"
-                      class="status returned-status">
+                        <span th:if="${booking.status.name() == 'SCHEDULED'}"
+                              class="status scheduled-status">
 
-                    Returned
+                        Scheduled
 
-                </span>
+                    </span>
 
-                <span th:if="${booking.status.name() == 'SCHEDULED'}"
-                      class="status scheduled-status">
+                        <span th:if="${booking.status.name() == 'CANCELLED'}"
+                              class="status cancelled-status">
 
-                    Scheduled
+                        Cancelled
 
-                </span>
+                    </span>
 
-                <span th:if="${booking.status.name() == 'CANCELLED'}"
-                      class="status cancelled-status">
+                    </td>
 
-                    Cancelled
+                    <td>
 
-                </span>
+                    <span th:text="${#temporals.format(
+                    booking.startDateTime,
+                    'dd MMM yyyy HH:mm')}">
 
-            </td>
+                    </span>
 
-            <td th:text="${booking.startDate}"></td>
+                    </td>
 
-            <td th:text="${booking.endDate}"></td>
+                    <td>
 
-            <td>
+                    <span th:text="${#temporals.format(
+                    booking.endDateTime,
+                    'dd MMM yyyy HH:mm')}">
 
-                ₹<span th:text="${booking.totalAmount}"></span>
+                    </span>
 
-            </td>
+                    </td>
 
-            <!-- ACTIONS -->
+                    <td class="total-hours"
+                        th:data-start="${booking.startDateTime}"
+                        th:data-end="${booking.endDateTime}">
+                    </td>
 
-            <td class="action-buttons">
+                    <td>
 
-                <!-- EDIT -->
+                        ₹<span th:text="${booking.totalAmount}"></span>
 
-                <a th:if="${booking.status.name() != 'RETURNED'
-                && booking.status.name() != 'CANCELLED'}"
+                    </td>
 
-                   th:href="@{'/rentify/common/booking/edit/' + ${booking.id}}"
+                    <td class="action-buttons">
 
-                   class="edit-btn">
+                        <a th:if="${booking.status.name() != 'RETURNED'
+                    && booking.status.name() != 'CANCELLED'}"
 
-                    Edit
+                           th:href="${#authorization.expression('hasRole(''ADMIN'')')}
+                             ? @{'/rentify/admin/booking/edit/' + ${booking.id}}
+                             : @{'/rentify/user/booking/edit/' + ${booking.id}}"
 
-                </a>
+                           class="edit-btn">
 
-                <!-- DELETE -->
+                            Edit
 
-                <a th:if="${booking.status.name() == 'RETURNED'
-                || booking.status.name() == 'CANCELLED'}"
+                        </a>
 
-                   th:href="@{'/rentify/common/booking/delete/' + ${booking.id}}"
+                        <a th:if="${booking.status.name() == 'RETURNED'
+                    || booking.status.name() == 'CANCELLED'}"
 
-                   class="delete-btn">
+                           th:href="${#authorization.expression('hasRole(''ADMIN'')')}
+                             ? @{'/rentify/admin/booking/delete/' + ${booking.id}}
+                             : @{'/rentify/user/booking/delete/' + ${booking.id}}"
 
-                    Delete
+                           class="delete-btn">
 
-                </a>
+                            Delete
 
-                <!-- CANCEL -->
+                        </a>
 
-                <a th:if="${booking.status.name() != 'RETURNED'
-                && booking.status.name() != 'CANCELLED'}"
+                        <a th:if="${booking.status.name() != 'RETURNED'
+                    && booking.status.name() != 'CANCELLED'}"
 
-                   th:href="@{'/rentify/common/booking/cancel/' + ${booking.id}}"
+                           th:href="${#authorization.expression('hasRole(''ADMIN'')')}
+                             ? @{'/rentify/admin/booking/cancel/' + ${booking.id}}
+                             : @{'/rentify/user/booking/cancel/' + ${booking.id}}"
 
-                   class="cancel-btn-small">
+                           class="cancel-btn-small">
 
-                    Cancel
+                            Cancel
 
-                </a>
+                        </a>
 
-            </td>
+                    </td>
 
-        </tr>
+                </tr>
 
-        </tbody>
+                </tbody>
 
-    </table>
+            </table>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-grid">
+
+            <div>
+
+                <h3>
+
+                    About Us
+
+                </h3>
+
+                <ul>
+
+                    <li>Company</li>
+                    <li>Careers</li>
+                    <li>Blog</li>
+                    <li>Press</li>
+
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Services
+
+                </h3>
+
+                <ul>
+
+                    <li>Self Drive Cars</li>
+                    <li>Airport Rentals</li>
+                    <li>Luxury Cars</li>
+                    <li>Monthly Rentals</li>
+
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Top Cities
+
+                </h3>
+
+                <ul>
+
+                    <li>Bangalore</li>
+                    <li>Delhi</li>
+                    <li>Mumbai</li>
+                    <li>Hyderabad</li>
+
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Support
+
+                </h3>
+
+                <ul>
+
+                    <li>FAQs</li>
+                    <li>Contact Us</li>
+                    <li>Privacy Policy</li>
+                    <li>Terms & Conditions</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+
+            © 2026 Rentify. All Rights Reserved.
+
+        </div>
+
+    </footer>
 
 </div>
 
 <!-- JAVASCRIPT -->
 
 <script>
+
+    // PAGE LOAD PE SAB CAR HIDE
+    window.onload = function () {
+
+        const cards =
+            document.querySelectorAll(
+                ".filter-car-card"
+            );
+
+        cards.forEach(card => {
+
+            card.style.display = "none";
+        });
+    };
 
     function filterCarsByType(){
 
@@ -1062,9 +1454,140 @@
 
                 card.style.display = "none";
             }
-
         });
     }
+
+
+   // CURRENT DATE & TIME IN INDIA
+    const now = new Date();
+
+    // CONVERT TO INDIAN TIME
+    const indianDateTime =
+        new Date(
+            now.toLocaleString(
+                "en-US",
+                {
+                    timeZone: "Asia/Kolkata"
+                }
+            )
+        );
+
+    // FORMAT FOR datetime-local
+    const year =
+        indianDateTime.getFullYear();
+
+    const month =
+        String(
+            indianDateTime.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            indianDateTime.getDate()
+        ).padStart(2, "0");
+
+    const hours =
+        String(
+            indianDateTime.getHours()
+        ).padStart(2, "0");
+
+    const minutes =
+        String(
+            indianDateTime.getMinutes()
+        ).padStart(2, "0");
+
+    // FINAL FORMAT
+    const formattedNow =
+        `${year}-${month}-${day}T${hours}:${minutes}`;
+
+    // MIN DATE SET
+    document.getElementById(
+        "fromDate"
+    ).min = formattedNow;
+
+    document.getElementById(
+        "toDate"
+    ).min = formattedNow;
+
+
+    // FORM VALIDATION
+    document.querySelector("form")
+        .addEventListener("submit", function(e){
+
+        const fromDate =
+            new Date(
+                document.getElementById(
+                    "fromDate"
+                ).value
+            );
+
+        const toDate =
+            new Date(
+                document.getElementById(
+                    "toDate"
+                ).value
+            );
+
+        // CURRENT INDIAN DATE
+        const currentIndianDate =
+            new Date(
+                new Date().toLocaleString(
+                    "en-US",
+                    {
+                        timeZone: "Asia/Kolkata"
+                    }
+                )
+            );
+
+        // PAST DATE CHECK
+        if(fromDate < currentIndianDate
+            || toDate < currentIndianDate){
+
+            alert(
+                "Past date and time is not allowed!"
+            );
+
+            e.preventDefault();
+
+            return;
+        }
+
+        // END DATE CHECK
+        if(toDate <= fromDate){
+
+            alert(
+                "End date/time must be greater than start date/time!"
+            );
+
+            e.preventDefault();
+        }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const hourCells = document.querySelectorAll(".total-hours");
+
+    hourCells.forEach(cell => {
+
+        const start = cell.getAttribute("data-start");
+        const end = cell.getAttribute("data-end");
+
+        if (start && end) {
+
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            // Difference in milliseconds
+            const diffMs = endDate - startDate;
+
+            // Round UP to next hour
+            const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+
+            cell.innerText = hours + " Hours";
+        }
+    });
+});
 
 </script>
 
