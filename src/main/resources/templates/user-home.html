@@ -1,1177 +1,779 @@
+
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentify | Self Drive Car Rental</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Rentify | Self Drive Car Rental
-    </title>
-
-    <!-- GOOGLE FONT -->
-
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
 
-    <!-- FONT AWESOME -->
-
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-
-        :root{
-
-            --bg:#020617;
-            --card:#0f172a;
-            --card2:#111827;
-            --text:#f8fafc;
-            --muted:#94a3b8;
-            --primary:#22c55e;
-            --primarySoft:rgba(34,197,94,.14);
-            --danger:#ef4444;
-            --warning:#facc15;
-            --info:#60a5fa;
-            --border:rgba(255,255,255,.08);
+        /* ==================== GLOBAL ==================== */
+        :root {
+            --bg: #020617;
+            --card: #0f172a;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --primary: #22c55e;
+            --primary-soft: rgba(34, 197, 94, .14);
+            --danger: #ef4444;
+            --warning: #facc15;
+            --info: #60a5fa;
+            --border: rgba(255, 255, 255, .08);
         }
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:"Inter",sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
         }
 
-        body{
-            background:
-                    radial-gradient(circle at top left,
-                    #1e293b 0%,
-                    #020617 45%);
-            color:var(--text);
-            overflow-x:hidden;
+        body {
+            background: radial-gradient(circle at top left, #1e293b 0%, #020617 45%);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        a{
-            text-decoration:none;
-            color:inherit;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        /* NAVBAR */
-
-        .navbar{
-
-            position:sticky;
-            top:0;
-            z-index:999;
-
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-
-            padding:18px 32px;
-
-            background:rgba(2,6,23,.88);
-
-            backdrop-filter:blur(18px);
-
-            border-bottom:1px solid var(--border);
+        .container {
+            width: 95%;
+            max-width: 1450px;
+            margin: auto;
         }
 
-        .logo{
-
-            display:flex;
-            align-items:center;
-            gap:12px;
-
-            font-size:30px;
-            font-weight:900;
+        section {
+            padding: 70px 0;
         }
 
-        .logo span{
-            color:var(--primary);
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .app-logo{
-            width:44px;
-            height:44px;
-            border-radius:14px;
+        .section-title h2 {
+            font-size: 42px;
+            font-weight: 900;
         }
 
-        .nav-links{
-            display:flex;
-            align-items:center;
-            gap:12px;
+        .section-title p {
+            margin-top: 12px;
+            color: var(--muted);
+        }
+
+        /* ==================== NAVBAR ==================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 32px;
+            background: rgba(2, 6, 23, .92);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .app-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            object-fit: cover;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .nav-links a,
-        .logout-btn{
-
-            padding:11px 18px;
-
-            border-radius:14px;
-
-            background:rgba(255,255,255,.05);
-
-            border:1px solid var(--border);
-
-            font-weight:700;
-
-            transition:.3s;
+        .logout-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid var(--border);
+            font-weight: 700;
+            transition: .3s;
         }
 
-        .nav-links a:hover{
-
-            background:var(--primarySoft);
-
-            color:var(--primary);
+        .nav-links a:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
         }
 
-        .logout-btn{
-
-            color:white;
-            cursor:pointer;
+        .logout-btn {
+            color: white;
+            cursor: pointer;
         }
 
-        .logout-btn:hover{
-
-            background:rgba(239,68,68,.14);
-
-            color:var(--danger);
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, .14);
+            color: var(--danger);
         }
 
-        /* CONTAINER */
-
-        .container{
-
-            width:95%;
-            max-width:1450px;
-
-            margin:auto;
+        /* ==================== HERO / BOOKING FORM ==================== */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 28px;
+            align-items: center;
+            padding: 50px 0;
         }
 
-        section{
-            padding:70px 0;
+        .booking-box {
+            background: linear-gradient(180deg, #111827, #020617);
+            border: 1px solid var(--border);
+            border-radius: 34px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
         }
 
-        .section-title{
-
-            text-align:center;
-            margin-bottom:40px;
+        .booking-box h1 {
+            font-size: 54px;
+            line-height: 1.1;
+            margin-bottom: 16px;
         }
 
-        .section-title h2{
-
-            font-size:42px;
-            font-weight:900;
+        .booking-box > p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 28px;
         }
 
-        .section-title p{
-
-            margin-top:12px;
-            color:var(--muted);
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        /* HERO */
-
-        .hero{
-
-            display:grid;
-            grid-template-columns:1.1fr 1fr;
-
-            gap:28px;
-
-            align-items:center;
-
-            padding:50px 0;
-        }
-
-        .booking-box{
-
-            background:
-                    linear-gradient(180deg,
-                    #111827,
-                    #020617);
-
-            border:1px solid var(--border);
-
-            border-radius:34px;
-
-            padding:40px;
-
-            box-shadow:0 20px 60px rgba(0,0,0,.35);
-        }
-
-        .booking-box h1{
-
-            font-size:54px;
-            line-height:1.1;
-            margin-bottom:16px;
-        }
-
-        .booking-box p{
-
-            color:var(--muted);
-            line-height:1.7;
-            margin-bottom:28px;
-        }
-
-        .form-group{
-            margin-bottom:20px;
-        }
-
-        .form-group label{
-
-            display:block;
-            margin-bottom:10px;
-
-            font-size:14px;
-            font-weight:700;
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
         }
 
         .form-group input,
-        .form-group select{
+        .form-group select {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            height: 58px;
+            padding: 0 18px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: #020617;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
 
-            width:100%;
-            height:58px;
+        /* IMPORTANT: Date/time text and calendar icon visibility */
+        .form-group input[type="datetime-local"] {
+            width: 100%;
+            height: 58px;
+            padding: 0 18px;
+            background-color: #ffffff;
+            color: #111827;
+            color-scheme: light;
+            border: 1px solid #d1d5db;
+            border-radius: 18px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
 
-            border:none;
-            outline:none;
-
-            border-radius:18px;
-
-            background:#020617;
-
-            border:1px solid var(--border);
-
-            color:white;
-
-            padding:0 18px;
-
-            font-size:15px;
+        .form-group input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            display: block;
+            opacity: 1;
+            cursor: pointer;
         }
 
         .form-group input:focus,
-        .form-group select:focus{
-
-            border-color:var(--primary);
-
-            box-shadow:0 0 0 5px rgba(34,197,94,.12);
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(34, 197, 94, .12);
         }
 
-        .search-btn{
-
-            width:100%;
-            height:58px;
-
-            border:none;
-            border-radius:18px;
-
-            background:
-                    linear-gradient(135deg,
-                    #22c55e,
-                    #16a34a);
-
-            color:#052e16;
-
-            font-size:18px;
-            font-weight:900;
-
-            cursor:pointer;
+        .search-btn {
+            display: block;
+            width: 100%;
+            height: 58px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #052e16;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: .3s;
         }
 
-        .hero-banner img{
-
-            width:100%;
-            height:100%;
-
-            object-fit:cover;
-
-            border-radius:34px;
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, .2);
         }
 
-        /* CARD */
-
-        .cards{
-
-            display:grid;
-
-            grid-template-columns:
-                    repeat(auto-fit,minmax(280px,1fr));
-
-            gap:24px;
+        .hero-banner img {
+            display: block;
+            width: 100%;
+            min-height: 380px;
+            max-height: 600px;
+            object-fit: cover;
+            border-radius: 34px;
         }
 
-        .card{
-
-            background:
-                    linear-gradient(180deg,
-                    #111827,
-                    #020617);
-
-            border:1px solid var(--border);
-
-            border-radius:26px;
-
-            overflow:hidden;
-
-            transition:.3s;
+        /* ==================== CARDS ==================== */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
         }
 
-        .card:hover{
-
-            transform:translateY(-6px);
+        .card {
+            background: linear-gradient(180deg, #111827, #020617);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            overflow: hidden;
+            transition: .3s;
         }
 
-        .card img{
-
-            width:100%;
-            height:230px;
-
-            object-fit:cover;
+        .card:hover {
+            transform: translateY(-6px);
         }
 
-        .card-content{
-            padding:24px;
+        .card img {
+            display: block;
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
         }
 
-        .card-content h3{
-
-            font-size:24px;
-            margin-bottom:12px;
+        .card-content {
+            padding: 24px;
         }
 
-        .card-content p{
-
-            color:var(--muted);
-            line-height:1.7;
+        .card-content h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
         }
 
-        .price{
-
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-
-            margin-top:20px;
+        .card-content p {
+            color: var(--muted);
+            line-height: 1.7;
         }
 
-        .price strong{
-
-            color:var(--primary);
-
-            font-size:24px;
+        .price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
         }
 
-        .book-btn{
-
-            background:var(--primarySoft);
-
-            color:var(--primary);
-
-            padding:10px 18px;
-
-            border-radius:12px;
-
-            font-weight:700;
+        .price strong {
+            color: var(--primary);
+            font-size: 24px;
         }
 
-        /* WHY */
+        .book-btn {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
 
+        /* ==================== WHY RENTIFY ==================== */
         .why-grid,
         .city-grid,
-        .service-grid{
-
-            display:grid;
-
-            grid-template-columns:
-                    repeat(auto-fit,minmax(220px,1fr));
-
-            gap:24px;
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
         }
 
         .why-card,
         .city-card,
-        .service-card{
-
-            background:
-                    linear-gradient(180deg,
-                    #111827,
-                    #020617);
-
-            border:1px solid var(--border);
-
-            border-radius:24px;
-
-            padding:35px;
-
-            text-align:center;
+        .service-card {
+            background: linear-gradient(180deg, #111827, #020617);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 35px;
+            text-align: center;
         }
 
-        .why-card i{
-
-            font-size:42px;
-
-            color:var(--primary);
-
-            margin-bottom:20px;
+        .why-card i {
+            display: inline-block;
+            font-size: 42px;
+            color: var(--primary);
+            margin-bottom: 20px;
         }
 
-        .why-card h3{
-            margin-bottom:12px;
+        .why-card h3 {
+            margin-bottom: 12px;
         }
 
-        .why-card p{
-
-            color:var(--muted);
-            line-height:1.7;
+        .why-card p {
+            color: var(--muted);
+            line-height: 1.7;
         }
 
-        /* CONTENT */
-
-        .story-content,
-        .self-drive-content{
-
-            background:
-                    linear-gradient(180deg,
-                    #111827,
-                    #020617);
-
-            border:1px solid var(--border);
-
-            border-radius:30px;
-
-            padding:40px;
+        /* ==================== BOOKING HISTORY ==================== */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 26px;
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, #111827, #0b1120);
         }
 
-        .story-content p,
-        .self-drive-content p{
-
-            color:var(--muted);
-
-            line-height:1.9;
-
-            margin-bottom:20px;
+        .booking-table {
+            width: 100%;
+            min-width: 1200px;
+            border-collapse: collapse;
         }
 
-        /* TABLE */
-
-        .table-wrap{
-
-            overflow-x:auto;
-
-            border-radius:26px;
-
-            border:1px solid var(--border);
-
-            background:
-                    linear-gradient(180deg,
-                    #111827,
-                    #0b1120);
+        .booking-table th {
+            background: #020617;
+            color: var(--muted);
+            padding: 18px 14px;
+            font-size: 13px;
+            font-weight: 800;
+            text-align: center;
         }
 
-        .booking-table{
-
-            width:100%;
-
-            min-width:1200px;
-
-            border-collapse:collapse;
+        .booking-table td {
+            padding: 18px 14px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+            font-size: 14px;
         }
 
-        .booking-table th{
-
-            background:#020617;
-
-            color:var(--muted);
-
-            padding:18px 14px;
-
-            font-size:13px;
-
-            font-weight:800;
-
-            text-align:center;
+        .booking-table tr:hover {
+            background: rgba(255, 255, 255, .03);
         }
 
-        .booking-table td{
-
-            padding:18px 14px;
-
-            text-align:center;
-
-            border-bottom:1px solid rgba(255,255,255,.05);
-
-            font-size:14px;
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
         }
 
-        .booking-table tr:hover{
-
-            background:rgba(255,255,255,.03);
+        .ongoing-status {
+            background: rgba(34, 197, 94, .14);
+            color: #22c55e;
         }
 
-        .status{
-
-            display:inline-flex;
-
-            align-items:center;
-
-            gap:8px;
-
-            padding:8px 14px;
-
-            border-radius:999px;
-
-            font-size:12px;
-            font-weight:800;
+        .returned-status {
+            background: rgba(239, 68, 68, .14);
+            color: #ef4444;
         }
 
-        .ongoing-status{
-
-            background:rgba(34,197,94,.14);
-
-            color:#22c55e;
+        .scheduled-status {
+            background: rgba(250, 204, 21, .14);
+            color: #facc15;
         }
 
-        .returned-status{
-
-            background:rgba(239,68,68,.14);
-
-            color:#ef4444;
+        .cancelled-status {
+            background: rgba(107, 114, 128, .18);
+            color: #9ca3af;
         }
 
-        .scheduled-status{
-
-            background:rgba(250,204,21,.14);
-
-            color:#facc15;
-        }
-
-        .cancelled-status{
-
-            background:rgba(107,114,128,.18);
-
-            color:#9ca3af;
-        }
-
-        .action-buttons{
-
-            display:flex;
-
-            justify-content:center;
-
-            gap:10px;
-
-            flex-wrap:wrap;
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .edit-btn,
         .delete-btn,
-        .cancel-btn-small{
-
-            padding:10px 14px;
-
-            border-radius:12px;
-
-            font-size:13px;
-
-            font-weight:800;
-
-            transition:.3s;
+        .cancel-btn-small {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: .3s;
         }
 
-        .edit-btn{
-
-            background:rgba(96,165,250,.14);
-
-            color:#60a5fa;
+        .edit-btn {
+            background: rgba(96, 165, 250, .14);
+            color: #60a5fa;
         }
 
-        .delete-btn{
-
-            background:rgba(239,68,68,.14);
-
-            color:#ef4444;
+        .delete-btn {
+            background: rgba(239, 68, 68, .14);
+            color: #ef4444;
         }
 
-        .cancel-btn-small{
-
-            background:rgba(250,204,21,.14);
-
-            color:#facc15;
+        .cancel-btn-small {
+            background: rgba(250, 204, 21, .14);
+            color: #facc15;
         }
 
-        /* FOOTER */
-
-        footer{
-
-            background:#01040d;
-
-            padding:80px 0 30px;
-
-            margin-top:60px;
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: #01040d;
+            padding: 80px 0 30px;
+            margin-top: 60px;
         }
 
-        .footer-grid{
-
-            display:grid;
-
-            grid-template-columns:
-                    repeat(auto-fit,minmax(220px,1fr));
-
-            gap:30px;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
         }
 
-        footer h3{
-            margin-bottom:18px;
+        footer h3 {
+            margin-bottom: 18px;
         }
 
-        footer ul{
-            list-style:none;
+        footer ul {
+            list-style: none;
         }
 
-        footer ul li{
-
-            margin-bottom:12px;
-
-            color:#94a3b8;
+        footer ul li {
+            margin-bottom: 12px;
+            color: #94a3b8;
         }
 
-        .copyright{
-
-            text-align:center;
-
-            margin-top:50px;
-
-            border-top:1px solid rgba(255,255,255,.08);
-
-            padding-top:25px;
-
-            color:#64748b;
+        .copyright {
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            padding-top: 25px;
+            color: #64748b;
         }
 
-        /* RESPONSIVE */
-
-        @media(max-width:950px){
-
-            .hero{
-                grid-template-columns:1fr;
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 950px) {
+            .hero {
+                grid-template-columns: 1fr;
             }
 
-            .booking-box h1{
-                font-size:42px;
+            .booking-box h1 {
+                font-size: 42px;
             }
 
-            .section-title h2{
-                font-size:34px;
+            .section-title h2 {
+                font-size: 34px;
+            }
+
+            .hero-banner img {
+                min-height: 300px;
             }
         }
 
-        @media(max-width:700px){
-
-            .navbar{
-
-                padding:16px 18px;
-
-                flex-direction:column;
-
-                gap:16px;
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 16px 18px;
+                flex-direction: column;
+                gap: 16px;
             }
 
-            .booking-box{
-                padding:28px;
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
-            .booking-box h1{
-                font-size:34px;
+            .booking-box {
+                padding: 28px;
             }
 
-            .section-title h2{
-                font-size:28px;
+            .booking-box h1 {
+                font-size: 34px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .hero {
+                padding: 25px 0;
+            }
+
+            section {
+                padding: 45px 0;
             }
         }
-
     </style>
-
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-
+<!-- ==================== NAVBAR ==================== -->
 <div class="navbar">
-
     <div class="logo">
-
         <img th:src="@{/images/rentify.png}"
-             class="app-logo">
-
+             class="app-logo"
+             alt="Rentify Logo">
         Rent<span>ify</span>
-
     </div>
 
     <div class="nav-links">
-
         <a th:href="@{'/rentify/profile/edit/' + ${customer.id}}">
-
             <i class="fa-solid fa-user-pen"></i>
-
             Edit Profile
-
         </a>
 
-        <form th:action="@{/logout}"
-              method="post">
-
-            <button type="submit"
-                    class="logout-btn">
-
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-btn">
                 <i class="fa-solid fa-right-from-bracket"></i>
-
                 Logout
-
             </button>
-
         </form>
-
     </div>
-
 </div>
 
 <div class="container">
 
-    <!-- HERO -->
-
+    <!-- ==================== HERO / BOOKING FORM ==================== -->
     <section class="hero">
-
         <div class="booking-box">
-
-            <h1>
-
-                Self Drive Car Rentals In India
-
-            </h1>
+            <h1>Self Drive Car Rentals In India</h1>
 
             <p>
-
                 Book premium self-drive cars anywhere in India with Rentify.
-
             </p>
 
-            <!-- BOOKING FORM -->
-
-            <form th:action="@{/rentify/user/available-cars}"
+            <form id="bookingForm"
+                  th:action="@{/rentify/user/available-cars}"
                   method="post">
 
-                <!-- START DATE -->
-
                 <div class="form-group">
-
-                    <label>
-                        Start Date & Time
-                    </label>
-
+                    <label for="fromDate">Start Date &amp; Time</label>
                     <input type="datetime-local"
                            id="fromDate"
                            name="fromDate"
                            required>
                 </div>
 
-                <!-- END DATE -->
-
                 <div class="form-group">
-
-                    <label>
-                        End Date & Time
-                    </label>
-
+                    <label for="toDate">End Date &amp; Time</label>
                     <input type="datetime-local"
                            id="toDate"
                            name="toDate"
                            required>
                 </div>
 
-                <!-- BUTTON -->
-
-                <button type="submit"
-                        class="search-btn">
-
+                <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
-
                     Search Cars
-
                 </button>
-
             </form>
-
         </div>
 
         <div class="hero-banner">
-
-            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop">
-
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop"
+                 alt="Premium car">
         </div>
-
     </section>
 
-    <!-- AVAILABLE CARS -->
-
+    <!-- ==================== AVAILABLE CARS ==================== -->
     <div th:if="${availableCars != null and !#lists.isEmpty(availableCars)}">
         <section>
-
             <div class="section-title">
-
-                <h2>
-
-                    Available Cars
-
-                </h2>
-
-                <p>
-
-                    Cars available for selected timing
-
-                </p>
-
+                <h2>Available Cars</h2>
+                <p>Cars available for selected timing</p>
             </div>
 
             <div class="cards">
-
-                <div class="card"
-                     th:each="car : ${availableCars}">
-
-                    <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1200&auto=format&fit=crop">
+                <div class="card" th:each="car : ${availableCars}">
+                    <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1200&auto=format&fit=crop"
+                         alt="Available rental car">
 
                     <div class="card-content">
-
                         <h3 th:text="${car.model}"></h3>
-
-                        <p>
-
-                            Premium self drive experience
-
-                        </p>
+                        <p>Premium self drive experience</p>
 
                         <div class="price">
-
                             <strong>
-
                                 ₹<span th:text="${car.pricePerHour}"></span>/hour
-
                             </strong>
 
                             <a th:href="@{'/rentify/user/booking/new'(
-
                                     carId=${car.id},
-
                                     startDate=${param.fromDate},
-
                                     endDate=${param.toDate}
-                            )}"
+                                )}"
                                class="book-btn">
-
                                 Book
-
                             </a>
-
                         </div>
 
-                        <div style="margin-top:16px;">
-
+                        <div style="margin-top: 16px;">
                             <p>
-
                                 Registration:
                                 <span th:text="${car.registrationNo}"></span>
-
                             </p>
-
                             <p>
-
                                 Type:
                                 <span th:text="${car.type}"></span>
-
                             </p>
-
                             <p>
-
                                 Company:
                                 <span th:text="${car.company.name}"></span>
-
                             </p>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </section>
     </div>
 
-    <!-- FILTER -->
-
+    <!-- ==================== FILTER CARS ==================== -->
     <section>
-
         <div class="section-title">
-
-            <h2>
-
-                Filter Cars By Type
-
-            </h2>
-
+            <h2>Filter Cars By Type</h2>
         </div>
 
         <div class="form-group">
+            <label for="carTypeFilter">Select Car Type</label>
 
-            <label>
-
-                Select Car Type
-
-            </label>
-
-            <select id="carTypeFilter"
-                    onchange="filterCarsByType()">
-
-                <option value="" selected disabled>
-                    Select Car Type
-                </option>
-
-                <option value="ALL">
-                    All Cars
-                </option>
-
-                <option value="SEDAN">
-                    Sedan
-                </option>
-
-                <option value="SUV">
-                    SUV
-                </option>
-
-                <option value="LUXURY">
-                    Luxury
-                </option>
-
+            <select id="carTypeFilter" onchange="filterCarsByType()">
+                <option value="" selected disabled>Select Car Type</option>
+                <option value="ALL">All Cars</option>
+                <option value="SEDAN">Sedan</option>
+                <option value="SUV">SUV</option>
+                <option value="LUXURY">Luxury</option>
             </select>
-
         </div>
 
         <div class="cards">
-
             <div class="card filter-car-card"
                  th:each="car : ${carList}"
                  th:attr="data-type=${car.type}">
 
-                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop">
+                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop"
+                     alt="Rental car">
 
                 <div class="card-content">
-
                     <h3 th:text="${car.model}"></h3>
-
-                    <p>
-
-                        Self drive rental available
-
-                    </p>
+                    <p>Self drive rental available</p>
 
                     <div class="price">
-
                         <strong>
-
                             ₹<span th:text="${car.pricePerHour}"></span>/hour
-
                         </strong>
 
                         <a th:if="${car.available}"
-
                            th:href="@{'/rentify/user/booking/new'(
-
                                 carId=${car.id},
-
                                 startDate=${param.fromDate},
-
                                 endDate=${param.toDate}
-                           )}"
-
+                            )}"
                            class="book-btn">
-
                             Book
                         </a>
-
                     </div>
 
-                    <div style="margin-top:16px;">
-
+                    <div style="margin-top: 16px;">
                         <p>
-
                             Registration:
                             <span th:text="${car.registrationNo}"></span>
-
                         </p>
-
                         <p>
-
                             Type:
                             <span th:text="${car.type}"></span>
-
                         </p>
-
                         <p>
-
                             Company:
                             <span th:text="${car.company.name}"></span>
-
                         </p>
-
                     </div>
 
-                    <div style="margin-top:18px;">
-
-                    <span th:if="${car.available}"
-                          class="status ongoing-status">
-
-                        Available
-
-                    </span>
+                    <div style="margin-top: 18px;">
+                        <span th:if="${car.available}"
+                              class="status ongoing-status">
+                            Available
+                        </span>
 
                         <span th:unless="${car.available}"
                               class="status returned-status">
-
-                        Not Available
-
-                    </span>
-
+                            Not Available
+                        </span>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-    <!-- WHY RENTIFY -->
-
+    <!-- ==================== WHY RENTIFY ==================== -->
     <section>
-
         <div class="section-title">
-
-            <h2>
-
-                Why Rentify?
-
-            </h2>
-
+            <h2>Why Rentify?</h2>
         </div>
 
         <div class="why-grid">
-
             <div class="why-card">
-
                 <i class="fa-solid fa-road"></i>
-
-                <h3>
-
-                    Freedom To Drive
-
-                </h3>
-
-                <p>
-
-                    Unlimited kilometers and complete travel freedom.
-
-                </p>
-
+                <h3>Freedom To Drive</h3>
+                <p>Unlimited kilometers and complete travel freedom.</p>
             </div>
 
             <div class="why-card">
-
                 <i class="fa-solid fa-headset"></i>
-
-                <h3>
-
-                    24x7 Support
-
-                </h3>
-
-                <p>
-
-                    Roadside assistance anytime during your trip.
-
-                </p>
-
+                <h3>24x7 Support</h3>
+                <p>Roadside assistance anytime during your trip.</p>
             </div>
 
             <div class="why-card">
-
                 <i class="fa-solid fa-wallet"></i>
-
-                <h3>
-
-                    Affordable Pricing
-
-                </h3>
-
-                <p>
-
-                    Transparent pricing without hidden charges.
-
-                </p>
-
+                <h3>Affordable Pricing</h3>
+                <p>Transparent pricing without hidden charges.</p>
             </div>
 
             <div class="why-card">
-
                 <i class="fa-solid fa-car-side"></i>
-
-                <h3>
-
-                    Sanitized Cars
-
-                </h3>
-
-                <p>
-
-                    Professionally cleaned cars after every ride.
-
-                </p>
-
+                <h3>Sanitized Cars</h3>
+                <p>Professionally cleaned cars after every ride.</p>
             </div>
-
         </div>
-
     </section>
 
-    <!-- BOOKING HISTORY -->
-
+    <!-- ==================== BOOKING HISTORY ==================== -->
     <section>
-
         <div class="section-title">
-
-            <h2>
-
-                My Booking History
-
-            </h2>
-
+            <h2>My Booking History</h2>
         </div>
 
         <div class="table-wrap">
-
             <table class="booking-table">
-
                 <thead>
-
                 <tr>
-
                     <th>ID</th>
                     <th>Car</th>
                     <th>Status</th>
@@ -1180,73 +782,49 @@
                     <th>Total Hours</th>
                     <th>Total Amount</th>
                     <th>Actions</th>
-
                 </tr>
-
                 </thead>
 
                 <tbody>
-
                 <tr th:each="booking : ${bookingList}">
-
                     <td th:text="${booking.id}"></td>
 
                     <td>
-
                         <strong th:text="${booking.car.model}"></strong>
-
                     </td>
 
                     <td>
-
-                    <span th:if="${booking.status.name() == 'ONGOING'}"
-                          class="status ongoing-status">
-
-                        Ongoing
-
-                    </span>
+                        <span th:if="${booking.status.name() == 'ONGOING'}"
+                              class="status ongoing-status">
+                            Ongoing
+                        </span>
 
                         <span th:if="${booking.status.name() == 'RETURNED'}"
                               class="status returned-status">
-
-                        Returned
-
-                    </span>
+                            Returned
+                        </span>
 
                         <span th:if="${booking.status.name() == 'SCHEDULED'}"
                               class="status scheduled-status">
-
-                        Scheduled
-
-                    </span>
+                            Scheduled
+                        </span>
 
                         <span th:if="${booking.status.name() == 'CANCELLED'}"
                               class="status cancelled-status">
-
-                        Cancelled
-
-                    </span>
-
+                            Cancelled
+                        </span>
                     </td>
 
                     <td>
-
-                    <span th:text="${#temporals.format(
-                    booking.startDateTime,
-                    'dd MMM yyyy HH:mm')}">
-
-                    </span>
-
+                        <span th:text="${#temporals.format(
+                            booking.startDateTime,
+                            'dd MMM yyyy HH:mm')}"></span>
                     </td>
 
                     <td>
-
-                    <span th:text="${#temporals.format(
-                    booking.endDateTime,
-                    'dd MMM yyyy HH:mm')}">
-
-                    </span>
-
+                        <span th:text="${#temporals.format(
+                            booking.endDateTime,
+                            'dd MMM yyyy HH:mm')}"></span>
                     </td>
 
                     <td class="total-hours"
@@ -1255,342 +833,211 @@
                     </td>
 
                     <td>
-
                         ₹<span th:text="${booking.totalAmount}"></span>
-
                     </td>
 
                     <td class="action-buttons">
-
                         <a th:if="${booking.status.name() != 'RETURNED'
-                    && booking.status.name() != 'CANCELLED'}"
-
+                                   and booking.status.name() != 'CANCELLED'}"
                            th:href="${#authorization.expression('hasRole(''ADMIN'')')}
-                             ? @{'/rentify/admin/booking/edit/' + ${booking.id}}
-                             : @{'/rentify/user/booking/edit/' + ${booking.id}}"
-
+                               ? @{'/rentify/admin/booking/edit/' + ${booking.id}}
+                               : @{'/rentify/user/booking/edit/' + ${booking.id}}"
                            class="edit-btn">
-
                             Edit
-
                         </a>
 
                         <a th:if="${booking.status.name() == 'RETURNED'
-                    || booking.status.name() == 'CANCELLED'}"
-
+                                   or booking.status.name() == 'CANCELLED'}"
                            th:href="${#authorization.expression('hasRole(''ADMIN'')')}
-                             ? @{'/rentify/admin/booking/delete/' + ${booking.id}}
-                             : @{'/rentify/user/booking/delete/' + ${booking.id}}"
-
+                               ? @{'/rentify/admin/booking/delete/' + ${booking.id}}
+                               : @{'/rentify/user/booking/delete/' + ${booking.id}}"
                            class="delete-btn">
-
                             Delete
-
                         </a>
 
                         <a th:if="${booking.status.name() != 'RETURNED'
-                    && booking.status.name() != 'CANCELLED'}"
-
+                                   and booking.status.name() != 'CANCELLED'}"
                            th:href="${#authorization.expression('hasRole(''ADMIN'')')}
-                             ? @{'/rentify/admin/booking/cancel/' + ${booking.id}}
-                             : @{'/rentify/user/booking/cancel/' + ${booking.id}}"
-
+                               ? @{'/rentify/admin/booking/cancel/' + ${booking.id}}
+                               : @{'/rentify/user/booking/cancel/' + ${booking.id}}"
                            class="cancel-btn-small">
-
                             Cancel
-
                         </a>
-
                     </td>
-
                 </tr>
-
                 </tbody>
-
             </table>
-
         </div>
-
     </section>
 
-    <!-- FOOTER -->
-
+    <!-- ==================== FOOTER ==================== -->
     <footer>
-
         <div class="footer-grid">
-
             <div>
-
-                <h3>
-
-                    About Us
-
-                </h3>
-
+                <h3>About Us</h3>
                 <ul>
-
                     <li>Company</li>
                     <li>Careers</li>
                     <li>Blog</li>
                     <li>Press</li>
-
                 </ul>
-
             </div>
 
             <div>
-
-                <h3>
-
-                    Services
-
-                </h3>
-
+                <h3>Services</h3>
                 <ul>
-
                     <li>Self Drive Cars</li>
                     <li>Airport Rentals</li>
                     <li>Luxury Cars</li>
                     <li>Monthly Rentals</li>
-
                 </ul>
-
             </div>
 
             <div>
-
-                <h3>
-
-                    Top Cities
-
-                </h3>
-
+                <h3>Top Cities</h3>
                 <ul>
-
                     <li>Bangalore</li>
                     <li>Delhi</li>
                     <li>Mumbai</li>
                     <li>Hyderabad</li>
-
                 </ul>
-
             </div>
 
             <div>
-
-                <h3>
-
-                    Support
-
-                </h3>
-
+                <h3>Support</h3>
                 <ul>
-
                     <li>FAQs</li>
                     <li>Contact Us</li>
                     <li>Privacy Policy</li>
-                    <li>Terms & Conditions</li>
-
+                    <li>Terms &amp; Conditions</li>
                 </ul>
-
             </div>
-
         </div>
 
         <div class="copyright">
-
             © 2026 Rentify. All Rights Reserved.
-
         </div>
-
     </footer>
 
 </div>
 
-<!-- JAVASCRIPT -->
-
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
-
-    // PAGE LOAD PE SAB CAR HIDE
-    window.onload = function () {
-
-        const cards =
-            document.querySelectorAll(
-                ".filter-car-card"
-            );
-
-        cards.forEach(card => {
-
-            card.style.display = "none";
-        });
-    };
-
-    function filterCarsByType(){
-
-        const selectedType =
-            document.getElementById(
-                "carTypeFilter"
-            ).value;
-
-        const cards =
-            document.querySelectorAll(
-                ".filter-car-card"
-            );
-
-        cards.forEach(card => {
-
-            const carType =
-                card.getAttribute(
-                    "data-type"
-                );
-
-            if(selectedType === "ALL"
-                || carType === selectedType){
-
-                card.style.display = "block";
-            }
-
-            else{
-
-                card.style.display = "none";
-            }
-        });
-    }
-
-
-   // CURRENT DATE & TIME IN INDIA
-    const now = new Date();
-
-    // CONVERT TO INDIAN TIME
-    const indianDateTime =
-        new Date(
-            now.toLocaleString(
-                "en-US",
-                {
-                    timeZone: "Asia/Kolkata"
-                }
-            )
-        );
-
-    // FORMAT FOR datetime-local
-    const year =
-        indianDateTime.getFullYear();
-
-    const month =
-        String(
-            indianDateTime.getMonth() + 1
-        ).padStart(2, "0");
-
-    const day =
-        String(
-            indianDateTime.getDate()
-        ).padStart(2, "0");
-
-    const hours =
-        String(
-            indianDateTime.getHours()
-        ).padStart(2, "0");
-
-    const minutes =
-        String(
-            indianDateTime.getMinutes()
-        ).padStart(2, "0");
-
-    // FINAL FORMAT
-    const formattedNow =
-        `${year}-${month}-${day}T${hours}:${minutes}`;
-
-    // MIN DATE SET
-    document.getElementById(
-        "fromDate"
-    ).min = formattedNow;
-
-    document.getElementById(
-        "toDate"
-    ).min = formattedNow;
-
-
-    // FORM VALIDATION
-    document.querySelector("form")
-        .addEventListener("submit", function(e){
-
-        const fromDate =
-            new Date(
-                document.getElementById(
-                    "fromDate"
-                ).value
-            );
-
-        const toDate =
-            new Date(
-                document.getElementById(
-                    "toDate"
-                ).value
-            );
-
-        // CURRENT INDIAN DATE
-        const currentIndianDate =
-            new Date(
-                new Date().toLocaleString(
-                    "en-US",
-                    {
-                        timeZone: "Asia/Kolkata"
-                    }
-                )
-            );
-
-        // PAST DATE CHECK
-        if(fromDate < currentIndianDate
-            || toDate < currentIndianDate){
-
-            alert(
-                "Past date and time is not allowed!"
-            );
-
-            e.preventDefault();
-
-            return;
-        }
-
-        // END DATE CHECK
-        if(toDate <= fromDate){
-
-            alert(
-                "End date/time must be greater than start date/time!"
-            );
-
-            e.preventDefault();
-        }
-    });
-
-
     document.addEventListener("DOMContentLoaded", function () {
 
-    const hourCells = document.querySelectorAll(".total-hours");
+        /* ---------- CAR FILTER ---------- */
+        const carTypeFilter = document.getElementById("carTypeFilter");
+        const carCards = document.querySelectorAll(".filter-car-card");
 
-    hourCells.forEach(cell => {
+        // Hide filter cards until a type is selected.
+        carCards.forEach(card => {
+            card.style.display = "none";
+        });
 
-        const start = cell.getAttribute("data-start");
-        const end = cell.getAttribute("data-end");
+        window.filterCarsByType = function () {
+            const selectedType = carTypeFilter.value;
 
-        if (start && end) {
+            carCards.forEach(card => {
+                const carType = card.getAttribute("data-type");
 
-            const startDate = new Date(start);
-            const endDate = new Date(end);
+                card.style.display =
+                    selectedType === "ALL" || carType === selectedType
+                        ? "block"
+                        : "none";
+            });
+        };
 
-            // Difference in milliseconds
-            const diffMs = endDate - startDate;
+        /* ---------- CURRENT TIME IN INDIA ---------- */
+        function getIndianDateTimeValue() {
+            const parts = new Intl.DateTimeFormat("en-CA", {
+                timeZone: "Asia/Kolkata",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hourCycle: "h23"
+            }).formatToParts(new Date());
 
-            // Round UP to next hour
-            const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+            const value = {};
+            parts.forEach(part => {
+                value[part.type] = part.value;
+            });
 
-            cell.innerText = hours + " Hours";
+            return `${value.year}-${value.month}-${value.day}T${value.hour}:${value.minute}`;
         }
-    });
-});
 
+        const fromDateInput = document.getElementById("fromDate");
+        const toDateInput = document.getElementById("toDate");
+        const bookingForm = document.getElementById("bookingForm");
+
+        const currentDateTime = getIndianDateTimeValue();
+
+        fromDateInput.min = currentDateTime;
+        toDateInput.min = currentDateTime;
+
+        /* ---------- START / END DATE RELATIONSHIP ---------- */
+        fromDateInput.addEventListener("change", function () {
+            if (!fromDateInput.value) {
+                return;
+            }
+
+            // End date cannot be earlier than the selected start date.
+            toDateInput.min = fromDateInput.value;
+
+            if (toDateInput.value &&
+                toDateInput.value <= fromDateInput.value) {
+                toDateInput.value = "";
+            }
+        });
+
+        /* ---------- BOOKING FORM VALIDATION ---------- */
+        bookingForm.addEventListener("submit", function (event) {
+            const fromValue = fromDateInput.value;
+            const toValue = toDateInput.value;
+
+            if (!fromValue || !toValue) {
+                alert("Please select both start and end date/time.");
+                event.preventDefault();
+                return;
+            }
+
+            // Compare datetime-local values in their local date/time format.
+            if (fromValue < getIndianDateTimeValue()) {
+                alert("Start date/time cannot be in the past.");
+                event.preventDefault();
+                return;
+            }
+
+            if (toValue <= fromValue) {
+                alert("End date/time must be greater than start date/time.");
+                event.preventDefault();
+                return;
+            }
+        });
+
+        /* ---------- BOOKING TOTAL HOURS ---------- */
+        const hourCells = document.querySelectorAll(".total-hours");
+
+        hourCells.forEach(cell => {
+            const start = cell.getAttribute("data-start");
+            const end = cell.getAttribute("data-end");
+
+            if (start && end) {
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+                const diffMs = endDate - startDate;
+
+                if (Number.isFinite(diffMs) && diffMs >= 0) {
+                    const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+                    cell.textContent = hours + " Hours";
+                } else {
+                    cell.textContent = "N/A";
+                }
+            }
+        });
+    });
 </script>
 
 </body>
-
 </html>
